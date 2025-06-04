@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  order-online-fe:
+    container_name: order-online-fe
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - ./public:/app/public
+      - ./src:/app/src
+      - ./.env:/app/.env
+      - ./server.js:/app/server.js
+      - ./.eslint.config.js:/app/.eslint.config.js
+      - ./.prettierrc:/app/.prettierrc
+      - ./index.html:/app/index.html
+      - ./postcss.config.cjs:/app/postcss.config.cjs
+      - ./tailwind.config.cjs:/app/tailwind.config.cjs
+      - ./tsconfig.json:/app/tsconfig.json
+      - ./tsconfig.node.json:/app/tsconfig.node.json
+      - ./vite.config.ts:/app/vite.config.ts
+    ports:
+      - ${VITE_PORT}:${VITE_PORT}

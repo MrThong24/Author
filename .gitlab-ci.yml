@@ -1,0 +1,27 @@
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  image: docker:stable
+  services:
+    - docker:dind
+  tags:
+    - pooltest-app2
+  only:
+    - develop
+  script:
+    - cp .env.deploy .env
+    - docker compose build
+
+deploy:
+  stage: deploy
+  image: ubuntu:latest
+  script:
+    - cp .env.deploy .env
+    - docker compose up -d --force-recreate
+  tags:
+    - pooltest-app2
+  only:
+    - develop
