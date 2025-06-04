@@ -1,52 +1,14 @@
-import { Badge, Layout, Modal, Button, Tooltip, theme } from "antd";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Layout } from "antd";
+import { Link } from "react-router-dom";
 import { sidebarItems } from "./sidebarItems";
-import { FaCircleChevronLeft, FaCircleChevronRight } from "react-icons/fa6";
-import { RxExit } from "react-icons/rx";
-import { FiUser } from "react-icons/fi";
-import {
-  imageStoreDefault,
-  logoBlue,
-  logoBlueSmall,
-  mobifone,
-  mobifoneSmall,
-} from "src/assets/images";
-import {
-  clearLS,
-  getAccessTokenFromLS,
-  setAccessTokenToLS,
-} from "src/shared/utils/auth";
+import { mobifone } from "src/assets/images";
 import useAuthStore from "src/store/authStore";
 import { Role } from "src/types/user.type";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { GoDotFill } from "react-icons/go";
-import { LuKeyRound, LuStore } from "react-icons/lu";
-import ModalConfirm from "src/cms/components/Modal/ModalConfirm";
 import { useEffect, useState, useRef, useCallback } from "react";
-import { useForm } from "react-hook-form";
-import BaseSelect from "src/shared/components/Core/Select";
-import useRequestStore from "src/store/useRequestStore";
-import {
-  RequestProductStatus,
-  RequestType,
-  RoleType,
-  SocketEnum,
-} from "src/shared/common/enum";
-import { getSocket, useMultiSocketEvents } from "src/shared/utils/socket";
-import { useUrlQuery } from "src/hooks/useUrlQuery";
-import { AxiosResponse } from "axios";
-import http from "src/shared/utils/http";
-import { Store } from "antd/es/form/interface";
-import { useOutsideClick } from "src/hooks/useOutsideClick";
-import useMediaQuery from "src/hooks/useMediaQuery";
-import CustomModal from "src/shared/components/Modals/Modal";
-import useRequestProductStore from "src/store/useRequestProductStore";
-import { RequestProduct } from "src/types/request.type";
-import { useTheme } from "src/provider/ThemeContext";
 import { MdKeyboardDoubleArrowDown } from "react-icons/md";
 import BaseButton from "src/shared/components/Buttons/Button";
-import { generateImageURL } from "src/shared/utils/utils";
-import useWindowResize from "src/hooks/useWindowResize";
 
 const { Sider } = Layout;
 interface SidebarProps {
@@ -68,44 +30,22 @@ interface SubMenuItem {
   path: string;
   type?: string;
 }
-// Move the getPendingCount function outside of both components to make it reusable
-const getPendingCount = (
-  type: string,
-  requestCounts: { [x: string]: number }
-) => {
-  if (!requestCounts || Object.keys(requestCounts).length === 0) return 0;
-  let requestType = "";
-  if (type === "request/order") {
-    requestType = RequestType.ORDER;
-  } else if (type === "request/staff") {
-    requestType = RequestType.STAFF;
-  } else if (type === "request/payment") {
-    requestType = RequestType.PAYMENT;
-  } else if (type === "request/pending") {
-    requestType = RequestType.PENDING;
-  }
-  return requestCounts[requestType] || 0;
-};
 
 interface SubMenuProps {
   item: SidebarItem;
   collapsed: boolean;
   isItemSelected: (path: string) => boolean;
-  requestCounts: { [x: string]: number };
 }
 
 const SubMenu: React.FC<SubMenuProps> = ({
   item,
   collapsed,
   isItemSelected,
-  requestCounts,
 }) => {
   const [isOpen, setIsOpen] = useState(true);
   const hasActiveChild = item.subItems?.some((subItem) =>
     isItemSelected(subItem.path)
   );
-
-  // Remove the duplicate getPendingCount function from here
 
   return (
     <div className="w-full">
@@ -137,7 +77,6 @@ const SubMenu: React.FC<SubMenuProps> = ({
           ${collapsed ? "absolute left-full top-0 bg-white shadow-lg rounded-lg ml-2" : "ml-4"}`}
       >
         {item.subItems?.map((subItem) => {
-          const pendingCount = getPendingCount(subItem.path, requestCounts);
           return (
             <Link
               key={subItem.path}
@@ -157,10 +96,6 @@ const SubMenu: React.FC<SubMenuProps> = ({
               </span>
               <div className="flex justify-between w-full">
                 <span> {subItem.text} </span>
-                {/* {pendingCount > 0 && <Badge className='mr-2' count={pendingCount} overflowCount={10}></Badge>} */}
-                {pendingCount > 0 && (
-                  <Badge className="mr-2" count={pendingCount}></Badge>
-                )}
               </div>
             </Link>
           );
@@ -172,112 +107,14 @@ const SubMenu: React.FC<SubMenuProps> = ({
 
 const Sidebar = ({ collapsed, isMobile, onToggle }: SidebarProps) => {
   const { currentUser } = useAuthStore();
-  const {
-    fetchPendingRequestCounts,
-    pendingRequestCounts,
-    requestCounts,
-    setRequestCounts,
-  } = useRequestStore();
-
-  const {
-    requestProductCounts,
-    fetchRequestProductCounts,
-    isLoading: isRequestProductLoading,
-  } = useRequestProductStore();
-  const [listStoreOwner, setListStoreOwner] = useState<Store[]>([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
-
   const [canScrollDown, setCanScrollDown] = useState(false);
-  // const [isUserScrolling, setIsUserScrolling] = useState(false);
-  const { getAllQuery } = useUrlQuery();
-  const { type } = useParams();
-  const { fetchRequests } = useRequestStore();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [openConfirm, setOpenConfirm] = useState<boolean>(false);
-  const [selectedStore, setSelectedStore] = useState<string | null>();
   const isItemSelected = (path: string) => {
     return new RegExp(`^/${path}(/|$)`).test(location.pathname);
   };
-
-  const userRole = currentUser?.currentUserStore?.role as Role;
-  const kitchenDisabled = currentUser?.currentUserStore?.store?.kitchenDisabled;
-
   const filteredSidebarItems = sidebarItems.filter((item) => {
-    if (kitchenDisabled && item.path === "kitchen/inprogress") return false;
-    if (!item.allowedRoles) return true;
-    return item.allowedRoles.includes(userRole);
+    return item;
   });
-
-  // const handleLogout = () => {
-  //   clearLS();
-  //   window.location.reload();
-  // };
-  // const getPendingCount = (type: string) => {
-  //   if (!requestCounts || requestCounts.length === 0) return 0;
-  //   let requestType = '';
-  //   if (type === 'request/order') {
-  //     requestType = RequestType.ORDER;
-  //   } else if (type === 'request/staff') {
-  //     requestType = RequestType.STAFF;
-  //   } else if (type === 'request/payment') {
-  //     requestType = RequestType.PAYMENT;
-  //   } else if (type === 'request/pending') {
-  //     requestType = RequestType.PENDING;
-  //   }
-  //   return requestCounts[requestType];
-  // };
-  // const { handleSubmit } = useForm({
-  //   mode: 'onChange'
-  // });
-  const buildQueryString = (
-    params: Record<string, string | number | undefined | null>
-  ) => {
-    const queryParams = new URLSearchParams();
-
-    -Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== "") {
-        queryParams.append(key, String(value));
-      }
-    });
-
-    const queryString = queryParams.toString();
-    return queryString ? `?${queryString}` : "";
-  };
-  // const onSubmit = async () => {
-  //   setOpenConfirm(false);
-  //   const res = await chooseStore({
-  //     token: `${getAccessTokenFromLS()}` || '',
-  //     storeId: selectedStore || ''
-  //   });
-  //   setAccessTokenToLS(res?.accessToken as string);
-  //   getCurrentUser();
-  //   fetchRequestProductCounts();
-  //   navigate('request/order');
-  // };
-  //Xử lý đóng Drawer với hook useOutside
-  const closeDrawer = () => setIsDrawerOpen(false);
-
-  // Khởi tạo
-  useEffect(() => {
-    setSelectedStore(currentUser?.currentUserStore?.store?.id);
-  }, [currentUser]);
-
-  const fetchStoresData = async () => {
-    try {
-      const response: AxiosResponse = await http.get("/store");
-      setListStoreOwner(response.data.data);
-    } catch (error) {}
-  };
-
-  useEffect(() => {
-    if (
-      currentUser?.currentUserStore?.role === RoleType.STORE_OWNER &&
-      openConfirm
-    ) {
-      fetchStoresData();
-    }
-  }, [openConfirm, currentUser]);
 
   const renderScrollButton = (scrollAmount: number, className?: string) => {
     return (
@@ -369,8 +206,6 @@ const Sidebar = ({ collapsed, isMobile, onToggle }: SidebarProps) => {
           left: 0,
           top: isMobile ? 0 : 64,
           transition: "all 0.2s",
-          // overflowX: 'hidden',
-          // overflowY: 'auto',
           zIndex: 10,
         }}
         className="hide-scrollbar"
@@ -378,23 +213,14 @@ const Sidebar = ({ collapsed, isMobile, onToggle }: SidebarProps) => {
         <div
           className={`h-[100dvh] w-full bg-main flex flex-col pt-2 ${collapsed ? "pb-2" : "pb-1"} justify-between`}
         >
-          {/* Top section containing logo and menu */}
           <div className="relative flex flex-col flex-grow overflow-hidden">
             <div
               ref={menuRef}
               onScroll={handleScroll}
               className="overflow-hidden overflow-y-auto hide-scrollbar flex-grow"
             >
-              {/* ul menu */}
               <ul className="flex flex-col w-full">
                 {filteredSidebarItems.map((item) => {
-                  const pendingCount = isMobile
-                    ? item.path
-                      ? getPendingCount(item.path, requestCounts)
-                      : 0
-                    : item.path
-                      ? getPendingCount(item.path, requestCounts)
-                      : 0;
                   if (item.subItems) {
                     return (
                       <li
@@ -408,7 +234,6 @@ const Sidebar = ({ collapsed, isMobile, onToggle }: SidebarProps) => {
                           item={item}
                           collapsed={collapsed}
                           isItemSelected={isItemSelected}
-                          requestCounts={requestCounts}
                         />
                       </li>
                     );
@@ -436,25 +261,11 @@ const Sidebar = ({ collapsed, isMobile, onToggle }: SidebarProps) => {
                           >
                             {item.icon}
                           </span>
-                          <span className="relative">
-                            {collapsed && pendingCount > 0 && (
-                              <Badge
-                                className="absolute -left-4 -top-1.5 ml-2"
-                                size="small"
-                                count={pendingCount}
-                              />
-                            )}
-                          </span>
+
                           {!collapsed && (
                             <span className="truncate">{item.text}</span>
                           )}
                         </div>
-                        {!collapsed && pendingCount > 0 && (
-                          <Badge
-                            className="ml-2 items-end"
-                            count={pendingCount}
-                          />
-                        )}
                       </Link>
                     </li>
                   );
@@ -477,57 +288,6 @@ const Sidebar = ({ collapsed, isMobile, onToggle }: SidebarProps) => {
             <></>
           )}
 
-          {/* Bottom section with user profile and footer */}
-          {/* <div className='mt-auto'>
-          <div ref={wrapperRef} className='relative px-4 py-2 text-center flex flex-col justify-center flex-shrink-0'>
-            <div
-              className='relative flex items-center gap-2 cursor-pointer active:bg-primary-50'
-              onClick={() => setIsDrawerOpen(!isDrawerOpen)}
-            >
-              <img
-                src={currentUser?.avatar || imageStoreDefault}
-                alt='avatar'
-                className='w-[42px] h-[42px] rounded-full flex-shrink-0 object-cover'
-              />
-              {!collapsed && (
-                <Tooltip
-                  title={currentUser?.name}
-                  trigger={isSmToMdScreen ? [] : ['hover']}
-                  // open={isTooltipOpen}
-                  // onOpenChange={(visible) => setIsTooltipOpen(visible)}
-                  color={theme?.primary}
-                  arrow={{ pointAtCenter: true }}
-                  overlayStyle={{ maxWidth: '250px' }} // Giới hạn chiều rộng tooltip
-                  autoAdjustOverflow
-                >
-                  <h2 className='text-black text-[14px] font-semibold truncate max-w-[150px]'>{currentUser?.name}</h2>
-                </Tooltip>
-              )}
-              {isDrawerOpen && (
-                <div
-                  className={`flex absolute flex-col w-[200px] p-2 gap-3 bg-white rounded-md shadow-md z-50
-                      ${!collapsed && !isSmScreen ? 'left-[250px]' : 'left-[20px]'}  
-                      border ${isSmScreen ? 'left-[50px] bottom-[100%] shadow-xl' : ' bottom-[10%]'}`}
-                >
-                  {content}
-                </div>
-              )}
-            </div>
-
-            {collapsed && (
-              <div className='mt-4 cursor-pointer mx-auto flex-shrink-0' onClick={handleLogout}>
-                <RxExit className='text-danger' size={20} />
-              </div>
-            )}
-          </div> */}
-
-          {/* </div> */}
-          {/* {!collapsed && (
-              <div className='flex justify-center flex-shrink-0 overflow-hidden'>
-                <img src={mobifone} alt='Logo' className='w-[150px] max-w-full object-contain' />
-              </div>
-            )} */}
-          {/* Bottom section with Powered by */}
           {!collapsed && (
             <div className="mt-auto text-center  flex items-center justify-center gap-1">
               <p className="text-xs text-gray-500 font-light">Powered by</p>
@@ -540,33 +300,6 @@ const Sidebar = ({ collapsed, isMobile, onToggle }: SidebarProps) => {
           )}
         </div>
       </Sider>
-      {/* <ModalConfirm
-        isOpen={openConfirm}
-        title='Chọn cửa hàng'
-        onClose={() => {
-          setOpenConfirm(false);
-          setSelectedStore(currentUser?.currentUserStore?.store?.id);
-        }}
-        onConfirm={handleSubmit(onSubmit)}
-        icon={<LuStore size={24} />}
-        loading={isLoading}
-      >
-        <BaseSelect
-          value={selectedStore}
-          options={currentUser?.userStores?.map((item) => item.store) || []}
-          placeholder='Chọn cửa hàng'
-          fieldNames={{
-            label: 'name',
-            value: 'id'
-          }}
-          optionFilterProp='name'
-          showSearch
-          onChange={(value) => {
-            setSelectedStore(value);
-          }}
-          className='w-full mb-6'
-        />
-      </ModalConfirm> */}
     </div>
   );
 };

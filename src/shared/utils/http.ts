@@ -1,5 +1,5 @@
-import axios, { AxiosError, HttpStatusCode, type AxiosInstance } from 'axios';
-import { AuthResponse, RefreshTokenReponse } from 'src/types/auth.type';
+import axios, { AxiosError, HttpStatusCode, type AxiosInstance } from "axios";
+import { AuthResponse, RefreshTokenReponse } from "src/types/auth.type";
 import {
   clearLS,
   getAccessTokenFromLS,
@@ -13,12 +13,12 @@ import {
   URL_CUSTOMER,
   URL_JOINORDER,
   URL_LOGIN,
-  URL_REFRESH_TOKEN
-} from './auth';
-import { ErrorResponse } from 'src/types/utils.type';
-import { isAxiosExpiredTokenError, isAxiosUnauthorizedError } from './utils';
-import { CustomerInfo } from 'src/types/customer.type';
-import useCartStore from 'src/store/useCartStore';
+  URL_REFRESH_TOKEN,
+} from "./auth";
+import { ErrorResponse } from "src/types/utils.type";
+import { isAxiosExpiredTokenError, isAxiosUnauthorizedError } from "./utils";
+import { CustomerInfo } from "src/types/customer.type";
+import useCartStore from "src/store/useCartStore";
 
 export class Http {
   instance: AxiosInstance;
@@ -34,8 +34,8 @@ export class Http {
       timeout: 120000,
       withCredentials: true,
       headers: {
-        'Content-Type': 'application/json'
-      }
+        "Content-Type": "application/json",
+      },
     });
     this.instance.interceptors.request.use(
       (config) => {
@@ -43,7 +43,7 @@ export class Http {
           config.headers.authorization = `Bearer ${this.accessToken}`;
         }
         if (this.verifyToken && config.headers) {
-          config.headers['order-info'] = this.verifyToken;
+          config.headers["order-info"] = this.verifyToken;
         }
         return config;
       },
@@ -61,7 +61,11 @@ export class Http {
           this.accessToken = data.accessToken;
           setAccessTokenToLS(this.accessToken);
         }
-        if (url?.includes(URL_CUSTOMER) || url?.includes(URL_JOINORDER) || url?.includes(URL_CHANGE_LANGUAGE)) {
+        if (
+          url?.includes(URL_CUSTOMER) ||
+          url?.includes(URL_JOINORDER) ||
+          url?.includes(URL_CHANGE_LANGUAGE)
+        ) {
           const customerInfo = response.data as CustomerInfo;
           const { verifyToken } = customerInfo;
           this.verifyToken = verifyToken;
@@ -77,7 +81,10 @@ export class Http {
         }
 
         if (
-          ![HttpStatusCode.UnprocessableEntity, HttpStatusCode.Unauthorized].includes(error.response?.status as number)
+          ![
+            HttpStatusCode.UnprocessableEntity,
+            HttpStatusCode.Unauthorized,
+          ].includes(error.response?.status as number)
         ) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const data: any | undefined = error.response?.data;
@@ -86,8 +93,12 @@ export class Http {
           // toast.error(message)
         }
 
-        if (isAxiosUnauthorizedError<ErrorResponse<{ name: string; message: string }>>(error)) {
-          const config = error.response?.config || { headers: {}, url: '' };
+        if (
+          isAxiosUnauthorizedError<
+            ErrorResponse<{ name: string; message: string }>
+          >(error)
+        ) {
+          const config = error.response?.config || { headers: {}, url: "" };
           const { url } = config;
 
           if (isAxiosExpiredTokenError(error) && url !== URL_REFRESH_TOKEN) {
@@ -101,13 +112,13 @@ export class Http {
             return this.refreshTokenRequest.then((accessToken) => {
               return this.instance({
                 ...config,
-                headers: { ...config.headers, authorization: accessToken }
+                headers: { ...config.headers, authorization: accessToken },
               });
             });
           }
 
           clearLS();
-          this.accessToken = '';
+          this.accessToken = "";
           // toast.error(error.response?.data.data?.message || error.response?.data.message)
           if (!url?.includes(URL_LOGIN)) {
             window.location.reload();
@@ -122,12 +133,14 @@ export class Http {
 
     const data: any | undefined = error.response?.data;
 
-    return data?.code === 'INVALID_SESSION' || data?.code === 'SESSION_NOT_FOUND';
+    return (
+      data?.code === "INVALID_SESSION" || data?.code === "SESSION_NOT_FOUND"
+    );
   }
   private handleRefreshToken() {
     return this.instance
       .get<RefreshTokenReponse>(URL_REFRESH_TOKEN, {
-        withCredentials: true
+        withCredentials: true,
       })
       .then((res) => {
         const { accessToken } = res.data;
@@ -137,7 +150,7 @@ export class Http {
       })
       .catch((error) => {
         clearLS();
-        this.accessToken = '';
+        this.accessToken = "";
         throw error;
       });
   }

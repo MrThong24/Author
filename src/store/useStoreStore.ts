@@ -1,8 +1,8 @@
-import { notification } from 'antd';
-import { RcFile } from 'antd/es/upload';
-import { showError } from 'src/shared/utils/error';
-import http from 'src/shared/utils/http';
-import { uploadFileFn } from 'src/shared/utils/uploadFile';
+import { notification } from "antd";
+import { RcFile } from "antd/es/upload";
+import { showError } from "src/shared/utils/error";
+import http from "src/shared/utils/http";
+import { uploadFileFn } from "src/shared/utils/uploadFile";
 import {
   EInvoiceConfigPayload,
   KitchenSettingPayload,
@@ -10,20 +10,19 @@ import {
   StoreConfig,
   StorePayload,
   StorePayloadPartial,
-  productSettingSchema
-} from 'src/validate/userSchema';
-import { create } from 'zustand';
-import { Bank } from 'src/types/user.type';
+} from "src/validate/userSchema";
+import { create } from "zustand";
+import { Bank } from "src/types/user.type";
 import {
   EInvoiceSymbol,
   Kitchen1PostStore,
   KitchenDetailSetting,
   KitchenSettings,
   ProductSettings,
-  Store
-} from 'src/types/store.type';
-import { Params } from 'react-router-dom';
-import useAuthStore from './authStore';
+  Store,
+} from "src/types/store.type";
+import { Params } from "react-router-dom";
+import useAuthStore from "./authStore";
 
 export interface FilterStores extends Params {
   search?: string;
@@ -44,7 +43,10 @@ interface StoreStore {
   detailKitchenSetting: KitchenDetailSetting | null;
   listPosStore: Kitchen1PostStore[];
   loadingPosStore: boolean;
-  createStore: (payload: StorePayload, thumbnail: RcFile | string) => Promise<void>;
+  createStore: (
+    payload: StorePayload,
+    thumbnail: RcFile | string
+  ) => Promise<void>;
   fetchStores: (params: FilterStores, getOnly?: boolean) => Promise<void>;
   deleteStores: (ids: React.Key[]) => Promise<void>;
   getDetailStore: (id: string) => Promise<Store>;
@@ -60,14 +62,23 @@ interface StoreStore {
   getEInvoiceConfig: () => Promise<void>;
   setEInvoiceConfig: (data: Store | null) => void;
   getListSymbols: () => Promise<void>;
-  checkEInvoiceConnection: (data: EInvoiceConfigPayload, hideMessage?: boolean) => Promise<boolean>;
+  checkEInvoiceConnection: (
+    data: EInvoiceConfigPayload,
+    hideMessage?: boolean
+  ) => Promise<boolean>;
   fetchProductSettings: () => Promise<void>;
   createProductSetting: (data: any) => Promise<void>;
-  updateProductSetting: (id: string, data: ProductSettingPayload) => Promise<void>;
+  updateProductSetting: (
+    id: string,
+    data: ProductSettingPayload
+  ) => Promise<void>;
   deleteProductSettings: (ids: React.Key[]) => Promise<void>;
   fetchKitchenSettings: () => Promise<void>;
   createKitchenSetting: (data: KitchenSettingPayload) => Promise<void>;
-  updateKitchenSetting: (id: string, data: KitchenSettingPayload) => Promise<void>;
+  updateKitchenSetting: (
+    id: string,
+    data: KitchenSettingPayload
+  ) => Promise<void>;
   deleteKitchenSettings: (ids: React.Key[]) => Promise<void>;
   getDetailKitchenSetting: (id: string) => Promise<KitchenDetailSetting>;
   clearDetailKitchenSetting: () => void;
@@ -96,13 +107,18 @@ const useStoreStore = create<StoreStore>((set) => ({
       set({ isLoading: true });
     }
     try {
-      const response = await http.get('/store', { params });
+      const response = await http.get("/store", { params });
       if (!getOnly) {
-        set({ stores: response.data.data, isLoading: false, total: response.data.totalItems, detailStore: null });
+        set({
+          stores: response.data.data,
+          isLoading: false,
+          total: response.data.totalItems,
+          detailStore: null,
+        });
       }
       return response.data;
     } catch (error) {
-      showError({ error, title: 'Lấy danh sách cửa hàng thất bại' });
+      showError({ error, title: "Lấy danh sách cửa hàng thất bại" });
       set({ isLoading: false });
       throw error;
     }
@@ -112,7 +128,7 @@ const useStoreStore = create<StoreStore>((set) => ({
     set({ isLoading: true });
     try {
       let resFile;
-      if (thumbnail && typeof thumbnail !== 'string') {
+      if (thumbnail && typeof thumbnail !== "string") {
         resFile = await uploadFileFn(thumbnail as RcFile);
         thumbnail = resFile.link;
       }
@@ -120,11 +136,11 @@ const useStoreStore = create<StoreStore>((set) => ({
       await useAuthStore.getState().getCurrentUser();
       set({ isLoading: false });
       notification.success({
-        message: 'Tạo mới cửa hàng thành công'
+        message: "Tạo mới cửa hàng thành công",
       });
       return response.data;
     } catch (error) {
-      showError({ error, title: 'Tạo mới cửa hàng thất bại' });
+      showError({ error, title: "Tạo mới cửa hàng thất bại" });
       set({ isLoading: false });
       throw error;
     }
@@ -136,10 +152,10 @@ const useStoreStore = create<StoreStore>((set) => ({
       await http.delete<React.Key[]>(`/store`, { data: { ids } });
       set({ isLoading: false });
       notification.success({
-        message: 'Xóa cửa hàng thành công'
+        message: "Xóa cửa hàng thành công",
       });
     } catch (error) {
-      showError({ error, title: 'Xóa cửa hàng thất bại' });
+      showError({ error, title: "Xóa cửa hàng thất bại" });
       set({ isLoading: false });
       throw error;
     }
@@ -152,7 +168,7 @@ const useStoreStore = create<StoreStore>((set) => ({
       set({ detailStore: response.data, isLoading: false });
       return response.data;
     } catch (error) {
-      showError({ error, title: 'Lấy chi tiết công ty thất bại' });
+      showError({ error, title: "Lấy chi tiết công ty thất bại" });
       set({ isLoading: false });
       throw error;
     }
@@ -167,7 +183,7 @@ const useStoreStore = create<StoreStore>((set) => ({
     set({ isLoading: true });
     try {
       let resFile;
-      if (thumbnail && typeof thumbnail !== 'string') {
+      if (thumbnail && typeof thumbnail !== "string") {
         resFile = await uploadFileFn(thumbnail as RcFile);
         thumbnail = resFile.link;
       }
@@ -175,11 +191,13 @@ const useStoreStore = create<StoreStore>((set) => ({
       await useAuthStore.getState().getCurrentUser();
       set({ isLoading: false });
       notification.success({
-        message: fromSystemConfig ? 'Cập nhật thành công' : 'Chỉnh sửa thông tin cửa hàng thành công'
+        message: fromSystemConfig
+          ? "Cập nhật thành công"
+          : "Chỉnh sửa thông tin cửa hàng thành công",
       });
       return response.data;
     } catch (error) {
-      showError({ error, title: 'Chỉnh sửa thông tin cửa hàng thất bại' });
+      showError({ error, title: "Chỉnh sửa thông tin cửa hàng thất bại" });
       set({ isLoading: false });
       throw error;
     }
@@ -192,11 +210,11 @@ const useStoreStore = create<StoreStore>((set) => ({
       await useStoreStore.getState().getEInvoiceConfig();
       set({ isLoading: false });
       notification.success({
-        message: 'Chỉnh sửa cấu hình HDDT thành công'
+        message: "Chỉnh sửa cấu hình HDDT thành công",
       });
       return response.data;
     } catch (error) {
-      showError({ error, title: 'Chỉnh sửa cấu hình HDDT thất bại' });
+      showError({ error, title: "Chỉnh sửa cấu hình HDDT thất bại" });
       set({ isLoading: false });
       throw error;
     }
@@ -209,11 +227,14 @@ const useStoreStore = create<StoreStore>((set) => ({
       await useAuthStore.getState().getCurrentUser();
       set({ isLoading: false });
       notification.success({
-        message: 'Chỉnh sửa cài đặt cấu hình cửa hàng thành công'
+        message: "Chỉnh sửa cài đặt cấu hình cửa hàng thành công",
       });
       return response.data;
     } catch (error) {
-      showError({ error, title: 'Chỉnh sửa cài đặt cấu hình cửa hàng thất bại' });
+      showError({
+        error,
+        title: "Chỉnh sửa cài đặt cấu hình cửa hàng thất bại",
+      });
       set({ isLoading: false });
       throw error;
     }
@@ -222,10 +243,10 @@ const useStoreStore = create<StoreStore>((set) => ({
   getBanks: async () => {
     set({ isLoading: true });
     try {
-      const response = await http.get('/qr-code-payment/bank');
+      const response = await http.get("/qr-code-payment/bank");
       set({ banks: response.data, isLoading: false });
     } catch (error) {
-      showError({ error, title: 'Lấy thông tin thất bại' });
+      showError({ error, title: "Lấy thông tin thất bại" });
       set({ isLoading: false });
     }
   },
@@ -233,10 +254,10 @@ const useStoreStore = create<StoreStore>((set) => ({
   getEInvoiceConfig: async () => {
     set({ isLoading: true });
     try {
-      const response = await http.get('/store/e-invoice/config');
+      const response = await http.get("/store/e-invoice/config");
       set({ eInvoiceConfig: response.data, isLoading: false });
     } catch (error) {
-      showError({ error, title: 'Lấy cấu hình HDDT thất bại' });
+      showError({ error, title: "Lấy cấu hình HDDT thất bại" });
       set({ isLoading: false });
       throw error;
     }
@@ -245,27 +266,30 @@ const useStoreStore = create<StoreStore>((set) => ({
   getListSymbols: async () => {
     set({ isLoading: true });
     try {
-      const response = await http.get('/store/e-invoice/symbol');
+      const response = await http.get("/store/e-invoice/symbol");
       set({ listSymbol: response.data, isLoading: false });
     } catch (error) {
-      showError({ error, title: 'Lấy danh sách ký hiệu HDDT thất bại' });
+      showError({ error, title: "Lấy danh sách ký hiệu HDDT thất bại" });
       set({ isLoading: false });
       throw error;
     }
   },
 
-  checkEInvoiceConnection: async (data: EInvoiceConfigPayload, hideMessage?: boolean) => {
+  checkEInvoiceConnection: async (
+    data: EInvoiceConfigPayload,
+    hideMessage?: boolean
+  ) => {
     set({ isChecking: true });
     try {
-      const response = await http.post('/store/e-invoice/auth', { ...data });
+      const response = await http.post("/store/e-invoice/auth", { ...data });
       set({ isChecking: false });
       if (!hideMessage)
         notification.success({
-          message: 'Kết nối thành công'
+          message: "Kết nối thành công",
         });
       return response.data;
     } catch (error) {
-      showError({ error, title: 'Kết nối thất bại' });
+      showError({ error, title: "Kết nối thất bại" });
       set({ isChecking: false });
       throw error;
     }
@@ -278,10 +302,14 @@ const useStoreStore = create<StoreStore>((set) => ({
   fetchProductSettings: async () => {
     set({ isLoading: true });
     try {
-      const response = await http.get('/product-type');
-      set({ productSettings: response?.data?.data, totalProductSettings: response.data.totalItems, isLoading: false });
+      const response = await http.get("/product-type");
+      set({
+        productSettings: response?.data?.data,
+        totalProductSettings: response.data.totalItems,
+        isLoading: false,
+      });
     } catch (error) {
-      showError({ error, title: 'Lấy dữ liệu thất bại' });
+      showError({ error, title: "Lấy dữ liệu thất bại" });
       set({ isLoading: false });
       throw error;
     }
@@ -290,13 +318,13 @@ const useStoreStore = create<StoreStore>((set) => ({
   createProductSetting: async (data: ProductSettingPayload) => {
     set({ isLoading: true });
     try {
-      await http.post('/product-type', data);
+      await http.post("/product-type", data);
       set({ isLoading: false });
       notification.success({
-        message: 'Tạo mới phân loại sản phẩm thành công'
+        message: "Tạo mới phân loại sản phẩm thành công",
       });
     } catch (error) {
-      showError({ error, title: 'Tạo mới phân loại sản phẩm thất bại' });
+      showError({ error, title: "Tạo mới phân loại sản phẩm thất bại" });
       set({ isLoading: false });
       throw error;
     }
@@ -308,10 +336,10 @@ const useStoreStore = create<StoreStore>((set) => ({
       await http.put(`/product-type/${id}`, data);
       set({ isLoading: false });
       notification.success({
-        message: 'Chỉnh sửa phân loại sản phẩm thành công'
+        message: "Chỉnh sửa phân loại sản phẩm thành công",
       });
     } catch (error) {
-      showError({ error, title: 'Chỉnh sửa phân loại sản phẩm thất bại' });
+      showError({ error, title: "Chỉnh sửa phân loại sản phẩm thất bại" });
       set({ isLoading: false });
       throw error;
     }
@@ -323,10 +351,10 @@ const useStoreStore = create<StoreStore>((set) => ({
       await http.delete<React.Key[]>(`/product-type`, { data: { ids } });
       set({ isLoading: false });
       notification.success({
-        message: 'Xóa phân loại sản phẩm thành công'
+        message: "Xóa phân loại sản phẩm thành công",
       });
     } catch (error) {
-      showError({ error, title: 'Xóa phân loại sản phẩm thất bại' });
+      showError({ error, title: "Xóa phân loại sản phẩm thất bại" });
       set({ isLoading: false });
       throw error;
     }
@@ -335,10 +363,14 @@ const useStoreStore = create<StoreStore>((set) => ({
   fetchKitchenSettings: async () => {
     set({ isLoading: true });
     try {
-      const response = await http.get('/kitchen');
-      set({ kitchenSettings: response?.data?.data, totalKitchenSettings: response.data.totalItems, isLoading: false });
+      const response = await http.get("/kitchen");
+      set({
+        kitchenSettings: response?.data?.data,
+        totalKitchenSettings: response.data.totalItems,
+        isLoading: false,
+      });
     } catch (error) {
-      showError({ error, title: 'Lấy dữ liệu thất bại' });
+      showError({ error, title: "Lấy dữ liệu thất bại" });
       set({ isLoading: false });
       throw error;
     }
@@ -347,13 +379,13 @@ const useStoreStore = create<StoreStore>((set) => ({
   createKitchenSetting: async (data: KitchenSettingPayload) => {
     set({ isLoading: true });
     try {
-      await http.post('/kitchen', data);
+      await http.post("/kitchen", data);
       set({ isLoading: false });
       notification.success({
-        message: 'Tạo mới thông tin bếp thành công'
+        message: "Tạo mới thông tin bếp thành công",
       });
     } catch (error) {
-      showError({ error, title: 'Tạo mới thông tin bếp thất bại' });
+      showError({ error, title: "Tạo mới thông tin bếp thất bại" });
       set({ isLoading: false });
       throw error;
     }
@@ -365,10 +397,10 @@ const useStoreStore = create<StoreStore>((set) => ({
       await http.put(`/kitchen/${id}`, data);
       set({ isLoading: false });
       notification.success({
-        message: 'Chỉnh sửa thông tin bếp thành công'
+        message: "Chỉnh sửa thông tin bếp thành công",
       });
     } catch (error) {
-      showError({ error, title: 'Chỉnh sửa thông tin bếp thất bại' });
+      showError({ error, title: "Chỉnh sửa thông tin bếp thất bại" });
       set({ isLoading: false });
       throw error;
     }
@@ -380,23 +412,25 @@ const useStoreStore = create<StoreStore>((set) => ({
       await http.delete<React.Key[]>(`/kitchen`, { data: { ids } });
       set({ isLoading: false });
       notification.success({
-        message: 'Xóa thông tin bếp thành công'
+        message: "Xóa thông tin bếp thành công",
       });
     } catch (error) {
-      showError({ error, title: 'Xóa thông tin bếp thất bại' });
+      showError({ error, title: "Xóa thông tin bếp thất bại" });
       set({ isLoading: false });
       throw error;
     }
   },
 
-  getDetailKitchenSetting: async (id: string): Promise<KitchenDetailSetting> => {
+  getDetailKitchenSetting: async (
+    id: string
+  ): Promise<KitchenDetailSetting> => {
     set({ isLoading: true });
     try {
       const response = await http.get<KitchenDetailSetting>(`/kitchen/${id}`);
       set({ detailKitchenSetting: response.data, isLoading: false });
       return response.data;
     } catch (error) {
-      showError({ error, title: 'Lấy chi tiết thông tin bếp thất bại' });
+      showError({ error, title: "Lấy chi tiết thông tin bếp thất bại" });
       set({ isLoading: false });
       throw error;
     }
@@ -411,11 +445,11 @@ const useStoreStore = create<StoreStore>((set) => ({
       set({ listPosStore: response.data, loadingPosStore: false });
       return response.data;
     } catch (error) {
-      showError({ error, title: 'Lấy chi tiết thông tin cửa hàng thất bại' });
+      showError({ error, title: "Lấy chi tiết thông tin cửa hàng thất bại" });
       set({ loadingPosStore: false });
       throw error;
     }
-  }
+  },
 }));
 
 export default useStoreStore;

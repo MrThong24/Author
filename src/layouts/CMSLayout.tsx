@@ -1,27 +1,15 @@
 import { Layout, Drawer } from "antd";
 import { Outlet } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { DraggableButton } from "src/shared/components/Buttons/ButtonDrag";
+import { useEffect } from "react";
 import Sidebar from "./Sidebar";
 import { LoadingFullPage } from "src/shared/components/Loading/LoadingFullPage";
 import useAuthStore from "src/store/authStore";
 import useMediaQuery from "src/hooks/useMediaQuery";
-import {
-  useMultiSocketEvents,
-  disconnectSocket,
-  initializeSocket,
-} from "src/shared/utils/socket";
+import { initializeSocket } from "src/shared/utils/socket";
 import { useTheme } from "src/provider/ThemeContext";
-import {
-  RequestProductStatus,
-  RequestType,
-  RoleType,
-  SocketEnum,
-} from "src/shared/common/enum";
+import { RoleType } from "src/shared/common/enum";
 import useLayoutStore from "src/store/layoutStore";
 import useWindowResize from "src/hooks/useWindowResize";
-import useRequestStore from "src/store/useRequestStore";
-import useRequestProductStore from "src/store/useRequestProductStore";
 
 const { Content, Header } = Layout;
 
@@ -39,14 +27,6 @@ const CMSLayout = () => {
   const { isLoading, currentUser, getCurrentUser } = useAuthStore();
 
   const isResized = useWindowResize();
-  const {
-    pendingRequestCounts,
-    requestCounts,
-    setRequestCounts,
-    fetchPendingRequestCounts,
-  } = useRequestStore();
-  const { requestProductCounts, fetchRequestProductCounts } =
-    useRequestProductStore();
 
   useEffect(() => {
     getCurrentUser();
@@ -73,53 +53,6 @@ const CMSLayout = () => {
       });
   }, [currentUser?.currentUserStore?.store?.primaryColor]);
 
-  useMultiSocketEvents(
-    [
-      {
-        event: SocketEnum.TABLE_CREATED,
-        callback: () => {
-          // Reinitialize socket
-          disconnectSocket();
-          initializeSocket();
-        },
-      },
-    ],
-    [isLoading]
-  );
-
-  useEffect(() => {
-    if (
-      isResized &&
-      Object.keys(requestCounts).includes(RequestType.PENDING) &&
-      collapsed
-    )
-      return;
-    const pendingRequestCountsObject = pendingRequestCounts.reduce<
-      Record<string, number>
-    >((acc, item) => {
-      acc[item.type] = parseInt(item.count);
-      return acc;
-    }, {});
-    const requestProductCountsObject = requestProductCounts.reduce<
-      Record<string, number>
-    >((acc, item) => {
-      acc[item.status] = parseInt(item.count);
-      return acc;
-    }, {});
-
-    setRequestCounts((prev) => ({
-      ...prev,
-      ...pendingRequestCountsObject,
-      [RequestType.PENDING]:
-        (requestProductCountsObject[RequestProductStatus.COMPLETED] || 0) +
-        (requestProductCountsObject[RequestProductStatus.INPROGRESS] || 0),
-    }));
-  }, [pendingRequestCounts, requestProductCounts]);
-
-  useEffect(() => {
-    fetchPendingRequestCounts();
-    fetchRequestProductCounts();
-  }, []);
   return (
     <>
       {!!currentUser?.username && (
@@ -167,20 +100,13 @@ const CMSLayout = () => {
               ))}
             <Layout
               style={{
-                marginLeft:
-                  currentUser?.currentUserStore?.role !== RoleType.CHEF
-                    ? isMobile
-                      ? 0
-                      : collapsed
-                        ? 80
-                        : 250
-                    : 0,
+                marginLeft: isMobile ? 0 : collapsed ? 80 : 250,
                 transition: "all 0.2s ease",
                 padding: isMobile ? "0" : "0 0 0 12px",
                 marginTop: 64,
                 background: theme.paleSkyBlue,
-                height: "100dvh", // Đảm bảo Content full màn hình
-                overflow: "hidden", // Tránh bị cuộn khi Sidebar cuộn
+                height: "100dvh",
+                overflow: "hidden",
               }}
             >
               <Content
