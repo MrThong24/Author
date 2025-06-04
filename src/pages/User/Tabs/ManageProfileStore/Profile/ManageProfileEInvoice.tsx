@@ -1,15 +1,23 @@
-import { useForm } from 'react-hook-form';
-import useAuthStore from 'src/store/authStore';
-import { useEffect, useState } from 'react';
-import BaseButton from 'src/shared/components/Buttons/Button';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { eInvoiceConfigSchema, EInvoiceConfigPayload, eInvoiceAuthSchema } from 'src/validate/userSchema';
-import ModalConfirm from 'src/cms/components/Modal/ModalConfirm';
-import { CiBellOn } from 'react-icons/ci';
-import ProfileEInvoiceDetail from './ProfileEInvoiceDetail';
-import ProfileEInvoiceForm from './ProfileEInvoiceForm';
-import useStoreStore from 'src/store/useStoreStore';
-import { eInvoiceTypes, eInvoiceFormats, eInvoiceModes } from 'src/shared/common/constant';
+import { useForm } from "react-hook-form";
+import useAuthStore from "src/store/authStore";
+import { useEffect, useState } from "react";
+import BaseButton from "src/shared/components/Buttons/Button";
+import { yupResolver } from "@hookform/resolvers/yup";
+import {
+  eInvoiceConfigSchema,
+  EInvoiceConfigPayload,
+  eInvoiceAuthSchema,
+} from "src/validate/userSchema";
+import ModalConfirm from "src/components/Modal/ModalConfirm";
+import { CiBellOn } from "react-icons/ci";
+import ProfileEInvoiceDetail from "./ProfileEInvoiceDetail";
+import ProfileEInvoiceForm from "./ProfileEInvoiceForm";
+import useStoreStore from "src/store/useStoreStore";
+import {
+  eInvoiceTypes,
+  eInvoiceFormats,
+  eInvoiceModes,
+} from "src/shared/common/constant";
 
 export default function ManageProfileEInvoice() {
   const { currentUser, isLoading: loadingCurrent } = useAuthStore();
@@ -21,7 +29,7 @@ export default function ManageProfileEInvoice() {
     getListSymbols,
     listSymbol,
     updateEInvoiceConfig,
-    checkEInvoiceConnection
+    checkEInvoiceConnection,
   } = useStoreStore();
   const [editStore, setEditStore] = useState<boolean>(false);
   const [openConfirmEdit, setOpenConfirmEdit] = useState<boolean>(false);
@@ -31,31 +39,37 @@ export default function ManageProfileEInvoice() {
     handleSubmit,
     setValue,
     watch,
-    formState: { errors }
+    formState: { errors },
   } = useForm<EInvoiceConfigPayload>({
-    mode: 'onChange',
-    resolver: yupResolver(eInvoiceConfig?.eInvoicePassword ? eInvoiceConfigSchema : eInvoiceAuthSchema)
+    mode: "onChange",
+    resolver: yupResolver(
+      eInvoiceConfig?.eInvoicePassword
+        ? eInvoiceConfigSchema
+        : eInvoiceAuthSchema
+    ),
   });
 
-  const eInvoiceUrl = watch('eInvoiceUrl');
-  const eInvoiceUsername = watch('eInvoiceUsername');
-  const eInvoicePassword = watch('eInvoicePassword');
-  const eInvoiceType = watch('eInvoiceType');
-  const eInvoiceFormat = watch('eInvoiceFormat');
-  const eInvoiceMode = watch('eInvoiceMode');
-  const eInvoiceSymbol = watch('eInvoiceSymbol');
+  const eInvoiceUrl = watch("eInvoiceUrl");
+  const eInvoiceUsername = watch("eInvoiceUsername");
+  const eInvoicePassword = watch("eInvoicePassword");
+  const eInvoiceType = watch("eInvoiceType");
+  const eInvoiceFormat = watch("eInvoiceFormat");
+  const eInvoiceMode = watch("eInvoiceMode");
+  const eInvoiceSymbol = watch("eInvoiceSymbol");
 
   const handleCheckConnection = async () => {
     const data = editStore
       ? {
-          eInvoiceUrl: eInvoiceUrl || '',
-          eInvoiceUsername: eInvoiceUsername || '',
-          eInvoicePassword: eInvoicePassword || ''
+          eInvoiceUrl: eInvoiceUrl || "",
+          eInvoiceUsername: eInvoiceUsername || "",
+          eInvoicePassword: eInvoicePassword || "",
         }
       : {
-          eInvoiceUrl: eInvoiceUrl || eInvoiceConfig?.eInvoiceUrl || '',
-          eInvoiceUsername: eInvoiceUsername || eInvoiceConfig?.eInvoiceUsername || '',
-          eInvoicePassword: eInvoicePassword || eInvoiceConfig?.eInvoicePassword || ''
+          eInvoiceUrl: eInvoiceUrl || eInvoiceConfig?.eInvoiceUrl || "",
+          eInvoiceUsername:
+            eInvoiceUsername || eInvoiceConfig?.eInvoiceUsername || "",
+          eInvoicePassword:
+            eInvoicePassword || eInvoiceConfig?.eInvoicePassword || "",
         };
     await checkEInvoiceConnection(data);
   };
@@ -77,21 +91,29 @@ export default function ManageProfileEInvoice() {
   useEffect(() => {
     if (eInvoiceConfig?.eInvoicePassword && editStore) {
       reset({
-        eInvoiceUrl: eInvoiceConfig?.eInvoiceUrl || '',
-        eInvoiceUsername: eInvoiceConfig?.eInvoiceUsername || '',
-        eInvoicePassword: eInvoiceConfig?.eInvoicePassword || '',
-        eInvoiceType: eInvoiceConfig?.eInvoiceType || eInvoiceConfig?.eInvoiceSymbol ? eInvoiceTypes[0].value : '2',
+        eInvoiceUrl: eInvoiceConfig?.eInvoiceUrl || "",
+        eInvoiceUsername: eInvoiceConfig?.eInvoiceUsername || "",
+        eInvoicePassword: eInvoiceConfig?.eInvoicePassword || "",
+        eInvoiceType:
+          eInvoiceConfig?.eInvoiceType || eInvoiceConfig?.eInvoiceSymbol
+            ? eInvoiceTypes[0].value
+            : "2",
         eInvoiceFormat:
-          eInvoiceConfig?.eInvoiceFormat || eInvoiceConfig?.eInvoiceSymbol ? eInvoiceFormats[0].value : 'M',
-        eInvoiceMode: eInvoiceConfig?.eInvoiceMode || eInvoiceConfig?.eInvoiceSymbol ? eInvoiceModes[0].value : 'C',
-        eInvoiceSymbol: eInvoiceConfig?.eInvoiceSymbol || '2C25MPS'
+          eInvoiceConfig?.eInvoiceFormat || eInvoiceConfig?.eInvoiceSymbol
+            ? eInvoiceFormats[0].value
+            : "M",
+        eInvoiceMode:
+          eInvoiceConfig?.eInvoiceMode || eInvoiceConfig?.eInvoiceSymbol
+            ? eInvoiceModes[0].value
+            : "C",
+        eInvoiceSymbol: eInvoiceConfig?.eInvoiceSymbol || "2C25MPS",
       });
     }
     if (!editStore) {
       reset({
-        eInvoiceUrl: eInvoiceConfig?.eInvoiceUrl || '',
-        eInvoiceUsername: eInvoiceConfig?.eInvoiceUsername || '',
-        eInvoicePassword: eInvoiceConfig?.eInvoicePassword || ''
+        eInvoiceUrl: eInvoiceConfig?.eInvoiceUrl || "",
+        eInvoiceUsername: eInvoiceConfig?.eInvoiceUsername || "",
+        eInvoicePassword: eInvoiceConfig?.eInvoicePassword || "",
       });
     }
   }, [eInvoiceConfig, editStore]);
@@ -107,11 +129,14 @@ export default function ManageProfileEInvoice() {
   useEffect(() => {
     if (eInvoiceFormat && eInvoiceMode && eInvoiceType && listSymbol) {
       const symbol = listSymbol.find(
-        (item) => eInvoiceType === item.lhdon.toString() && eInvoiceFormat === item.khdon && eInvoiceMode === item.hthuc
+        (item) =>
+          eInvoiceType === item.lhdon.toString() &&
+          eInvoiceFormat === item.khdon &&
+          eInvoiceMode === item.hthuc
       );
-      if (symbol) setValue('eInvoiceSymbol', symbol?.khhdon || '');
-      else setValue('eInvoiceSymbol', '');
-    } else setValue('eInvoiceSymbol', '');
+      if (symbol) setValue("eInvoiceSymbol", symbol?.khhdon || "");
+      else setValue("eInvoiceSymbol", "");
+    } else setValue("eInvoiceSymbol", "");
   }, [eInvoiceFormat, eInvoiceMode, eInvoiceType, listSymbol, editStore]);
 
   useEffect(() => {
@@ -119,9 +144,9 @@ export default function ManageProfileEInvoice() {
       const match = eInvoiceSymbol.match(/^(\d)([A-Z])[0-9]*([A-Z])/);
       if (match) {
         const [_, eInvoiceType, eInvoiceMode, eInvoiceFormat] = match;
-        setValue('eInvoiceType', eInvoiceType);
-        setValue('eInvoiceMode', eInvoiceMode);
-        setValue('eInvoiceFormat', eInvoiceFormat);
+        setValue("eInvoiceType", eInvoiceType);
+        setValue("eInvoiceMode", eInvoiceMode);
+        setValue("eInvoiceFormat", eInvoiceFormat);
       }
     }
   }, [eInvoiceSymbol]);
@@ -129,7 +154,7 @@ export default function ManageProfileEInvoice() {
   return (
     <div>
       {/* <h3 className='text-lg font-bold'>Thông tin cửa hàng</h3> */}
-      <div className='mt-4'>
+      <div className="mt-4">
         {editStore ? (
           <ProfileEInvoiceForm
             loading={false}
@@ -149,15 +174,15 @@ export default function ManageProfileEInvoice() {
             handleCheckConnection={handleCheckConnection}
           />
         )}
-        <div className='flex items-center gap-6 justify-center mt-10 mb-16'>
+        <div className="flex items-center gap-6 justify-center mt-10 mb-16">
           {editStore && (
             <BaseButton
               loading={false}
               onClick={() => {
                 setEditStore(false);
               }}
-              color='danger'
-              className='w-[190px] h-[44px]'
+              color="danger"
+              className="w-[190px] h-[44px]"
             >
               Huỷ
             </BaseButton>
@@ -168,9 +193,9 @@ export default function ManageProfileEInvoice() {
               if (editStore) await handleSubmit(onSubmitValidate)();
               else setEditStore(true);
             }}
-            className='w-[190px] h-[44px]'
+            className="w-[190px] h-[44px]"
           >
-            {editStore ? 'Lưu thông tin' : 'Chỉnh sửa'}
+            {editStore ? "Lưu thông tin" : "Chỉnh sửa"}
           </BaseButton>
         </div>
       </div>

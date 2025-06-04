@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 /**
  * Hook để tắt/cuộn màn hình khi một thành phần mở lên
@@ -7,13 +7,13 @@ import { useEffect } from 'react';
 const useDisableScroll = (isActive: boolean) => {
   useEffect(() => {
     if (isActive) {
-      document.body.style.overflow = 'hidden'; 
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = ''; 
+      document.body.style.overflow = "";
     }
 
     return () => {
-      document.body.style.overflow = ''; 
+      document.body.style.overflow = "";
     };
   }, [isActive]);
 };

@@ -1,7 +1,7 @@
-import { Product } from './product.type';
-import { Request } from './request.type';
-import { Session } from './session.type';
-import { Table } from './table.type';
+import { Product } from "./product.type";
+import { Request } from "./request.type";
+import { Session } from "./session.type";
+import { Table } from "./table.type";
 export interface OrderProduct {
   id: string;
   productName: string;

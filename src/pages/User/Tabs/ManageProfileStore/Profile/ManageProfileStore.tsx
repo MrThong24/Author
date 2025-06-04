@@ -1,15 +1,15 @@
-import { useForm } from 'react-hook-form';
-import useAuthStore from 'src/store/authStore';
-import { useEffect, useState } from 'react';
-import BaseButton from 'src/shared/components/Buttons/Button';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { storeSchema, StorePayload } from 'src/validate/userSchema';
-import ModalConfirm from 'src/cms/components/Modal/ModalConfirm';
-import { CiBellOn } from 'react-icons/ci';
-import InfoStoreForm from './ProfileStoreForm';
-import { RcFile, UploadChangeParam } from 'antd/es/upload';
-import InfoStoreDetail from './ProfileStoreDetail';
-import useStoreStore from 'src/store/useStoreStore';
+import { useForm } from "react-hook-form";
+import useAuthStore from "src/store/authStore";
+import { useEffect, useState } from "react";
+import BaseButton from "src/shared/components/Buttons/Button";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { storeSchema, StorePayload } from "src/validate/userSchema";
+import ModalConfirm from "src/components/Modal/ModalConfirm";
+import { CiBellOn } from "react-icons/ci";
+import InfoStoreForm from "./ProfileStoreForm";
+import { RcFile, UploadChangeParam } from "antd/es/upload";
+import InfoStoreDetail from "./ProfileStoreDetail";
+import useStoreStore from "src/store/useStoreStore";
 
 export default function ManageProfileStore() {
   const { currentUser, isLoading: loadingCurrent } = useAuthStore();
@@ -23,14 +23,18 @@ export default function ManageProfileStore() {
     reset,
     handleSubmit,
     setValue,
-    formState: { errors }
+    formState: { errors },
   } = useForm<StorePayload>({
-    mode: 'onChange',
-    resolver: yupResolver(storeSchema)
+    mode: "onChange",
+    resolver: yupResolver(storeSchema),
   });
   const onSubmit = async (data: StorePayload) => {
     try {
-      await updateStore(currentUser?.currentUserStore?.store?.id as string, data, fileImage as RcFile | string);
+      await updateStore(
+        currentUser?.currentUserStore?.store?.id as string,
+        data,
+        fileImage as RcFile | string
+      );
       setEditStore(false);
       setOpenConfirmEdit(false);
     } catch (error) {}
@@ -47,22 +51,24 @@ export default function ManageProfileStore() {
     if (currentUser && editStore) {
       const { store } = currentUser?.currentUserStore || {};
       reset({
-        name: store?.name || '',
-        phone: store?.phone || '',
-        address: store?.address || '',
-        email: store?.email || '',
-        slogan: store?.slogan || '',
-        bankBin: store?.bankBin || '',
-        bankNumber: store?.bankNumber || '',
-        accountHolder: store?.accountHolder || '',
-        primaryColor: store?.primaryColor || '#005FAB',
+        name: store?.name || "",
+        phone: store?.phone || "",
+        address: store?.address || "",
+        email: store?.email || "",
+        slogan: store?.slogan || "",
+        bankBin: store?.bankBin || "",
+        bankNumber: store?.bankNumber || "",
+        accountHolder: store?.accountHolder || "",
+        primaryColor: store?.primaryColor || "#005FAB",
         isQRIntegrated: store?.isQRIntegrated || false,
         kitchenDisabled: store?.kitchenDisabled || false,
-        servingQuantityConfirmationDisabled: store?.servingQuantityConfirmationDisabled || false,
-        completingQuantityConfirmationDisabled: store?.completingQuantityConfirmationDisabled || false,
+        servingQuantityConfirmationDisabled:
+          store?.servingQuantityConfirmationDisabled || false,
+        completingQuantityConfirmationDisabled:
+          store?.completingQuantityConfirmationDisabled || false,
         qrSoundRegistered: store?.qrSoundRegistered || false,
-        bPacTemplatePath: store?.bPacTemplatePath || '',
-        taxCode: store?.taxCode || ''
+        bPacTemplatePath: store?.bPacTemplatePath || "",
+        taxCode: store?.taxCode || "",
       });
       setFileImage(currentUser?.currentUserStore?.store?.thumbnail);
       setErrorImage(false);
@@ -74,7 +80,7 @@ export default function ManageProfileStore() {
   return (
     <div>
       {/* <h3 className='text-lg font-bold'>Thông tin cửa hàng</h3> */}
-      <div className='mt-4'>
+      <div className="mt-4">
         {editStore ? (
           <InfoStoreForm
             loading={false}
@@ -87,15 +93,15 @@ export default function ManageProfileStore() {
         ) : (
           <InfoStoreDetail />
         )}
-        <div className='flex items-center gap-6 justify-center mt-10 mb-16'>
+        <div className="flex items-center gap-6 justify-center mt-10 mb-16">
           {editStore && (
             <BaseButton
               loading={false}
               onClick={() => {
                 setEditStore(false);
               }}
-              color='danger'
-              className='w-[190px] h-[44px]'
+              color="danger"
+              className="w-[190px] h-[44px]"
             >
               Huỷ
             </BaseButton>
@@ -110,9 +116,9 @@ export default function ManageProfileStore() {
               if (editStore) await handleSubmit(onSubmitValidate)();
               else setEditStore(true);
             }}
-            className='w-[190px] h-[44px]'
+            className="w-[190px] h-[44px]"
           >
-            {editStore ? 'Lưu thông tin' : 'Chỉnh sửa'}
+            {editStore ? "Lưu thông tin" : "Chỉnh sửa"}
           </BaseButton>
         </div>
       </div>

@@ -1,11 +1,11 @@
 import { Suspense, useEffect } from "react";
 import { useRoutes, Navigate } from "react-router-dom";
 import cmsRoutes from "./cmsRoutes";
-import Login from "src/cms/pages/Auth/Login";
+import Login from "src/pages/Auth/Login";
 import { clearLS } from "src/shared/utils/auth";
 import PrivateRoute from "src/auth/PrivateRoute";
 import { LoadingFullPage } from "src/shared/components/Loading/LoadingFullPage";
-import Unauthorized from "src/cms/pages/Unauthorized";
+import Unauthorized from "src/pages/Unauthorized";
 import useDismissPopupOnOrientationChange from "src/hooks/useDismissPopupOnOrientationChange";
 import CMSLayout from "src/layouts/CMSLayout";
 

@@ -2,7 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import useAuthStore from "src/store/authStore";
 import { Role } from "src/types/user.type";
 import { RoleType } from "src/shared/common/enum";
-import Overview from "src/cms/pages/Dashboard/Overview";
+import Overview from "src/pages/Dashboard/Overview";
 
 interface RouteConfig {
   path: string;

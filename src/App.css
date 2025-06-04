@@ -165,10 +165,6 @@ div[style*='overflow-x: auto']::-webkit-scrollbar {
   scrollbar-color: #c1c1c1 #f5f5f5;
 }
 
-.checkBadge .ant-tabs-tab-active span {
-  color: var(--primary-color);
-}
-
 /* Firefox */
 .custom-scrollbar {
   scrollbar-width: thin;
@@ -194,15 +190,4 @@ div[style*='overflow-x: auto']::-webkit-scrollbar {
     visibility: hidden !important;
   }
 }
-.ant-select-max-width .ant-select-selection-item {
-  display: block !important;
-  width: 0px !important;
-  overflow: hidden !important;
-  white-space: nowrap !important;
-  text-overflow: ellipsis !important;
-}
 
-/* resolved: Ant Design Chart blocks page scroll on mobile/tablet web  */
-canvas {
-  touch-action: pan-y !important;
-}
