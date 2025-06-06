@@ -10,18 +10,15 @@ import { useTableConfig } from "src/hooks/useTable";
 import { useUrlQuery } from "src/hooks/useUrlQuery";
 import BaseButton from "src/shared/components/Buttons/Button";
 import useEmployeeStore, { FilterEmployee } from "src/store/useEmployeeStore";
+import useSubsystem from "src/store/useSubsystem";
 import { Employee } from "src/types/employee.type";
 import { EditOutlined } from "@ant-design/icons";
-import ModalDelete from "src/components/Modal/ModalDelete";
-import SelectedStatusBar from "src/components/SelectedStatusBar";
-import { RequestStatusBadge } from "src/components/Badge/RequestStatusBadge";
-import { EmployeeStatus } from "src/shared/common/enum";
 
-const GroupEmployee = () => {
+export default function AccessPlatform() {
   const { getQuery } = useUrlQuery();
   const navigate = useNavigate();
-  const { fetchEmployees, isLoading, total, employees, deleteEmployees } =
-    useEmployeeStore();
+  const { fetchGroupEmployees, isLoading, total, groupEmployees } =
+    useSubsystem();
   const [filters, setFilters] = useState<FilterEmployee>({
     search: getQuery("search") || undefined,
   });
@@ -31,14 +28,12 @@ const GroupEmployee = () => {
     Employee,
     FilterEmployee
   >({
-    data: employees,
+    data: groupEmployees,
     totalItems: total,
     isLoading,
-    fetchData: fetchEmployees,
+    fetchData: fetchGroupEmployees,
     filters,
   });
-
-  const [rowSelectVisible, setRowSelectVisible] = useState<boolean>(false);
 
   const handleRowSelectionChange = async (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
@@ -51,17 +46,9 @@ const GroupEmployee = () => {
       render: (_text, _record, index) =>
         (tableProps.currentPage - 1) * tableProps.pageSize + index + 1,
     },
-    { title: "Tên nhóm người dùng", dataIndex: "name" },
-    { title: "Mã nhóm", dataIndex: "username" },
-    { title: "Thuộc khách hàng", dataIndex: "phone" },
-    { title: "Ngày tạo", dataIndex: "address" },
-    {
-      title: "Trạng thái",
-      width: 150,
-      render: (value: any) => {
-        return RequestStatusBadge(value.status);
-      },
-    },
+    { title: "Nhóm người dùng", dataIndex: "name" },
+    { title: "Ngày cập nhật gần nhất", dataIndex: "username" },
+    { title: "Người truy cập gần nhất", dataIndex: "username" },
     {
       fixed: "right",
       title: "Tác vụ",
@@ -86,34 +73,12 @@ const GroupEmployee = () => {
     resetToFirstPage();
   };
 
-  const handleDeleteEmployees = async () => {
-    try {
-      await deleteEmployees(selectedRowKeys);
-      await fetchEmployees(filters);
-      setOpenModalDelete(false);
-      setSelectedRowKeys([]);
-    } catch (error) {
-      setOpenModalDelete(false);
-    }
-  };
-
-  const listStatus = [
-    {
-      value: EmployeeStatus.ACTIVE,
-      label: "Đang sử dụng",
-    },
-    {
-      value: EmployeeStatus.INACTIVE,
-      label: "Ngưng hoạt động",
-    },
-  ];
-
   return (
     <MainHeader
       title={
         <div className="flex items-center gap-[6.8px]">
           <h2 className="text-[16px] lg:text-xl xl:text-2xl">
-            Quản lý tài nhóm người dùng
+            Cấu hình truy cập Platform
           </h2>
           <div className="flex items-center gap-[6.8px] lg:hidden">
             <FilterDropdown
@@ -122,14 +87,8 @@ const GroupEmployee = () => {
                   key: "search",
                   label: "Tìm kiếm",
                   type: "search",
-                  placeholder: "Nhập tên nhóm người dùng",
-                },
-                {
-                  key: "status",
-                  options: listStatus,
-                  label: "Trạng thái",
-                  type: "select",
-                  placeholder: "Chọn trạng thái",
+                  placeholder:
+                    "Nhập tên đăng nhập, email, sổ điện thoại, tên người dùng",
                 },
               ]}
               filters={filters}
@@ -146,64 +105,20 @@ const GroupEmployee = () => {
             <SearchInput
               defaultValue={filters.search}
               onSearch={(value) => handleFiltersChange({ search: value })}
-              placeholder="Nhập tên nhóm người dùng"
+              placeholder="Nhập tên đăng nhập, email, sổ điện thoại, tên người dùng"
               className="max-w-96 flex-1"
-            />
-            <FilterDropdown
-              filtersFields={[
-                {
-                  key: "status",
-                  options: listStatus,
-                  label: "Trạng thái",
-                  type: "select",
-                  placeholder: "Chọn trạng thái",
-                },
-              ]}
-              filters={filters}
-              setFilters={setFilters}
-              className="w-full"
             />
           </div>
         </div>
-        {(rowSelectVisible || !!selectedRowKeys.length) && (
-          <SelectedStatusBar
-            selectedCount={selectedRowKeys.length}
-            label="nhân viên"
-            onCancel={() => {
-              setSelectedRowKeys([]);
-              setRowSelectVisible(false);
-            }}
-            onDelete={() => setOpenModalDelete(true)}
-          />
-        )}
-        <div className="flex items-center gap-2">
-          <BaseButton className="text-xs" onClick={() => navigate("create")}>
-            Thêm mới
-          </BaseButton>
-        </div>
       </div>
-      <DataTable<Employee>
+      <DataTable<any>
         rowKey="id"
+        className="hidden lg:block"
         columns={columns}
         {...tableProps}
-        rowSelectionEnabled
-        rowSelectionType="checkbox"
-        selectedRowKeys={selectedRowKeys}
-        onSelectedRowsChange={(newSelectedRowKeys) => {
-          handleRowSelectionChange(newSelectedRowKeys);
-        }}
         scroll={{ x: "max-content" }}
         locale={{ emptyText: <NoData /> }}
       />
-      <ModalDelete
-        isOpen={openModalDelete}
-        onClose={() => setOpenModalDelete(false)}
-        onConfirm={handleDeleteEmployees}
-      >
-        <h2>Bạn muốn xoá nhân viên này?</h2>
-      </ModalDelete>
     </MainHeader>
   );
-};
-
-export default GroupEmployee;
+}

@@ -14,7 +14,7 @@ const DetailHeader: React.FC<DetailHeader> = ({
   rightElement,
 }) => {
   return (
-    <div className="w-full">
+    <div className="">
       <div className="flex flex-wrap justify-between w-full flex-1">
         <button className="flex items-center gap-2 mb-4" onClick={handleBack}>
           <IoChevronBack size={26} />

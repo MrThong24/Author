@@ -74,7 +74,7 @@ export default function ManagerGroupEmployee() {
           </BaseButton>
         </div>
       }
-      handleBack={() => navigate("/groupEmployee")}
+      handleBack={() => navigate("/group-employee")}
     >
       {editGroupEmployee || !id ? (
         <GroupEmployeeForm

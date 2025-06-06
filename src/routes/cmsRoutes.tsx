@@ -5,7 +5,10 @@ import { RoleType } from "src/shared/common/enum";
 import Employee from "src/pages/Employee";
 import ManageEmployee from "src/pages/Employee/ManageEmployee/ManageEmployee";
 import GroupEmployee from "src/pages/GroupEmployee";
-import ManagerGroupEmployee from "src/pages/GroupEmployee/ManagerGroupEmployee/ManagerGroupEmployee";
+import ManagerGroupEmployee from "src/pages/GroupEmployee/ManageGroupEmployee/ManagerGroupEmployee";
+import Subsystem from "src/pages/Subsystem";
+import AccessPlatform from "src/pages/AccessPlatform";
+import ManageAccessPlatform from "src/pages/AccessPlatform/ManageAccessPlatform/ManageAccessPlatform";
 
 interface RouteConfig {
   path: string;
@@ -68,7 +71,7 @@ const routeConfigs: RouteConfig[] = [
     ],
   },
   {
-    path: "groupEmployee/*",
+    path: "group-employee/*",
     element: <GroupEmployee />,
     allowedRoles: [RoleType.STORE_OWNER, RoleType.MANAGER],
     children: [
@@ -83,6 +86,44 @@ const routeConfigs: RouteConfig[] = [
       {
         path: ":id",
         element: <ManagerGroupEmployee />,
+      },
+    ],
+  },
+  {
+    path: "subsystem/*",
+    element: <Subsystem />,
+    allowedRoles: [RoleType.STORE_OWNER, RoleType.MANAGER],
+    children: [
+      {
+        path: "",
+        element: <Subsystem />,
+      },
+      {
+        path: "create",
+        element: <ManagerGroupEmployee />,
+      },
+      {
+        path: ":id",
+        element: <ManagerGroupEmployee />,
+      },
+    ],
+  },
+  {
+    path: "access-platform/*",
+    element: <AccessPlatform />,
+    allowedRoles: [RoleType.STORE_OWNER, RoleType.MANAGER],
+    children: [
+      {
+        path: "",
+        element: <AccessPlatform />,
+      },
+      {
+        path: "create",
+        element: <ManageAccessPlatform />,
+      },
+      {
+        path: ":id",
+        element: <ManageAccessPlatform />,
       },
     ],
   },
