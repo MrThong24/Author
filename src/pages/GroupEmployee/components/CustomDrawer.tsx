@@ -1,17 +1,19 @@
+import { useMemo, useState } from "react";
 import { Drawer, Table, TableColumnsType } from "antd";
 import { TableProps } from "antd/lib";
 import { FaChevronLeft } from "react-icons/fa";
 import SearchInput from "src/components/Search/SearchInput";
+
 type TableRowSelection<T extends object = object> =
   TableProps<T>["rowSelection"];
 
 interface DataType {
   key: React.ReactNode;
   name: string;
-  age: number;
-  address: string;
+  age: string;
   children?: DataType[];
 }
+
 export default function CustomDrawer({
   onClose,
   open,
@@ -19,160 +21,94 @@ export default function CustomDrawer({
   onClose: () => void;
   open: boolean;
 }) {
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const columns: TableColumnsType<DataType> = [
     {
-      title: "Name",
+      title: "Tên tính năng",
       dataIndex: "name",
       key: "name",
+      width: "50%",
     },
     {
-      title: "Age",
+      title: "Mã",
       dataIndex: "age",
       key: "age",
-      width: "12%",
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      width: "30%",
-      key: "address",
+      width: "50%",
     },
   ];
+
   const data: DataType[] = [
     {
       key: 1,
-      name: "John Brown sr.",
-      age: 60,
-      address: "New York No. 1 Lake Park",
+      name: "Quản lý đơn hàng",
+      age: "MO_INVOICE",
       children: [
         {
           key: 11,
-          name: "John Brown",
-          age: 42,
-          address: "New York No. 2 Lake Park",
+          name: "Xem danh sách đơn hàng",
+          age: "MO_INVOICE",
         },
         {
           key: 12,
-          name: "John Brown jr.",
-          age: 30,
-          address: "New York No. 3 Lake Park",
+          name: "Xem chi tiết đơn hàng",
+          age: "MO_INVOICE",
           children: [
             {
               key: 121,
-              name: "Jimmy Brown",
-              age: 16,
-              address: "New York No. 3 Lake Park",
-            },
-          ],
-        },
-        {
-          key: 13,
-          name: "Jim Green sr.",
-          age: 72,
-          address: "London No. 1 Lake Park",
-          children: [
-            {
-              key: 131,
-              name: "Jim Green",
-              age: 42,
-              address: "London No. 2 Lake Park",
-              children: [
-                {
-                  key: 1311,
-                  name: "Jim Green jr.",
-                  age: 25,
-                  address: "London No. 3 Lake Park",
-                },
-                {
-                  key: 1312,
-                  name: "Jimmy Green sr.",
-                  age: 18,
-                  address: "London No. 4 Lake Park",
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-    {
-      key: 2,
-      name: "Joe Black",
-      age: 32,
-      address: "Sydney No. 1 Lake Park",
-    },
-    {
-      key: 3,
-      name: "John Brown sr.",
-      age: 60,
-      address: "New York No. 1 Lake Park",
-      children: [
-        {
-          key: 11,
-          name: "John Brown",
-          age: 42,
-          address: "New York No. 2 Lake Park",
-        },
-        {
-          key: 12,
-          name: "John Brown jr.",
-          age: 30,
-          address: "New York No. 3 Lake Park",
-          children: [
-            {
-              key: 121,
-              name: "Jimmy Brown",
-              age: 16,
-              address: "New York No. 3 Lake Park",
-            },
-          ],
-        },
-        {
-          key: 13,
-          name: "Jim Green sr.",
-          age: 72,
-          address: "London No. 1 Lake Park",
-          children: [
-            {
-              key: 131,
-              name: "Jim Green",
-              age: 42,
-              address: "London No. 2 Lake Park",
-              children: [
-                {
-                  key: 1311,
-                  name: "Jim Green jr.",
-                  age: 25,
-                  address: "London No. 3 Lake Park",
-                },
-                {
-                  key: 1312,
-                  name: "Jimmy Green sr.",
-                  age: 18,
-                  address: "London No. 4 Lake Park",
-                },
-              ],
+              name: "Thanh toán đơn hàng",
+              age: "MO_INVOICE",
             },
           ],
         },
       ],
     },
   ];
+
   const rowSelection: TableRowSelection<DataType> = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        "selectedRows: ",
-        selectedRows
-      );
+    selectedRowKeys,
+    onChange: (newSelectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+      setSelectedRowKeys(newSelectedRowKeys);
     },
-    onSelect: (record, selected, selectedRows) => {
-      console.log(record, selected, selectedRows);
-    },
-    onSelectAll: (selected, selectedRows, changeRows) => {
-      console.log(selected, selectedRows, changeRows);
-    },
+    checkStrictly: false,
   };
+
+  const removeVietnameseAccents = (str: string) => {
+    return str
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+  };
+
+  const filterData = (data: DataType[], keyword: string): DataType[] => {
+    return data
+      .map((item) => {
+        const nameMatch = removeVietnameseAccents(item.name).includes(
+          removeVietnameseAccents(keyword)
+        );
+
+        const filteredChildren = item.children
+          ? filterData(item.children, keyword)
+          : [];
+
+        if (nameMatch || filteredChildren.length > 0) {
+          return {
+            ...item,
+            children:
+              filteredChildren.length > 0 ? filteredChildren : undefined,
+          };
+        }
+
+        return null;
+      })
+      .filter(Boolean) as DataType[];
+  };
+
+  const filteredData = useMemo(() => {
+    if (!searchKeyword) return data;
+    return filterData(data, searchKeyword);
+  }, [searchKeyword]);
+
   return (
     <Drawer
       title={<p>Danh sách</p>}
@@ -185,15 +121,16 @@ export default function CustomDrawer({
       closeIcon={<FaChevronLeft className="text-[20px]" />}
     >
       <SearchInput
-        onSearch={(value) => console.log("value", value)}
+        onSearch={(value) => setSearchKeyword(value as string)}
         placeholder="Nhập tên, mã tính năng"
         className="max-w-full flex-1 mb-6"
       />
       <Table<DataType>
         columns={columns}
         pagination={false}
-        rowSelection={{ ...rowSelection }}
-        dataSource={data}
+        defaultExpandAllRows
+        rowSelection={rowSelection} // Use the rowSelection object
+        dataSource={filteredData}
       />
     </Drawer>
   );

@@ -112,7 +112,7 @@ export default function GroupEmployeeForm({
               name="systemAdministration"
               defaultValue={false}
               render={({ field }) => (
-                <Switch
+                <Checkbox
                   checked={field.value}
                   onChange={(checked) => {
                     field.onChange(checked);

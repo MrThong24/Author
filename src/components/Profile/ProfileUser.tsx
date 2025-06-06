@@ -1,22 +1,25 @@
-import { Dropdown } from 'antd';
-import { FiUser } from 'react-icons/fi';
-import { LuKeyRound, LuStore } from 'react-icons/lu';
-import { RxExit } from 'react-icons/rx';
-import { useNavigate } from 'react-router-dom';
-import { imageStoreDefault } from 'src/assets/images';
-import BaseSelect from 'src/shared/components/Core/Select';
-import { clearLS, getAccessTokenFromLS, setAccessTokenToLS } from 'src/shared/utils/auth';
-import useAuthStore from 'src/store/authStore';
-import ModalConfirm from '../Modal/ModalConfirm';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import useRequestProductStore from 'src/store/useRequestProductStore';
-import { disconnectSocket, initializeSocket } from 'src/shared/utils/socket';
-import { RoleType } from 'src/shared/common/enum';
-import { generateImageURL } from 'src/shared/utils/utils';
+import { Dropdown } from "antd";
+import { FiUser } from "react-icons/fi";
+import { LuKeyRound, LuStore } from "react-icons/lu";
+import { RxExit } from "react-icons/rx";
+import { useNavigate } from "react-router-dom";
+import { imageStoreDefault } from "src/assets/images";
+import BaseSelect from "src/shared/components/Core/Select";
+import {
+  clearLS,
+  getAccessTokenFromLS,
+  setAccessTokenToLS,
+} from "src/shared/utils/auth";
+import useAuthStore from "src/store/authStore";
+import ModalConfirm from "../Modal/ModalConfirm";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { RoleType } from "src/shared/common/enum";
+import { generateImageURL } from "src/shared/utils/utils";
 
 export default function ProfileUser() {
-  const { currentUser, isLoading, chooseStore, getCurrentUser } = useAuthStore();
+  const { currentUser, isLoading, chooseStore, getCurrentUser } =
+    useAuthStore();
   const navigate = useNavigate();
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
   const [selectedStore, setSelectedStore] = useState<string | null>();
@@ -33,7 +36,7 @@ export default function ProfileUser() {
   };
 
   const { handleSubmit } = useForm({
-    mode: 'onChange'
+    mode: "onChange",
   });
 
   const handleOnConfirm = () => {
@@ -45,16 +48,14 @@ export default function ProfileUser() {
   const onSubmit = async () => {
     setOpenConfirm(false);
     const res = await chooseStore({
-      token: `${getAccessTokenFromLS()}` || '',
-      storeId: selectedStore || ''
+      token: `${getAccessTokenFromLS()}` || "",
+      storeId: selectedStore || "",
     });
     setAccessTokenToLS(res?.accessToken as string);
     getCurrentUser();
-    disconnectSocket();
-    initializeSocket();
     if (currentUser?.currentUserStore?.role !== RoleType.CHEF) {
-      navigate('/request/order');
-    } else navigate('/kitchen/inprogress');
+      navigate("/request/order");
+    } else navigate("/kitchen/inprogress");
   };
 
   useEffect(() => {
@@ -62,42 +63,44 @@ export default function ProfileUser() {
   }, [currentUser]);
 
   const content = (
-    <div className='flex flex-col gap-1 bg-white p-3 rounded-md shadow-md border border-gray-200 max-w-[300px] min-w-[200px]'>
+    <div className="flex flex-col gap-1 bg-white p-3 rounded-md shadow-md border border-gray-200 max-w-[300px] min-w-[200px]">
       <div
-        className='cursor-pointer hover:bg-primary-50 active:bg-primary-50 rounded-sm gap-1.5 p-1.5 flex text-start items-center'
-        onClick={() => navigateWithSidebarControl('/user')}
+        className="cursor-pointer hover:bg-primary-50 active:bg-primary-50 rounded-sm gap-1.5 p-1.5 flex text-start items-center"
+        onClick={() => navigateWithSidebarControl("/user")}
       >
-        <div className=' p-1 rounded-full flex-shrink-0'>
-          <FiUser className='text-primary' size={16} />
+        <div className=" p-1 rounded-full flex-shrink-0">
+          <FiUser className="text-primary" size={16} />
         </div>
-        <h2 className='text-primary truncate text-sm'>Thông tin - Cài đặt</h2>
+        <h2 className="text-primary truncate text-sm">Thông tin - Cài đặt</h2>
       </div>
       <div
-        className='cursor-pointer hover:bg-primary-50 active:bg-primary-50 rounded-sm gap-1.5 p-1.5 flex text-start items-center'
-        onClick={() => navigateWithSidebarControl('/changePassword')}
+        className="cursor-pointer hover:bg-primary-50 active:bg-primary-50 rounded-sm gap-1.5 p-1.5 flex text-start items-center"
+        onClick={() => navigateWithSidebarControl("/changePassword")}
       >
-        <div className=' p-1 rounded-full flex-shrink-0'>
-          <LuKeyRound className='text-primary' size={16} />
+        <div className=" p-1 rounded-full flex-shrink-0">
+          <LuKeyRound className="text-primary" size={16} />
         </div>
-        <h2 className='text-primary truncate text-sm'>Đổi mật khẩu</h2>
+        <h2 className="text-primary truncate text-sm">Đổi mật khẩu</h2>
       </div>
       <div
-        className='cursor-pointer hover:bg-primary-50 active:bg-primary-50 rounded-sm gap-1.5 p-1.5 flex text-start items-center'
+        className="cursor-pointer hover:bg-primary-50 active:bg-primary-50 rounded-sm gap-1.5 p-1.5 flex text-start items-center"
         onClick={() => handleOnConfirm()}
       >
-        <div className='p-1 rounded-full flex-shrink-0'>
-          <LuStore className='text-primary' size={16} />
+        <div className="p-1 rounded-full flex-shrink-0">
+          <LuStore className="text-primary" size={16} />
         </div>
-        <h2 className='text-primary truncate text-sm'>{currentUser?.currentUserStore?.store?.name || ''}</h2>
+        <h2 className="text-primary truncate text-sm">
+          {currentUser?.currentUserStore?.store?.name || ""}
+        </h2>
       </div>
       <div
-        className='cursor-pointer hover:bg-primary-50 active:bg-primary-50 rounded-sm gap-1.5 p-1.5 flex text-start items-center'
+        className="cursor-pointer hover:bg-primary-50 active:bg-primary-50 rounded-sm gap-1.5 p-1.5 flex text-start items-center"
         onClick={handleLogout}
       >
-        <div className=' p-1 rounded-full flex-shrink-0'>
-          <RxExit className='text-danger' size={16} />
+        <div className=" p-1 rounded-full flex-shrink-0">
+          <RxExit className="text-danger" size={16} />
         </div>
-        <h2 className='text-danger truncate text-sm'>Thoát ra</h2>
+        <h2 className="text-danger truncate text-sm">Thoát ra</h2>
       </div>
     </div>
   );
@@ -106,28 +109,30 @@ export default function ProfileUser() {
     <>
       <Dropdown
         overlay={content}
-        trigger={['click']}
-        placement={'bottomRight'}
+        trigger={["click"]}
+        placement={"bottomRight"}
         open={isDropdownOpen}
         onOpenChange={(open) => setIsDropdownOpen(open)}
         arrow
         overlayStyle={{
-          maxWidth: 'calc(100vw - 16px)',
-          padding: '8px'
+          maxWidth: "calc(100vw - 16px)",
+          padding: "8px",
         }}
       >
-        <div className='flex  items-center gap-2 w-full truncate'>
+        <div className="flex  items-center gap-2 w-full truncate">
           <img
             src={generateImageURL(currentUser?.avatar) || imageStoreDefault}
-            alt='avatar'
-            className='w-8 h-8 rounded-full flex-shrink-0 object-cover active:scale-95 active:brightness-90 transition-all cursor-pointer'
+            alt="avatar"
+            className="w-8 h-8 rounded-full flex-shrink-0 object-cover active:scale-95 active:brightness-90 transition-all cursor-pointer"
           />
-          <span className='hidden sm:block font-medium truncate'>{currentUser?.name || ''}</span>
+          <span className="hidden sm:block font-medium truncate">
+            {currentUser?.name || ""}
+          </span>
         </div>
       </Dropdown>
       <ModalConfirm
         isOpen={openConfirm}
-        title='Chọn cửa hàng'
+        title="Chọn cửa hàng"
         onClose={() => {
           setOpenConfirm(false);
           setSelectedStore(currentUser?.currentUserStore?.store?.id);
@@ -139,17 +144,17 @@ export default function ProfileUser() {
         <BaseSelect
           value={selectedStore}
           options={currentUser?.userStores?.map((item) => item.store) || []}
-          placeholder='Chọn cửa hàng'
+          placeholder="Chọn cửa hàng"
           fieldNames={{
-            label: 'name',
-            value: 'id'
+            label: "name",
+            value: "id",
           }}
-          optionFilterProp='name'
+          optionFilterProp="name"
           showSearch
           onChange={(value) => {
             setSelectedStore(value);
           }}
-          className='w-full mb-6 text-start'
+          className="w-full mb-6 text-start"
         />
       </ModalConfirm>
     </>

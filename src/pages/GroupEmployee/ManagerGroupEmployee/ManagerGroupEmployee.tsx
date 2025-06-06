@@ -11,6 +11,7 @@ import {
   GroupEmployeePayload,
   groupEmployeeSchema,
 } from "src/validate/groupEmployeeSchema";
+import GroupEmployeeDetail from "./GroupEmployeeDetail";
 
 export default function ManagerGroupEmployee() {
   const navigate = useNavigate();
@@ -74,20 +75,24 @@ export default function ManagerGroupEmployee() {
       }
       handleBack={() => navigate("/groupEmployee")}
     >
-      <GroupEmployeeForm
-        control={control}
-        errors={errors}
-        loading={isLoading}
-        setValue={setValue}
-        clearErrors={clearErrors}
-        usersPermission={[
-          {
-            key: 1,
-            name: "12312",
-            use: true,
-          },
-        ]}
-      />
+      {editGroupEmployee || !id ? (
+        <GroupEmployeeForm
+          control={control}
+          errors={errors}
+          loading={isLoading}
+          setValue={setValue}
+          clearErrors={clearErrors}
+          usersPermission={[
+            {
+              key: 1,
+              name: "12312",
+              use: true,
+            },
+          ]}
+        />
+      ) : (
+        <GroupEmployeeDetail />
+      )}
     </DetailHeader>
   );
 }

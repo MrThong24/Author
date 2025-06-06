@@ -5,7 +5,6 @@ import Sidebar from "./Sidebar";
 import { LoadingFullPage } from "src/shared/components/Loading/LoadingFullPage";
 import useAuthStore from "src/store/authStore";
 import useMediaQuery from "src/hooks/useMediaQuery";
-import { initializeSocket } from "src/shared/utils/socket";
 import { useTheme } from "src/provider/ThemeContext";
 import { RoleType } from "src/shared/common/enum";
 import useLayoutStore from "src/store/layoutStore";
@@ -35,7 +34,6 @@ const CMSLayout = () => {
   }, []);
 
   useEffect(() => {
-    initializeSocket();
     initializeCollapsed();
   }, []);
 
