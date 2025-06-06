@@ -10,6 +10,8 @@ import { useTheme } from "src/provider/ThemeContext";
 import { RoleType } from "src/shared/common/enum";
 import useLayoutStore from "src/store/layoutStore";
 import useWindowResize from "src/hooks/useWindowResize";
+import { mobifone } from "src/assets/images";
+import LayoutHeader from "./LayoutHeader";
 
 const { Content, Header } = Layout;
 
@@ -57,20 +59,7 @@ const CMSLayout = () => {
     <>
       {!!currentUser?.username && (
         <Layout style={{ height: "100dvh" }}>
-          <Header
-            className="flex items-center border border-b-2"
-            style={{
-              position: "fixed",
-              top: 0,
-              right: 0,
-              left: 0,
-              zIndex: 99,
-            }}
-          >
-            <div className="cursor-pointer" onClick={handleToggleSidebar}>
-              Mobifone
-            </div>
-          </Header>
+          <LayoutHeader handleToggleSidebar={handleToggleSidebar} />
           <Layout>
             {currentUser?.currentUserStore?.role !== RoleType.CHEF &&
               (isMobile ? (
@@ -105,7 +94,6 @@ const CMSLayout = () => {
                 padding: isMobile ? "0" : "0 0 0 12px",
                 marginTop: 64,
                 background: theme.paleSkyBlue,
-                height: "100dvh",
                 overflow: "hidden",
               }}
             >

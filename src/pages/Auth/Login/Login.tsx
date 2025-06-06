@@ -14,7 +14,7 @@ import { roleTypes } from "src/shared/common/constant";
 import { Option } from "src/types/utils.type";
 import BaseSelect from "src/shared/components/Core/Select";
 import { Empty, notification } from "antd";
-import { logoBlue, mobifone } from "src/assets/images";
+import { logo, logoBlue, mobifone } from "src/assets/images";
 import Field from "src/shared/components/Core/Field";
 import { useTheme } from "src/provider/ThemeContext";
 import { RoleType } from "src/shared/common/enum";
@@ -88,34 +88,23 @@ export default function Login() {
     }
   };
   return !getAccessTokenFromLS() ? (
-    <div
-      className="flex items-center min-h-screen p-4 bg-gray-100 md:justify-center"
-      style={{
-        backgroundImage: "url(/imageLogin.jpeg)",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        position: "relative",
-      }}
-    >
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          backgroundColor: "rgb(28 28 28 / 38%)",
-          zIndex: 0,
-        }}
-      ></div>
-      <div className="flex flex-col overflow-hidden bg-white rounded-md shadow-lg max w-full md:w-[60%] xl:w-1/4 max-h-[450px] z-10">
-        <div className="bg-white w-full px-6 py-10 z-10">
+    <div className="flex items-center min-h-screen p-4 bg-gray-100 lg:justify-center">
+      <div className="flex flex-col overflow-hidden bg-white rounded-md shadow-lg max sm:flex-row sm:flex-1 w-full lg:max-w-screen-lg h-[450px]">
+        <div className="bg-primary sm:w-full hidden sm:flex sm:items-center sm:justify-center overflow-hidden">
+          <img
+            src={logo}
+            alt="logo"
+            className="flex-1 w-full h-full object-cover"
+          />
+        </div>
+        <div className="pt-5 pb-16 sm:pb-5 px-8 bg-white w-full sm:w-full">
           <div className="h-full w-full flex items-center relative">
             <div className="w-full bg-white rounded-lg">
               <div className="flex justify-center">
-                <img src={logoBlue} alt="Logo" className="h-[60px]" />
+                <img src={mobifone} alt="" />
               </div>
-              <div className="space-y-2 mt-8">
+              <div className="space-y-2">
+                <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 sm:text-2xl mb-6"></h1>
                 <form onSubmit={handleSubmit(onSubmit)}>
                   {!isLoggedIn ? (
                     <div className="space-y-4">
@@ -145,7 +134,7 @@ export default function Login() {
                     </div>
                   ) : (
                     <Field>
-                      <Label text="Chọn cửa hàng" className="text-sm" />
+                      <Label text="Chọn quyền" className="text-sm" />
                       <BaseSelect
                         value={selectedStore}
                         options={userStoreOptions}
@@ -196,19 +185,6 @@ export default function Login() {
       </div>
     </div>
   ) : (
-    <Navigate
-      replace={true}
-      to={
-        getAccessTokenFromLS()
-          ? (
-              jwtDecode(getAccessTokenFromLS()) as {
-                userStore?: { role?: RoleType };
-              }
-            )?.userStore?.role === RoleType.CHEF
-            ? "/kitchen/inprogress"
-            : "/"
-          : "/"
-      }
-    />
+    <Navigate replace={true} to={getAccessTokenFromLS() ? "/employee" : "/"} />
   );
 }

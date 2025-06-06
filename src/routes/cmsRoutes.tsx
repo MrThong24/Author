@@ -2,7 +2,10 @@ import { Navigate, Outlet } from "react-router-dom";
 import useAuthStore from "src/store/authStore";
 import { Role } from "src/types/user.type";
 import { RoleType } from "src/shared/common/enum";
-import Overview from "src/pages/Dashboard/Overview";
+import Employee from "src/pages/Employee";
+import ManageEmployee from "src/pages/Employee/ManageEmployee/ManageEmployee";
+import GroupEmployee from "src/pages/GroupEmployee";
+import ManagerGroupEmployee from "src/pages/GroupEmployee/ManagerGroupEmployee/ManagerGroupEmployee";
 
 interface RouteConfig {
   path: string;
@@ -43,26 +46,48 @@ const wrapRoute = (route: RouteConfig): RouteConfig => {
 const routeConfigs: RouteConfig[] = [
   {
     path: "",
-    element: <Navigate to="/dashboard/overview" replace />,
+    element: <Navigate to="/employee" replace />,
   },
   {
-    path: "dashboard/*",
+    path: "employee/*",
+    element: <Employee />,
     allowedRoles: [RoleType.STORE_OWNER, RoleType.MANAGER],
-    element: <Overview />,
     children: [
       {
-        path: "overview",
-        element: <Overview />,
+        path: "",
+        element: <Employee />,
       },
       {
-        path: "revenue-tracking",
-        element: <Overview />,
+        path: "create",
+        element: <ManageEmployee />,
+      },
+      {
+        path: ":id",
+        element: <ManageEmployee />,
+      },
+    ],
+  },
+  {
+    path: "groupEmployee/*",
+    element: <GroupEmployee />,
+    allowedRoles: [RoleType.STORE_OWNER, RoleType.MANAGER],
+    children: [
+      {
+        path: "",
+        element: <GroupEmployee />,
+      },
+      {
+        path: "create",
+        element: <ManagerGroupEmployee />,
+      },
+      {
+        path: ":id",
+        element: <ManagerGroupEmployee />,
       },
     ],
   },
 ];
 
-// Process routes with the wrapper
 const cmsRoutes = routeConfigs.map(wrapRoute);
 
 export default cmsRoutes;

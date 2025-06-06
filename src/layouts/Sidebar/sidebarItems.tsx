@@ -1,5 +1,6 @@
 import { Role } from "src/types/user.type";
 import { FaChartBar } from "react-icons/fa";
+import { IoRestaurantOutline } from "react-icons/io5";
 
 interface SubItem {
   text: string;
@@ -16,16 +17,15 @@ interface SidebarItem {
 
 export const sidebarItems: SidebarItem[] = [
   {
-    text: "Dashboard",
+    text: "Quản lý người dùng",
     icon: <FaChartBar size={18} />,
-    path: "dashboard",
-    allowedRoles: [],
+    path: "employee",
     subItems: [
-      { text: "Tổng quan", icon: <></>, path: "dashboard/overview" },
+      { text: "Tổng quan", icon: <></>, path: "employee" },
       {
         text: "Theo dõi doanh thu",
         icon: <></>,
-        path: "dashboard/revenue-tracking",
+        path: "groupEmployee",
       },
     ],
   },
