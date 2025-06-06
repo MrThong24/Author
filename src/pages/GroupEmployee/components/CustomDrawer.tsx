@@ -3,6 +3,7 @@ import { Drawer, Table, TableColumnsType } from "antd";
 import { TableProps } from "antd/lib";
 import { FaChevronLeft } from "react-icons/fa";
 import SearchInput from "src/components/Search/SearchInput";
+import BaseButton from "src/shared/components/Buttons/Button";
 
 type TableRowSelection<T extends object = object> =
   TableProps<T>["rowSelection"];
@@ -17,9 +18,11 @@ interface DataType {
 export default function CustomDrawer({
   onClose,
   open,
+  onSaveSelection,
 }: {
   onClose: () => void;
   open: boolean;
+  onSaveSelection: (selectedKeys: React.Key[]) => void;
 }) {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
@@ -129,9 +132,18 @@ export default function CustomDrawer({
         columns={columns}
         pagination={false}
         defaultExpandAllRows
-        rowSelection={rowSelection} // Use the rowSelection object
+        rowSelection={rowSelection}
         dataSource={filteredData}
       />
+      <BaseButton
+        onClick={() => {
+          onSaveSelection(selectedRowKeys);
+          onClose();
+        }}
+        className="w-[120px]"
+      >
+        Lưu
+      </BaseButton>
     </Drawer>
   );
 }

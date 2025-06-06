@@ -11,6 +11,7 @@ export const groupEmployeeSchema = () =>
         key: yup.number().optional(),
         name: yup.string().optional(),
         use: yup.boolean().optional(),
+        list: yup.array().optional(),
       })
     ),
   });

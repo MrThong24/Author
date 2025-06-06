@@ -28,6 +28,7 @@ interface DataType {
   key?: number;
   name: string;
   use: boolean;
+  list: any;
 }
 
 export default function GroupEmployeeForm({
@@ -39,6 +40,13 @@ export default function GroupEmployeeForm({
   usersPermission,
 }: GroupEmployeeForm) {
   const [drawerVisible, setDrawerVisible] = useState<boolean>(false);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+
+  const handleSaveSelection =
+    (index: number) => (selectedKeys: React.Key[]) => {
+      setValue(`usersPermission.${index}.list`, selectedKeys);
+    };
+
   const columns = [
     {
       title: "STT",
@@ -46,9 +54,15 @@ export default function GroupEmployeeForm({
     },
     {
       title: "Tên phân hệ",
-
       render: (_: any, record: DataType, index: number) => (
-        <h2>{record.name}</h2>
+        <div>
+          <Controller
+            control={control}
+            name={`usersPermission.${index}.name`}
+            defaultValue={record.name}
+            render={({ field }) => <h2>{field.value}</h2>}
+          />
+        </div>
       ),
     },
     {
@@ -74,16 +88,29 @@ export default function GroupEmployeeForm({
     {
       title: "Nhóm người dùng",
       width: 180,
-      render: (_: any, record: DataType, index: number) => (
-        <div>
-          <BaseButton
-            onClick={() => setDrawerVisible(true)}
-            className="w-[120px]"
-          >
-            06 Tính năng
-          </BaseButton>
-        </div>
-      ),
+      render: (_: any, record: DataType, index: number) => {
+        return (
+          <div>
+            <Controller
+              control={control}
+              name={`usersPermission.${index}.list`}
+              defaultValue={record.list}
+              render={({ field }) => (
+                <BaseButton
+                  onClick={() => {
+                    setCurrentIndex(index);
+                    setDrawerVisible(true);
+                  }}
+                  className="w-[120px]"
+                >
+                  Tính năng{" "}
+                  {field.value?.length ? `(${field.value.length})` : ""}
+                </BaseButton>
+              )}
+            />
+          </div>
+        );
+      },
     },
   ];
   return (
@@ -155,6 +182,7 @@ export default function GroupEmployeeForm({
       <CustomDrawer
         onClose={() => setDrawerVisible(false)}
         open={drawerVisible}
+        onSaveSelection={handleSaveSelection(currentIndex)}
       />
     </div>
   );

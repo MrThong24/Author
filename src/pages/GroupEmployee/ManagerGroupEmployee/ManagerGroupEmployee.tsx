@@ -32,8 +32,9 @@ export default function ManagerGroupEmployee() {
   } = useForm<GroupEmployeePayload>({
     resolver: yupResolver(groupEmployeeSchema()),
   });
-
-  const onSubmit = async () => {};
+  const onSubmit = async (data: GroupEmployeePayload) => {
+    console.log("🇻🇳 👉 data", data);
+  };
   return (
     <DetailHeader
       title={
@@ -85,8 +86,15 @@ export default function ManagerGroupEmployee() {
           usersPermission={[
             {
               key: 1,
-              name: "12312",
+              name: "Phân hệ 1",
               use: true,
+              list: [],
+            },
+            {
+              key: 2,
+              name: "Phân hệ 2",
+              use: false,
+              list: [],
             },
           ]}
         />
