@@ -9,14 +9,14 @@ import DataTable from "src/components/Table/DataTable";
 import { useTableConfig } from "src/hooks/useTable";
 import { useUrlQuery } from "src/hooks/useUrlQuery";
 import useEmployeeStore, { FilterEmployee } from "src/store/useEmployeeStore";
-import useSubsystem from "src/store/useSubsystem";
+import useSubsystemStore from "src/store/useSubsystemStore";
 import { Employee } from "src/types/employee.type";
 
 export default function Subsystem() {
   const { getQuery } = useUrlQuery();
   const navigate = useNavigate();
   const { fetchGroupEmployees, isLoading, total, groupEmployees } =
-    useSubsystem();
+    useSubsystemStore();
   const [filters, setFilters] = useState<FilterEmployee>({
     search: getQuery("search") || undefined,
   });

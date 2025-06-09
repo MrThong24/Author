@@ -17,18 +17,12 @@ interface EmployeeStore {
   groupEmployees: Employee[];
   total: number;
   isLoading: boolean;
-  detailGroupEmployee: Employee | null;
-  fetchGroupEmployees: (
-    params?: FilterEmployee,
-    getOnly?: boolean
-  ) => Promise<void>;
+  fetchGroupEmployees: (params?: FilterEmployee) => Promise<void>;
 }
 
-const useGroupEmployeeStore = create<EmployeeStore>((set) => ({
+const useSubsystemStore = create<EmployeeStore>((set) => ({
   groupEmployees: [],
-  unit: [],
   total: 0,
-  detailGroupEmployee: null,
   isLoading: false,
 
   fetchGroupEmployees: async (params?: FilterEmployee) => {
@@ -39,7 +33,6 @@ const useGroupEmployeeStore = create<EmployeeStore>((set) => ({
         groupEmployees: response.data.data,
         isLoading: false,
         total: response.data.totalItems,
-        detailGroupEmployee: null,
       });
       return response.data;
     } catch (error) {
@@ -50,4 +43,4 @@ const useGroupEmployeeStore = create<EmployeeStore>((set) => ({
   },
 }));
 
-export default useGroupEmployeeStore;
+export default useSubsystemStore;

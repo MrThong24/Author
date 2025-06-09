@@ -9,6 +9,8 @@ import ManagerGroupEmployee from "src/pages/GroupEmployee/ManageGroupEmployee/Ma
 import Subsystem from "src/pages/Subsystem";
 import AccessPlatform from "src/pages/AccessPlatform";
 import ManageAccessPlatform from "src/pages/AccessPlatform/ManageAccessPlatform/ManageAccessPlatform";
+import Category from "src/pages/Category";
+import ManageCategory from "src/pages/Category/ManageCategory/ManageCategory";
 
 interface RouteConfig {
   path: string;
@@ -100,11 +102,30 @@ const routeConfigs: RouteConfig[] = [
       },
       {
         path: "create",
-        element: <ManagerGroupEmployee />,
+        element: <ManageCategory />,
       },
       {
         path: ":id",
-        element: <ManagerGroupEmployee />,
+        element: <ManageCategory />,
+      },
+    ],
+  },
+  {
+    path: "category/*",
+    element: <Category />,
+    allowedRoles: [RoleType.STORE_OWNER, RoleType.MANAGER],
+    children: [
+      {
+        path: "",
+        element: <Category />,
+      },
+      {
+        path: "create",
+        element: <ManageCategory />,
+      },
+      {
+        path: ":id",
+        element: <ManageCategory />,
       },
     ],
   },

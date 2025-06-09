@@ -9,10 +9,9 @@ import { useTheme } from "src/provider/ThemeContext";
 import { RoleType } from "src/shared/common/enum";
 import useLayoutStore from "src/store/layoutStore";
 import useWindowResize from "src/hooks/useWindowResize";
-import { mobifone } from "src/assets/images";
 import LayoutHeader from "./LayoutHeader";
 
-const { Content, Header } = Layout;
+const { Content } = Layout;
 
 const CMSLayout = () => {
   const { theme, setTheme } = useTheme();

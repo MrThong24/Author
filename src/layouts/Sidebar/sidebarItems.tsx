@@ -21,9 +21,9 @@ export const sidebarItems: SidebarItem[] = [
     icon: <FaChartBar size={18} />,
     path: "employee",
     subItems: [
-      { text: "Tổng quan", icon: <></>, path: "employee" },
+      { text: "Quản lý người dùng", icon: <></>, path: "employee" },
       {
-        text: "Theo dõi doanh thu",
+        text: "Quản lý nhóm người dùng",
         icon: <></>,
         path: "group-employee",
       },
@@ -38,6 +38,11 @@ export const sidebarItems: SidebarItem[] = [
         text: "Quản lý phân hệ",
         icon: <></>,
         path: "subsystem",
+      },
+      {
+        text: "Quản lý danh mục/ tính năng",
+        icon: <></>,
+        path: "category",
       },
     ],
   },

@@ -18,7 +18,6 @@ import {
 import { ErrorResponse } from "src/types/utils.type";
 import { isAxiosExpiredTokenError, isAxiosUnauthorizedError } from "./utils";
 import { CustomerInfo } from "src/types/customer.type";
-import useCartStore from "src/store/useCartStore";
 
 export class Http {
   instance: AxiosInstance;
@@ -75,10 +74,10 @@ export class Http {
         return response;
       },
       (error: AxiosError) => {
-        if (this.isStoreSessionExpiredError(error)) {
-          const setSessionExpired = useCartStore.getState().setSessionExpired;
-          setSessionExpired(true);
-        }
+        // if (this.isStoreSessionExpiredError(error)) {
+        //   const setSessionExpired = useCartStore.getState().setSessionExpired;
+        //   setSessionExpired(true);
+        // }
 
         if (
           ![

@@ -1,16 +1,3 @@
-import Notification from "../Notification/Notification";
-import useAuthStore from "src/store/authStore";
-import { RequestProductStatus, RoleType } from "src/shared/common/enum";
-import ProfileUser from "../Profile/ProfileUser";
-import { LuMenu } from "react-icons/lu";
-import { CgMenuLeft } from "react-icons/cg";
-import useLayoutStore from "src/store/layoutStore";
-import useMediaQuery from "src/hooks/useMediaQuery";
-import useRequestStore from "src/store/useRequestStore";
-import useRequestProductStore from "src/store/useRequestProductStore";
-import { Badge } from "antd";
-import { useEffect, useMemo } from "react";
-
 interface MainHeaderProps {
   children: React.ReactNode;
   title: string | React.ReactNode;

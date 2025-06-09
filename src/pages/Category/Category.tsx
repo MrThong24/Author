@@ -9,16 +9,15 @@ import DataTable from "src/components/Table/DataTable";
 import { useTableConfig } from "src/hooks/useTable";
 import { useUrlQuery } from "src/hooks/useUrlQuery";
 import BaseButton from "src/shared/components/Buttons/Button";
-import useEmployeeStore, { FilterEmployee } from "src/store/useEmployeeStore";
+import useCategoryStore from "src/store/useCategoryStore";
+import { FilterEmployee } from "src/store/useEmployeeStore";
 import { Employee } from "src/types/employee.type";
 import { EditOutlined } from "@ant-design/icons";
-import useSubsystemStore from "src/store/useSubsystemStore";
 
-export default function AccessPlatform() {
+export default function Category() {
   const { getQuery } = useUrlQuery();
   const navigate = useNavigate();
-  const { fetchGroupEmployees, isLoading, total, groupEmployees } =
-    useSubsystemStore();
+  const { fetchCategory, isLoading, total, category } = useCategoryStore();
   const [filters, setFilters] = useState<FilterEmployee>({
     search: getQuery("search") || undefined,
   });
@@ -28,10 +27,10 @@ export default function AccessPlatform() {
     Employee,
     FilterEmployee
   >({
-    data: groupEmployees,
+    data: category,
     totalItems: total,
     isLoading,
-    fetchData: fetchGroupEmployees,
+    fetchData: fetchCategory,
     filters,
   });
 
@@ -46,9 +45,9 @@ export default function AccessPlatform() {
       render: (_text, _record, index) =>
         (tableProps.currentPage - 1) * tableProps.pageSize + index + 1,
     },
-    { title: "Nhóm người dùng", dataIndex: "name" },
-    { title: "Ngày cập nhật gần nhất", dataIndex: "username" },
-    { title: "Người truy cập gần nhất", dataIndex: "username" },
+    { title: "Mã phân hệ", dataIndex: "name" },
+    { title: "Tên phân hệ", dataIndex: "username" },
+    { title: "Loại", dataIndex: "username" },
     {
       fixed: "right",
       title: "Tác vụ",
@@ -78,7 +77,7 @@ export default function AccessPlatform() {
       title={
         <div className="flex items-center gap-[6.8px]">
           <h2 className="text-[16px] lg:text-xl xl:text-2xl">
-            Cấu hình truy cập Platform
+            Quản lý danh mục/ tính năng
           </h2>
           <div className="flex items-center gap-[6.8px] lg:hidden">
             <FilterDropdown
@@ -87,8 +86,7 @@ export default function AccessPlatform() {
                   key: "search",
                   label: "Tìm kiếm",
                   type: "search",
-                  placeholder:
-                    "Nhập tên đăng nhập, email, sổ điện thoại, tên người dùng",
+                  placeholder: "Nhập tên, mã phân hệ",
                 },
               ]}
               filters={filters}
@@ -105,7 +103,7 @@ export default function AccessPlatform() {
             <SearchInput
               defaultValue={filters.search}
               onSearch={(value) => handleFiltersChange({ search: value })}
-              placeholder="Nhập tên đăng nhập, email, sổ điện thoại, tên người dùng"
+              placeholder="Nhập tên, mã phân hệ"
               className="max-w-96 flex-1"
             />
           </div>
