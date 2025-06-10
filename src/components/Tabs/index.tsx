@@ -34,7 +34,7 @@ export default function BaseTabs({
     <div className={`my-2 ${className || ""}`}>
       <div className="space-y-2">
         {/* Menu items */}
-        <div className="flex w-fit rounded-md bg-[#D9D9D9] items-center space-x-4 overflow-x-auto p-[6px]">
+        <div className="flex w-fit rounded-md bg-[#EEECEC] items-center space-x-4 overflow-x-auto p-[6px]">
           {tabs.map((item, idx) => (
             <button
               key={idx}

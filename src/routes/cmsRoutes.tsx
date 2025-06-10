@@ -17,6 +17,8 @@ import Service from "src/pages/Service";
 import ManageService from "src/pages/Service/ManageService/ManageService";
 import Contract from "src/pages/Contract";
 import ManageContract from "src/pages/Contract/ManageContract/ManageContract";
+import Customer from "src/pages/Customer";
+import ManageCustomer from "src/pages/Customer/ManageCustomer/ManageCustomer";
 
 interface RouteConfig {
   path: string;
@@ -200,6 +202,25 @@ const routeConfigs: RouteConfig[] = [
       {
         path: ":id",
         element: <ManageContract />,
+      },
+    ],
+  },
+  {
+    path: "customer/*",
+    element: <Customer />,
+    allowedRoles: [RoleType.STORE_OWNER, RoleType.MANAGER],
+    children: [
+      {
+        path: "",
+        element: <Customer />,
+      },
+      {
+        path: "create",
+        element: <ManageCustomer />,
+      },
+      {
+        path: ":id",
+        element: <ManageCustomer />,
       },
     ],
   },

@@ -83,7 +83,7 @@ export default function ContractForm({
       <div className="flex flex-col md:flex-row gap-x-10">
         <Field className="mt-4">
           <Label text="Mã khách hàng" validate={true} />
-          <div className="bg-[#D9D9D9] rounded w-full h-[40px] px-3 py-3 text-sm text-black">
+          <div className="bg-[#EEECEC] rounded w-full h-[40px] px-3 py-3 text-sm text-black">
             123
           </div>
         </Field>
@@ -113,11 +113,11 @@ export default function ContractForm({
         <Field className="mt-4">
           <Label text="Thời gian sử dụng" validate={true} />
           <div className="flex gap-4 items-center">
-            <div className="bg-[#D9D9D9] rounded w-full h-[40px] px-3 py-3 text-sm text-black">
+            <div className="bg-[#EEECEC] rounded w-full h-[40px] px-3 py-3 text-sm text-black">
               123
             </div>
             /
-            <div className="bg-[#D9D9D9] rounded w-full h-[40px] px-3 py-3 text-sm text-black">
+            <div className="bg-[#EEECEC] rounded w-full h-[40px] px-3 py-3 text-sm text-black">
               123
             </div>
           </div>
@@ -126,7 +126,7 @@ export default function ContractForm({
       <div className="flex flex-col md:flex-row gap-x-10">
         <Field className="mt-4">
           <Label text="Mã gói dịch vụ" validate={false} />
-          <div className="bg-[#D9D9D9] rounded w-full h-[40px] px-3 py-3 text-sm text-black">
+          <div className="bg-[#EEECEC] rounded w-full h-[40px] px-3 py-3 text-sm text-black">
             123
           </div>
         </Field>
@@ -144,7 +144,7 @@ export default function ContractForm({
               allowClear={true}
             />
             <div className="mt-2">/</div>
-            <div className="bg-[#D9D9D9] rounded w-full h-[40px] px-3 py-3 text-sm text-black">
+            <div className="bg-[#EEECEC] rounded w-full h-[40px] px-3 py-3 text-sm text-black">
               123
             </div>
           </div>
@@ -153,7 +153,7 @@ export default function ContractForm({
       <div className="flex flex-col md:flex-row gap-x-10">
         <Field className="mt-4">
           <Label text="Giá trị gói (VND)" validate={false} />
-          <div className="bg-[#D9D9D9] rounded w-full h-[40px] px-3 py-3 text-sm text-black">
+          <div className="bg-[#EEECEC] rounded w-full h-[40px] px-3 py-3 text-sm text-black">
             123
           </div>
         </Field>
@@ -165,7 +165,7 @@ export default function ContractForm({
       <div className="flex flex-col md:flex-row gap-x-10">
         <Field className="mt-4">
           <Label text="SL cửa hàng" validate={false} />
-          <div className="bg-[#D9D9D9] rounded w-full h-[40px] px-3 py-3 text-sm text-black">
+          <div className="bg-[#EEECEC] rounded w-full h-[40px] px-3 py-3 text-sm text-black">
             123
           </div>
         </Field>

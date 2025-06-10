@@ -37,7 +37,7 @@ export default function GroupEmployeeDetail() {
           {isLoading ? (
             <Skeleton.Input active style={{ width: "100%" }} />
           ) : (
-            <div className="bg-[#D9D9D9] rounded w-full h-[44px] px-3 py-3 text-sm text-black">
+            <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black">
               123
             </div>
           )}
@@ -55,7 +55,7 @@ export default function GroupEmployeeDetail() {
           {isLoading ? (
             <Skeleton.Input active style={{ width: "100%" }} />
           ) : (
-            <div className="bg-[#D9D9D9] rounded w-full h-[44px] px-3 py-3 text-sm text-black">
+            <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black">
               123
             </div>
           )}

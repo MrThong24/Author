@@ -40,7 +40,7 @@ export default function ExtendService({
         <div className="mb-4">
           <Field>
             <Label text="Thời gian sử dụng" validate={false} />
-            <div className="bg-[#D9D9D9] rounded w-full h-[44px] px-3 py-3 text-sm text-black">
+            <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black">
               123
             </div>
           </Field>
@@ -73,7 +73,7 @@ export default function ExtendService({
         <div className="mb-4">
           <Field>
             <Label text="Ngày bắt đầu gia hạn" validate={false} />
-            <div className="bg-[#D9D9D9] rounded w-full h-[44px] px-3 py-3 text-sm text-black flex justify-between items-center">
+            <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black flex justify-between items-center">
               <span>123</span>
               <MdOutlineDateRange size={24} color="gray" />
             </div>
@@ -82,7 +82,7 @@ export default function ExtendService({
         <div className="mb-4">
           <Field>
             <Label text="Ngày kết hạn" validate={false} />
-            <div className="bg-[#D9D9D9] rounded w-full h-[44px] px-3 py-3 text-sm text-black flex justify-between items-center">
+            <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black flex justify-between items-center">
               <span>123</span>
               <MdOutlineDateRange size={24} color="gray" />
             </div>

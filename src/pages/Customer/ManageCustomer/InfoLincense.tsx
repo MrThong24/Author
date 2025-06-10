@@ -5,9 +5,10 @@ import { RequestStatusBadge } from "src/components/Badge/RequestStatusBadge";
 import Field from "src/shared/components/Core/Field";
 import Label from "src/shared/components/Core/Label";
 import useContractStore from "src/store/useContract";
+import useCustomerStore from "src/store/useCustomer";
 
-export default function ContractDetail() {
-  const { isLoading } = useContractStore();
+export default function InfoLincense() {
+  const { isLoading } = useCustomerStore();
   const columns = [
     {
       title: "STT",
@@ -76,14 +77,7 @@ export default function ContractDetail() {
             </div>
           )}
         </Field>
-        <Field className="mt-4">
-          <Label text="Trạng thái" validate={true} />
-          {isLoading ? (
-            <Skeleton.Input active style={{ width: "100%" }} />
-          ) : (
-            <div>{RequestStatusBadge("")}</div>
-          )}
-        </Field>
+        <Field className="mt-4"> </Field>
       </div>
       <h1 className="text-lg font-semibold text-primary">Thông tin gói</h1>
       <div className="flex flex-col md:flex-row gap-x-10">
@@ -154,6 +148,41 @@ export default function ContractDetail() {
                 <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black flex justify-between items-center">
                   <span>123</span>
                   <MdOutlineDateRange size={24} color="gray" />
+                </div>
+              )}
+            </Field>
+          </div>
+        </Field>
+      </div>
+      <div className="flex flex-col md:flex-row gap-x-10">
+        <Field className="mt-4">
+          <Label text="Trạng thái" validate={true} />
+          {isLoading ? (
+            <Skeleton.Input active style={{ width: "100%" }} />
+          ) : (
+            <div>{RequestStatusBadge("")}</div>
+          )}
+        </Field>
+        <Field className="mt-4">
+          <div className="flex gap-4 items-center">
+            <Field>
+              <Label text="Thời gian sử dụng" validate={true} />
+              {isLoading ? (
+                <Skeleton.Input active style={{ width: "100%" }} />
+              ) : (
+                <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black flex justify-between items-center">
+                  <span>123</span>
+                  <MdOutlineDateRange size={24} color="gray" />
+                </div>
+              )}
+            </Field>
+            <Field>
+              <Label text="Thời gian còn lại" validate={true} />
+              {isLoading ? (
+                <Skeleton.Input active style={{ width: "100%" }} />
+              ) : (
+                <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black">
+                  <span>123</span>
                 </div>
               )}
             </Field>

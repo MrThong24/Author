@@ -1,6 +1,8 @@
 import { Role } from "src/types/user.type";
-import { FaChartBar } from "react-icons/fa";
-import { IoRestaurantOutline } from "react-icons/io5";
+import { FaChartBar, FaExpandArrowsAlt } from "react-icons/fa";
+import { IoMdSettings } from "react-icons/io";
+import { LuFileChartColumnIncreasing, LuUserPlus } from "react-icons/lu";
+import { TbReservedLine } from "react-icons/tb";
 
 interface SubItem {
   text: string;
@@ -17,8 +19,8 @@ interface SidebarItem {
 
 export const sidebarItems: SidebarItem[] = [
   {
-    text: "Quản lý người dùng",
-    icon: <FaChartBar size={18} />,
+    text: "Quản lý tài khoản",
+    icon: <IoMdSettings size={18} />,
     path: "employee",
     subItems: [
       { text: "Quản lý người dùng", icon: <></>, path: "employee" },
@@ -31,18 +33,21 @@ export const sidebarItems: SidebarItem[] = [
   },
   {
     text: "Quản lý hợp đồng khách hàng",
-    icon: <FaChartBar size={18} />,
+    icon: <LuUserPlus size={18} />,
     path: "contract",
-    subItems: [{ text: "Quản lý hợp đồng", icon: <></>, path: "contract" }],
+    subItems: [
+      { text: "Quản lý khách hàng", icon: <></>, path: "customer" },
+      { text: "Quản lý hợp đồng", icon: <></>, path: "contract" },
+    ],
   },
   {
     text: "Quản lý gói dịch vụ",
-    icon: <FaChartBar size={18} />,
+    icon: <LuFileChartColumnIncreasing size={18} />,
     path: "service",
   },
   {
     text: "Quản lý hệ thông",
-    icon: <FaChartBar size={18} />,
+    icon: <TbReservedLine size={18} />,
     path: "database",
     subItems: [
       {
@@ -64,7 +69,7 @@ export const sidebarItems: SidebarItem[] = [
   },
   {
     text: "Quản lý tiện ích",
-    icon: <FaChartBar size={18} />,
+    icon: <FaExpandArrowsAlt size={18} />,
     path: "access-platform",
     subItems: [
       {

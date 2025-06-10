@@ -152,7 +152,6 @@ export default function ManageContract() {
             items={items}
             className="!bg-transparent shadow-none border-none mb-4"
           />
-
           {componentsMap[currentTabs]}
         </>
       )}
