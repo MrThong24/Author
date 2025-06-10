@@ -44,13 +44,20 @@ const CMSLayout = () => {
     }
   };
 
+  // useEffect(() => {
+  //   if (currentUser?.currentUserStore?.store?.primaryColor)
+  //     setTheme({
+  //       ...theme,
+  //       primary: currentUser?.currentUserStore.store.primaryColor,
+  //     });
+  // }, [currentUser?.currentUserStore?.store?.primaryColor]);
+
   useEffect(() => {
-    if (currentUser?.currentUserStore?.store?.primaryColor)
-      setTheme({
-        ...theme,
-        primary: currentUser?.currentUserStore.store.primaryColor,
-      });
-  }, [currentUser?.currentUserStore?.store?.primaryColor]);
+    setTheme({
+      ...theme,
+      primary: "#005FAB",
+    });
+  }, []);
 
   return (
     <>

@@ -47,7 +47,7 @@ const ModalPreviewPassword: React.FC<ModalConfirmResetPassword> = ({
     >
       <Field className="mt-4 mb-8">
         <Label text="Mật khẩu" validate={false} />
-        <div className=" rounded-[8px] px-4 py-[10px] overflow-hidden flex justify-between items-center bg-white shadow-md">
+        <div className=" rounded-[8px] h-[40px] px-4 py-[10px] overflow-hidden flex justify-between items-center bg-white shadow-md">
           <p>{dataResetPassword}</p>
           <MdOutlineContentCopy
             className="cursor-pointer"

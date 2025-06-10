@@ -31,13 +31,13 @@ export default function GroupEmployeeDetail() {
       <h1 className="text-lg font-semibold text-primary">
         Thông tin tài khoản
       </h1>
-      <div className="flex flex-col md:flex-row gap-x-10 items-center">
+      <div className="flex flex-col md:flex-row gap-x-10">
         <Field className="mt-4">
           <Label text="Tên nhóm" validate={true} />
           {isLoading ? (
             <Skeleton.Input active style={{ width: "100%" }} />
           ) : (
-            <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black">
+            <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black">
               123
             </div>
           )}
@@ -55,7 +55,7 @@ export default function GroupEmployeeDetail() {
           {isLoading ? (
             <Skeleton.Input active style={{ width: "100%" }} />
           ) : (
-            <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black">
+            <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black">
               123
             </div>
           )}

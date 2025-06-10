@@ -1,4 +1,4 @@
-import { TableColumnsType } from "antd";
+import { Switch, TableColumnsType } from "antd";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FilterDropdown from "src/components/Filter/FilterDropdown";
@@ -16,6 +16,9 @@ import ModalDelete from "src/components/Modal/ModalDelete";
 import SelectedStatusBar from "src/components/SelectedStatusBar";
 import { EmployeeStatus } from "src/shared/common/enum";
 import { RequestStatusBadge } from "src/components/Badge/RequestStatusBadge";
+import ModalSwitchStatus from "./components/ModalSwitchStatus";
+import dayjs from "dayjs";
+import { u } from "framer-motion/dist/types.d-B50aGbjN";
 
 const EmployeeList = () => {
   const { getQuery } = useUrlQuery();
@@ -24,9 +27,14 @@ const EmployeeList = () => {
     useEmployeeStore();
   const [filters, setFilters] = useState<FilterEmployee>({
     search: getQuery("search") || undefined,
+    startDate: getQuery("startDate") || undefined,
+    endDate: getQuery("endDate") || undefined,
   });
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
+  const [rowSelectVisible, setRowSelectVisible] = useState<boolean>(false);
+  const [modalSwitchStatus, setModalSwitchStatus] = useState<boolean>(false);
+  const [valueSwitchStatus, setValueSwitchStatus] = useState<boolean>(false);
   const { tableProps, resetToFirstPage } = useTableConfig<
     Employee,
     FilterEmployee
@@ -37,9 +45,6 @@ const EmployeeList = () => {
     fetchData: fetchEmployees,
     filters,
   });
-
-  const [rowSelectVisible, setRowSelectVisible] = useState<boolean>(false);
-
   const handleRowSelectionChange = async (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
@@ -68,7 +73,14 @@ const EmployeeList = () => {
       fixed: "right",
       title: "Tác vụ",
       render: (value: Employee) => (
-        <div>
+        <div className="flex gap-4 items-center">
+          <Switch
+            value={valueSwitchStatus}
+            onChange={() => {
+              setModalSwitchStatus(true);
+            }}
+            className="w-[40px]"
+          />
           <BaseButton
             className={`w-[44px] h-[34px] rounded-md overflow-hidden`}
             variant="filled"
@@ -123,7 +135,8 @@ const EmployeeList = () => {
                   key: "search",
                   label: "Tìm kiếm",
                   type: "search",
-                  placeholder: "Tìm kiếm tài khoản người dùng...",
+                  placeholder:
+                    "Nhập tên đăng nhập, email, sổ điện thoại, tên người dùng ",
                 },
                 {
                   key: "status",
@@ -131,6 +144,10 @@ const EmployeeList = () => {
                   label: "Trạng thái",
                   type: "select",
                   placeholder: "Chọn trạng thái",
+                },
+                {
+                  label: "Thời gian",
+                  type: "date-range",
                 },
               ]}
               filters={filters}
@@ -147,7 +164,7 @@ const EmployeeList = () => {
             <SearchInput
               defaultValue={filters.search}
               onSearch={(value) => handleFiltersChange({ search: value })}
-              placeholder="Tìm kiếm tài khoản người dùng..."
+              placeholder="Nhập tên đăng nhập, email, sổ điện thoại, tên người dùng "
               className="max-w-96 flex-1"
             />
             <FilterDropdown
@@ -158,6 +175,10 @@ const EmployeeList = () => {
                   label: "Trạng thái",
                   type: "select",
                   placeholder: "Chọn trạng thái",
+                },
+                {
+                  label: "Thời gian",
+                  type: "date-range",
                 },
               ]}
               filters={filters}
@@ -197,12 +218,28 @@ const EmployeeList = () => {
         locale={{ emptyText: <NoData /> }}
       />
       <ModalDelete
+        title="XOÁ TÀI KHOẢN"
         isOpen={openModalDelete}
         onClose={() => setOpenModalDelete(false)}
         onConfirm={handleDeleteEmployees}
       >
-        <h2>Bạn muốn xoá nhân viên này?</h2>
+        <h2 className="font-normal">
+          Khi xóa tài khoản này các dữ liệu liên quan đến tài khoản sẽ ngưng sử
+          dụng.
+        </h2>
+        <h3 className="">Bạn có chắc muốn tiếp tục?</h3>
       </ModalDelete>
+      <ModalSwitchStatus
+        valueSwitchStatus={valueSwitchStatus}
+        isOpen={modalSwitchStatus}
+        onClose={() => {
+          setModalSwitchStatus(false);
+        }}
+        onConfirm={() => {
+          setValueSwitchStatus((pre) => !pre);
+          setModalSwitchStatus(false);
+        }}
+      />
     </MainHeader>
   );
 };

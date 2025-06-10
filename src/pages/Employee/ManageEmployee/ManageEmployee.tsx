@@ -18,21 +18,36 @@ import { RiKey2Line } from "react-icons/ri";
 import ModalPreviewPassword from "../components/ModalPreviewPassword";
 import EmployeeForm from "./EmployeeForm";
 import ModalDelete from "src/components/Modal/ModalDelete";
+import CustomModal from "src/shared/components/Modals/Modal";
+import ModalSwitchStatus from "../components/ModalSwitchStatus";
 
 export default function ManageEmployee() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [editEmployee, setEditEmployee] = useState<boolean>(false);
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
-  const [openPreviewPassword, setOpenPreviewPassword] =
+  const listSystemPermission = [
+    {
+      label: "Supporter",
+      value: "sup",
+    },
+    {
+      label: "Super admin",
+      value: "admin",
+    },
+  ];
+  const [modalPreviewPassword, setModalPreviewPassword] =
     useState<boolean>(false);
+  const [modalUnlockAccount, setModalUnlockAccount] = useState<boolean>(false);
+  const [modalSwitchStatus, setModalSwitchStatus] = useState<boolean>(false);
+  const [valueSwitchStatus, setValueSwitchStatus] = useState<boolean>(false);
+  const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
   const {
     dataResetPassword,
     isLoadingResetPassword,
     deleteEmployees,
     isLoading,
   } = useEmployeeStore();
-  const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
   const {
     control,
     reset,
@@ -55,15 +70,42 @@ export default function ManageEmployee() {
     },
   });
   const usersPermission = watch("usersPermission");
-  const onSubmit = async () => {};
+
+  const onSubmit = async (
+    data: EmployeePayload | EmployeePayloadWithOutPassword
+  ) => {
+    try {
+      const dataToSubmit: EmployeePayloadWithOutPassword = {
+        ...data,
+        usersPermission: data?.usersPermission?.map((item) => ({
+          usersGroup: item?.usersGroup,
+        })),
+      };
+      console.log("🇻🇳 👉 dataToSubmit", dataToSubmit);
+      // if (id) {
+      //   if ("username" in dataToSubmit) {
+      //     delete dataToSubmit.username;
+      //   }
+      //   await updateEmployee(id, dataToSubmit);
+      //   await getDetailEmployee(id);
+      //   setEditEmployee(false);
+      // } else {
+      //   await createEmployee(dataToSubmit);
+      //   navigate(-1);
+      // }
+    } catch (error) {
+      console.error("Error during employee submit:", error);
+    }
+  };
 
   const handleResetPassword = async () => {
     try {
       // await resetPasswordUsers(detailEmployee?.id as string);
       setOpenConfirm(false);
-      setOpenPreviewPassword(true);
+      setModalPreviewPassword(true);
     } catch (error) {}
   };
+
   const handleCopyPassword = async () => {
     try {
       await navigator?.clipboard?.writeText(dataResetPassword || "");
@@ -85,6 +127,7 @@ export default function ManageEmployee() {
       setOpenModalDelete(false);
     }
   };
+
   return (
     <DetailHeader
       title={
@@ -95,32 +138,22 @@ export default function ManageEmployee() {
       rightElement={
         <div className="flex items-center gap-2">
           {!editEmployee && id && (
-            <BaseButton
-              className="text-xs"
-              variant="outlined"
-              onClick={() => setOpenConfirm(true)}
-            >
+            <BaseButton variant="outlined" onClick={() => setOpenConfirm(true)}>
               Đặt lại mật khẩu
             </BaseButton>
           )}
-          <BaseButton
-            disabled={isLoading}
-            onClick={() => {
-              if (editEmployee) {
+          {(editEmployee || !id) && (
+            <BaseButton
+              disabled={isLoading}
+              onClick={() => {
                 setEditEmployee(false);
-              } else {
-                if (!id) {
-                  navigate(-1);
-                } else {
-                  setOpenModalDelete(true);
-                }
-              }
-            }}
-            color="danger"
-            className="w-[120px]"
-          >
-            {editEmployee || !id ? "Huỷ" : "Xoá"}
-          </BaseButton>
+              }}
+              color="danger"
+              className="w-[120px]"
+            >
+              Huỷ
+            </BaseButton>
+          )}
           <BaseButton
             loading={isLoading}
             onClick={async () => {
@@ -133,7 +166,7 @@ export default function ManageEmployee() {
           </BaseButton>
         </div>
       }
-      handleBack={() => navigate("/employee")}
+      handleBack={() => navigate(-1)}
     >
       {editEmployee || !id ? (
         <EmployeeForm
@@ -143,6 +176,7 @@ export default function ManageEmployee() {
           setValue={setValue}
           usersPermission={usersPermission}
           clearErrors={clearErrors}
+          listSystemPermission={listSystemPermission}
           listCustomer={[
             {
               discountPercent: 5,
@@ -158,7 +192,14 @@ export default function ManageEmployee() {
           listUsersPermistion={[{ value: "123123", lable: "123123123" }]}
         />
       ) : (
-        <EmployeeDetail isLoading={false} />
+        <EmployeeDetail
+          isLoading={false}
+          handleUnlockAccount={() => setModalUnlockAccount(true)}
+          valueSwitch={valueSwitchStatus}
+          handleSwithStaus={() => {
+            setModalSwitchStatus(true);
+          }}
+        />
       )}
 
       <ModalConfirm
@@ -173,8 +214,8 @@ export default function ManageEmployee() {
         </div>
       </ModalConfirm>
       <ModalPreviewPassword
-        isOpen={openPreviewPassword}
-        onClose={() => setOpenPreviewPassword(false)}
+        isOpen={modalPreviewPassword}
+        onClose={() => setModalPreviewPassword(false)}
         onConfirm={handleCopyPassword}
       />
       <ModalDelete
@@ -183,8 +224,32 @@ export default function ManageEmployee() {
         onClose={() => setOpenModalDelete(false)}
         onConfirm={handleDeleteEmployee}
       >
-        <h2>Bạn muốn xoá nhân viên này?</h2>
+        <div>Bạn muốn xoá nhân viên này?</div>
       </ModalDelete>
+      <CustomModal
+        isOpen={modalUnlockAccount}
+        title="MỞ KHÓA TÀI KHOẢN"
+        onClose={() => {
+          setModalUnlockAccount(false);
+        }}
+        icon={false}
+        onConfirm={() => setModalUnlockAccount(false)}
+        loading={false}
+      >
+        Bạn có chắc muốn mở khóa tài khoản này không?
+      </CustomModal>
+
+      <ModalSwitchStatus
+        valueSwitchStatus={valueSwitchStatus}
+        isOpen={modalSwitchStatus}
+        onClose={() => {
+          setModalSwitchStatus(false);
+        }}
+        onConfirm={() => {
+          setValueSwitchStatus((pre) => !pre);
+          setModalSwitchStatus(false);
+        }}
+      />
     </DetailHeader>
   );
 }

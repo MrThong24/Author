@@ -1,8 +1,8 @@
 import { Role } from "src/types/user.type";
-import { FaChartBar, FaExpandArrowsAlt } from "react-icons/fa";
-import { IoMdSettings } from "react-icons/io";
+import { FaExpandArrowsAlt } from "react-icons/fa";
 import { LuFileChartColumnIncreasing, LuUserPlus } from "react-icons/lu";
 import { TbReservedLine } from "react-icons/tb";
+import { AiOutlineSetting } from "react-icons/ai";
 
 interface SubItem {
   text: string;
@@ -20,7 +20,7 @@ interface SidebarItem {
 export const sidebarItems: SidebarItem[] = [
   {
     text: "Quản lý tài khoản",
-    icon: <IoMdSettings size={18} />,
+    icon: <AiOutlineSetting size={18} />,
     path: "employee",
     subItems: [
       { text: "Quản lý người dùng", icon: <></>, path: "employee" },

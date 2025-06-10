@@ -9,32 +9,35 @@ import DataTable from "src/components/Table/DataTable";
 import { useTableConfig } from "src/hooks/useTable";
 import { useUrlQuery } from "src/hooks/useUrlQuery";
 import BaseButton from "src/shared/components/Buttons/Button";
-import useEmployeeStore, { FilterEmployee } from "src/store/useEmployeeStore";
 import { Employee } from "src/types/employee.type";
 import { EditOutlined } from "@ant-design/icons";
 import ModalDelete from "src/components/Modal/ModalDelete";
 import SelectedStatusBar from "src/components/SelectedStatusBar";
-import { RequestStatusBadge } from "src/components/Badge/RequestStatusBadge";
 import { EmployeeStatus } from "src/shared/common/enum";
+import useGroupEmployeeStore, {
+  FilterGroupEmployee,
+} from "src/store/useGroupEmployeeStore";
 
 const GroupEmployee = () => {
   const { getQuery } = useUrlQuery();
   const navigate = useNavigate();
-  const { fetchEmployees, isLoading, total, employees, deleteEmployees } =
-    useEmployeeStore();
-  const [filters, setFilters] = useState<FilterEmployee>({
+  const { fetchGroupEmployees, isLoading, total, groupEmployees } =
+    useGroupEmployeeStore();
+  const [filters, setFilters] = useState<FilterGroupEmployee>({
     search: getQuery("search") || undefined,
+    startDate: getQuery("startDate") || undefined,
+    endDate: getQuery("endDate") || undefined,
   });
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
   const { tableProps, resetToFirstPage } = useTableConfig<
     Employee,
-    FilterEmployee
+    FilterGroupEmployee
   >({
-    data: employees,
+    data: groupEmployees,
     totalItems: total,
     isLoading,
-    fetchData: fetchEmployees,
+    fetchData: fetchGroupEmployees,
     filters,
   });
 
@@ -56,13 +59,6 @@ const GroupEmployee = () => {
     { title: "Thuộc khách hàng", dataIndex: "phone" },
     { title: "Ngày tạo", dataIndex: "address" },
     {
-      title: "Trạng thái",
-      width: 150,
-      render: (value: any) => {
-        return RequestStatusBadge(value.status);
-      },
-    },
-    {
       fixed: "right",
       title: "Tác vụ",
       render: (value: Employee) => (
@@ -81,21 +77,12 @@ const GroupEmployee = () => {
     },
   ];
 
-  const handleFiltersChange = (newFilters: Partial<FilterEmployee>) => {
+  const handleFiltersChange = (newFilters: Partial<FilterGroupEmployee>) => {
     setFilters((prev) => ({ ...prev, ...newFilters }));
     resetToFirstPage();
   };
 
-  const handleDeleteEmployees = async () => {
-    try {
-      await deleteEmployees(selectedRowKeys);
-      await fetchEmployees(filters);
-      setOpenModalDelete(false);
-      setSelectedRowKeys([]);
-    } catch (error) {
-      setOpenModalDelete(false);
-    }
-  };
+  const handleDeleteGroupEmployees = async () => {};
 
   const listStatus = [
     {
@@ -124,13 +111,6 @@ const GroupEmployee = () => {
                   type: "search",
                   placeholder: "Nhập tên nhóm người dùng",
                 },
-                {
-                  key: "status",
-                  options: listStatus,
-                  label: "Trạng thái",
-                  type: "select",
-                  placeholder: "Chọn trạng thái",
-                },
               ]}
               filters={filters}
               setFilters={setFilters}
@@ -152,11 +132,8 @@ const GroupEmployee = () => {
             <FilterDropdown
               filtersFields={[
                 {
-                  key: "status",
-                  options: listStatus,
-                  label: "Trạng thái",
-                  type: "select",
-                  placeholder: "Chọn trạng thái",
+                  label: "Thời gian",
+                  type: "date-range",
                 },
               ]}
               filters={filters}
@@ -196,11 +173,12 @@ const GroupEmployee = () => {
         locale={{ emptyText: <NoData /> }}
       />
       <ModalDelete
+        title="XÓA NHÓM NGƯỜI DÙNG"
         isOpen={openModalDelete}
         onClose={() => setOpenModalDelete(false)}
-        onConfirm={handleDeleteEmployees}
+        onConfirm={handleDeleteGroupEmployees}
       >
-        <h2>Bạn muốn xoá nhân viên này?</h2>
+        <h2>Bạn muốn xoá nhóm người dùng này?</h2>
       </ModalDelete>
     </MainHeader>
   );

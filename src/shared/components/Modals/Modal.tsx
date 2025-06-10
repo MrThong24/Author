@@ -1,9 +1,9 @@
-import React from 'react';
-import { Modal, Button } from 'antd';
-import useDisableScroll from 'src/hooks/useDisableScroll';
-import BaseButton from '../Buttons/Button';
-import { twMerge } from 'tailwind-merge';
-import useMediaQuery from 'src/hooks/useMediaQuery';
+import React from "react";
+import { Modal } from "antd";
+import useDisableScroll from "src/hooks/useDisableScroll";
+import BaseButton from "../Buttons/Button";
+import { twMerge } from "tailwind-merge";
+import useMediaQuery from "src/hooks/useMediaQuery";
 
 interface CustomModalProps {
   isOpen: boolean;
@@ -17,7 +17,7 @@ interface CustomModalProps {
   bgColorIcon?: string;
   textColorIcon?: string;
   width?: number;
-  type?: 'primary' | 'default' | 'danger' | 'remade' | undefined;
+  type?: "primary" | "default" | "danger" | "remade" | undefined;
   buttonClassName?: string;
   showCancel?: boolean;
   disabled?: boolean;
@@ -32,38 +32,35 @@ const CustomModal: React.FC<CustomModalProps> = ({
   onConfirm,
   title,
   children,
-  confirmLabel = 'Xác nhận',
-  cancelLabel = 'Đóng',
-  icon,
-  bgColorIcon = '#ffffff',
-  textColorIcon = '#000000',
+  confirmLabel = "Đồng ý",
+  cancelLabel = "Huỷ bỏ",
   width = 510,
-  type = 'primary',
+  type = "primary",
   showCancel = true,
   disabled = false,
   loading,
-  className = '',
-  buttonClassName = '',
-  button
+  className = "",
+  buttonClassName = "",
+  button,
 }) => {
   useDisableScroll(isOpen);
-  const isMobile = useMediaQuery('(max-width: 1023px)');
+  const isMobile = useMediaQuery("(max-width: 1023px)");
   return (
     <Modal
       open={isOpen}
       onCancel={onClose}
       width={width}
       footer={
-        <div className='flex flex-col gap-2'>
+        <div className="flex flex-row gap-2 justify-end items-end mt-4">
           <BaseButton
-            key='confirm'
+            key="confirm"
             className={twMerge(
-              `text-lg font-semibold py-5`,
+              `text-base font-medium py-4`,
               buttonClassName
                 ? buttonClassName
-                : type === 'remade'
-                  ? 'bg-[#F89734] hover:!bg-[#F89734]/80'
-                  : 'bg-primary'
+                : type === "remade"
+                  ? "bg-[#F89734] hover:!bg-[#F89734]/80"
+                  : "bg-primary"
             )}
             color={type}
             onClick={onConfirm}
@@ -75,10 +72,10 @@ const CustomModal: React.FC<CustomModalProps> = ({
           {button}
           {showCancel && (
             <BaseButton
-              key='cancel'
+              key="cancel"
               onClick={onClose}
-              variant='link'
-              className='text-lg font-semibold py-5 text-black hover:text-primary'
+              variant="outlined"
+              className="text-base font-medium py-4 text-primary"
             >
               {cancelLabel}
             </BaseButton>
@@ -86,19 +83,11 @@ const CustomModal: React.FC<CustomModalProps> = ({
         </div>
       }
       centered={!!isMobile}
-      title={
-        <div className='flex flex-col items-center justify-center gap-2'>
-          <div
-            className={`flex p-3 rounded-full text-2xl`}
-            style={{ backgroundColor: bgColorIcon, color: textColorIcon }}
-          >
-            {icon}
-          </div>
-          <span className='text-xl text-center'>{title}</span>
-        </div>
-      }
+      title={<span className="text-xl text-start text-gray-600">{title}</span>}
     >
-      <div className={`flex items-center justify-center ${className}`}>{children}</div>
+      <div className={`flex items-center justify-start ${className}`}>
+        {children}
+      </div>
     </Modal>
   );
 };

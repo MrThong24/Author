@@ -5,13 +5,7 @@ import {
   getAccessTokenFromLS,
   getverifyTokenFromLS,
   setAccessTokenToLS,
-  setCustomerInfo,
-  setverifyTokenToLS,
-  URL_CHANGE_LANGUAGE,
-  URL_CHOOSE_KITCHEN,
   URL_CHOOSE_STORE,
-  URL_CUSTOMER,
-  URL_JOINORDER,
   URL_LOGIN,
   URL_REFRESH_TOKEN,
 } from "./auth";
@@ -55,21 +49,10 @@ export class Http {
       (response) => {
         const { url } = response.config;
 
-        if (url === URL_CHOOSE_STORE || url?.includes(URL_CHOOSE_KITCHEN)) {
+        if (url === URL_CHOOSE_STORE) {
           const data = response.data as AuthResponse;
           this.accessToken = data.accessToken;
           setAccessTokenToLS(this.accessToken);
-        }
-        if (
-          url?.includes(URL_CUSTOMER) ||
-          url?.includes(URL_JOINORDER) ||
-          url?.includes(URL_CHANGE_LANGUAGE)
-        ) {
-          const customerInfo = response.data as CustomerInfo;
-          const { verifyToken } = customerInfo;
-          this.verifyToken = verifyToken;
-          setverifyTokenToLS(this.verifyToken);
-          setCustomerInfo(customerInfo);
         }
         return response;
       },

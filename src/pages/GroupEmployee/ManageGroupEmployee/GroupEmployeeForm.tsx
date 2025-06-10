@@ -36,7 +36,6 @@ export default function GroupEmployeeForm({
   errors,
   loading,
   setValue,
-  clearErrors,
   usersPermission,
 }: GroupEmployeeForm) {
   const [drawerVisible, setDrawerVisible] = useState<boolean>(false);
@@ -67,7 +66,6 @@ export default function GroupEmployeeForm({
     },
     {
       title: "Nhóm người dùng",
-      // align: "center",
       render: (_: any, record: DataType, index: number) => (
         <div>
           <Controller
@@ -118,7 +116,7 @@ export default function GroupEmployeeForm({
       <h1 className="text-lg font-semibold text-primary">
         Thông tin tài khoản
       </h1>
-      <div className="flex flex-col md:flex-row gap-x-10">
+      <div className="flex flex-col md:flex-row gap-x-10 ">
         <Field className="mt-4">
           <Label text="Tên nhóm" validate={true} />
           <FormInput
@@ -132,8 +130,8 @@ export default function GroupEmployeeForm({
           />
         </Field>
         <Field className="mt-4">
-          <Label text="Quản trị hệ thống" validate={false} />
-          <div>
+          <div className="flex gap-2 items-center">
+            <Label text="Quản trị hệ thống" validate={false} />
             <Controller
               control={control}
               name="systemAdministration"

@@ -3,12 +3,19 @@ import * as yup from "yup";
 
 export const employeeSchema = () =>
   yup.object({
-    loginname: yup.string().required("Vui lòng nhập tên đăng nhập"),
-    username: yup.string().required("Vui lòng nhập tên người dùng"),
+    loginname: yup
+      .string()
+      .required("Vui lòng nhập tên đăng nhập")
+      .min(6, "Tên đăng nhập phải có ít nhất 6 ký tự")
+      .max(50, "Tên đăng nhập không được quá 50 ký tự"),
+    username: yup
+      .string()
+      .required("Vui lòng nhập tên người dùng")
+      .max(50, "Tên người dùng không được quá 50 ký tự"),
     email: yup
       .string()
       .required("Vui lòng nhập email")
-      .email("Must be a valid email"),
+      .email("Vui lòng nhập đúng định dạng email"),
     customer: yup.string().required("Vui lòng nhập thuộc khách hàng"),
     phone: yup.string().optional().nullable(),
     newPassword: yup
@@ -18,7 +25,7 @@ export const employeeSchema = () =>
         passwordRegex,
         "Mật khẩu phải có ít nhất 8 ký tự  bao gồm một chữ hoa, một chữ thường, một số và một kí tự đặc biệt"
       ),
-    systemAdministration: yup.object().optional(),
+    systemAdministration: yup.string().optional(),
     confirmNewPassword: yup
       .string()
       .required("Vui lòng nhập mật khẩu")

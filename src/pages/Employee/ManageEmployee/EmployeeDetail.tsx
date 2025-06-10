@@ -1,9 +1,19 @@
 import { Skeleton, Switch, Table } from "antd";
-import BaseCheckbox from "src/shared/components/Core/Checkbox";
+import BaseButton from "src/shared/components/Buttons/Button";
 import Field from "src/shared/components/Core/Field";
 import Label from "src/shared/components/Core/Label";
 
-export default function EmployeeDetail({ isLoading }: { isLoading: boolean }) {
+export default function EmployeeDetail({
+  isLoading,
+  handleUnlockAccount,
+  handleSwithStaus,
+  valueSwitch,
+}: {
+  isLoading: boolean;
+  valueSwitch: boolean;
+  handleUnlockAccount: () => void;
+  handleSwithStaus: (value: boolean) => void;
+}) {
   const columns = [
     {
       title: "STT",
@@ -12,11 +22,6 @@ export default function EmployeeDetail({ isLoading }: { isLoading: boolean }) {
     },
     { title: "Nhóm người dùng", dataIndex: "store", key: "store" },
   ];
-  const handleSwith = async (value: boolean) => {
-    console.log("🇻🇳 👉 value", value);
-    try {
-    } catch (error) {}
-  };
   return (
     <div>
       <h1 className="text-lg font-semibold text-primary">
@@ -28,7 +33,7 @@ export default function EmployeeDetail({ isLoading }: { isLoading: boolean }) {
           {isLoading ? (
             <Skeleton.Input active style={{ width: "100%" }} />
           ) : (
-            <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black">
+            <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black">
               123
             </div>
           )}
@@ -38,7 +43,7 @@ export default function EmployeeDetail({ isLoading }: { isLoading: boolean }) {
           {isLoading ? (
             <Skeleton.Input active style={{ width: "100%" }} />
           ) : (
-            <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black">
+            <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black">
               123
             </div>
           )}
@@ -50,7 +55,7 @@ export default function EmployeeDetail({ isLoading }: { isLoading: boolean }) {
           {isLoading ? (
             <Skeleton.Input active style={{ width: "100%" }} />
           ) : (
-            <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black">
+            <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black">
               123
             </div>
           )}
@@ -60,7 +65,7 @@ export default function EmployeeDetail({ isLoading }: { isLoading: boolean }) {
           {isLoading ? (
             <Skeleton.Input active style={{ width: "100%" }} />
           ) : (
-            <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black">
+            <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black">
               123
             </div>
           )}
@@ -72,7 +77,7 @@ export default function EmployeeDetail({ isLoading }: { isLoading: boolean }) {
           {isLoading ? (
             <Skeleton.Input active style={{ width: "100%" }} />
           ) : (
-            <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black">
+            <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black">
               123
             </div>
           )}
@@ -82,27 +87,42 @@ export default function EmployeeDetail({ isLoading }: { isLoading: boolean }) {
           {isLoading ? (
             <Skeleton.Input active style={{ width: "100%" }} />
           ) : (
-            <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black">
+            <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black">
               123
             </div>
           )}
         </Field>
       </div>
-      <div className="flex flex-col md:flex-row gap-x-10 mt-4">
-        <Label text="Trạng thái TK" />
-        <Switch
-          onChange={(checked) => {
-            handleSwith(checked);
-          }}
-          className="w-[40px]"
-        />
+      <div className="flex flex-row gap-x-10">
+        <Field className="mt-4">
+          <Label text="Trạng thái TK" />
+          <Switch
+            value={valueSwitch}
+            onChange={(checked) => {
+              handleSwithStaus(checked);
+            }}
+            className="w-[40px]"
+          />
+        </Field>
+        <Field className="mt-4">
+          <Label text="Mở khoá" validate={false} />
+          {isLoading ? (
+            <Skeleton.Input active style={{ width: "100%" }} />
+          ) : (
+            <div>
+              <BaseButton onClick={handleUnlockAccount} loading={isLoading}>
+                Mở khoá tài khoản
+              </BaseButton>
+            </div>
+          )}
+        </Field>
       </div>
-      <div className="flex w-full md:w-[50%] mt-8 justify-between">
+      <div className="flex w-full md:w-[50%] mt-10 justify-between">
         <h1 className="text-lg font-semibold text-primary">
           Danh sách phân quyền dịch vụ truy cập
         </h1>
       </div>
-      <div className="flex w-full md:w-[50%] my-10 justify-between">
+      <div className="flex w-full md:w-[50%] mt-4 mb-10 justify-between">
         <Table
           scroll={{ x: "max-content", y: 400 }}
           dataSource={[

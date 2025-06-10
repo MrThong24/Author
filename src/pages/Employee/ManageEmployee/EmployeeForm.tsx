@@ -12,11 +12,12 @@ import Field from "src/shared/components/Core/Field";
 import Label from "src/shared/components/Core/Label";
 import FormInput from "src/shared/components/Form/FormInput";
 import FormSelect from "src/shared/components/Form/FormSelect";
-import { DeleteOutlined } from "@ant-design/icons";
+import { AiOutlineMinusCircle } from "react-icons/ai";
 import {
   EmployeePayload,
   EmployeePayloadWithOutPassword,
 } from "src/validate/employeeSchema";
+import { FiMinusCircle } from "react-icons/fi";
 
 interface DataType {
   key?: number;
@@ -34,6 +35,7 @@ interface EmployeeForm {
   usersPermission: DataType[];
   listCustomer: any;
   listUsersPermistion: any;
+  listSystemPermission: { label: string; value: string }[];
 }
 
 export default function EmployeeForm({
@@ -45,6 +47,7 @@ export default function EmployeeForm({
   clearErrors,
   listCustomer,
   listUsersPermistion,
+  listSystemPermission,
 }: EmployeeForm) {
   const handleSelectPermission = (
     index: number,
@@ -94,7 +97,7 @@ export default function EmployeeForm({
       render: (_: any, record: DataType, index: number) => (
         <FormSelect
           name={`usersPermission.${index}.usersGroup`}
-          value={record.usersGroup || undefined}
+          value={record?.usersGroup || undefined}
           options={listUsersPermistion}
           fieldNames={{
             label: "label",
@@ -113,17 +116,20 @@ export default function EmployeeForm({
       ),
     },
     {
-      title: "",
+      title: "Thao tác",
       dataIndex: "delete",
-      width: "10%",
+      width: 80,
       key: "delete",
       render: (_: any, record: DataType, index: number) =>
         index !== 0 ? (
-          <DeleteOutlined
-            className="cursor-pointer text-xl hover:opacity-65 mb-6"
-            style={{ color: "#ff4d4f" }}
-            onClick={() => handleDeleteUserRole(index)}
-          />
+          <div className=" flex justify-center">
+            <FiMinusCircle
+              className="cursor-pointer hover:opacity-65"
+              style={{ color: "#94A3B8" }}
+              size={20}
+              onClick={() => handleDeleteUserRole(index)}
+            />
+          </div>
         ) : null,
     },
   ];
@@ -209,8 +215,11 @@ export default function EmployeeForm({
             placeholder="Không có quyền"
             control={control}
             name="systemAdministration"
-            options={[]}
-            showSearch
+            options={listSystemPermission.map((permission) => ({
+              label: permission?.label,
+              value: permission?.value,
+            }))}
+            allowClear
             errors={errors}
             notFoundContent={<NoData />}
             size="large"
@@ -232,7 +241,7 @@ export default function EmployeeForm({
             />
           </Field>
         </Field>
-        <Field className="mt-4"> </Field>
+        <Field> </Field>
       </div>
       <div className="flex flex-col md:flex-row gap-x-10">
         <Field className="mt-4">
@@ -249,7 +258,7 @@ export default function EmployeeForm({
             />
           </Field>
         </Field>
-        <Field className="mt-4"> </Field>
+        <Field> </Field>
       </div>
       <div className="flex w-full md:w-[50%] mt-10 justify-between">
         <h1 className="text-lg font-semibold text-primary">
@@ -259,7 +268,7 @@ export default function EmployeeForm({
           Thêm mới
         </BaseButton>
       </div>
-      <div className="flex w-full md:w-[50%] my-10 justify-between">
+      <div className="flex w-full md:w-[50%] mt-4 mb-10 justify-between">
         {usersPermission?.length > 0 && (
           <Table
             scroll={{ x: "max-content", y: 400 }}

@@ -9,9 +9,12 @@ import {
   EmployeePayload,
   EmployeePayloadWithOutPassword,
 } from "src/validate/employeeSchema";
+import { Dayjs } from "dayjs";
 
 export interface FilterEmployee extends Params {
   search?: string;
+  startDate?: Dayjs | string;
+  endDate?: Dayjs | string;
 }
 interface EmployeeStore {
   employees: Employee[];

@@ -35,7 +35,7 @@ export default function InfoLincense() {
           {isLoading ? (
             <Skeleton.Input active style={{ width: "100%" }} />
           ) : (
-            <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black">
+            <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black">
               123
             </div>
           )}
@@ -47,7 +47,7 @@ export default function InfoLincense() {
               {isLoading ? (
                 <Skeleton.Input active style={{ width: "100%" }} />
               ) : (
-                <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black flex justify-between items-center">
+                <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black flex justify-between items-center">
                   <span>123</span>
                   <MdOutlineDateRange size={24} color="gray" />
                 </div>
@@ -58,7 +58,7 @@ export default function InfoLincense() {
               {isLoading ? (
                 <Skeleton.Input active style={{ width: "100%" }} />
               ) : (
-                <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black">
+                <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black">
                   123
                 </div>
               )}
@@ -72,7 +72,7 @@ export default function InfoLincense() {
           {isLoading ? (
             <Skeleton.Input active style={{ width: "100%" }} />
           ) : (
-            <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black">
+            <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black">
               123
             </div>
           )}
@@ -86,7 +86,7 @@ export default function InfoLincense() {
           {isLoading ? (
             <Skeleton.Input active style={{ width: "100%" }} />
           ) : (
-            <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black">
+            <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black">
               123
             </div>
           )}
@@ -98,7 +98,7 @@ export default function InfoLincense() {
               {isLoading ? (
                 <Skeleton.Input active style={{ width: "100%" }} />
               ) : (
-                <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black">
+                <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black">
                   123
                 </div>
               )}
@@ -108,7 +108,7 @@ export default function InfoLincense() {
               {isLoading ? (
                 <Skeleton.Input active style={{ width: "100%" }} />
               ) : (
-                <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black">
+                <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black">
                   123
                 </div>
               )}
@@ -122,7 +122,7 @@ export default function InfoLincense() {
           {isLoading ? (
             <Skeleton.Input active style={{ width: "100%" }} />
           ) : (
-            <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black">
+            <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black">
               123
             </div>
           )}
@@ -134,7 +134,7 @@ export default function InfoLincense() {
               {isLoading ? (
                 <Skeleton.Input active style={{ width: "100%" }} />
               ) : (
-                <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black flex justify-between items-center">
+                <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black flex justify-between items-center">
                   <span>123</span>
                   <MdOutlineDateRange size={24} color="gray" />
                 </div>
@@ -145,7 +145,7 @@ export default function InfoLincense() {
               {isLoading ? (
                 <Skeleton.Input active style={{ width: "100%" }} />
               ) : (
-                <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black flex justify-between items-center">
+                <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black flex justify-between items-center">
                   <span>123</span>
                   <MdOutlineDateRange size={24} color="gray" />
                 </div>
@@ -170,7 +170,7 @@ export default function InfoLincense() {
               {isLoading ? (
                 <Skeleton.Input active style={{ width: "100%" }} />
               ) : (
-                <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black flex justify-between items-center">
+                <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black flex justify-between items-center">
                   <span>123</span>
                   <MdOutlineDateRange size={24} color="gray" />
                 </div>
@@ -181,7 +181,7 @@ export default function InfoLincense() {
               {isLoading ? (
                 <Skeleton.Input active style={{ width: "100%" }} />
               ) : (
-                <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black">
+                <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black">
                   <span>123</span>
                 </div>
               )}
@@ -198,7 +198,7 @@ export default function InfoLincense() {
           {isLoading ? (
             <Skeleton.Input active style={{ width: "100%" }} />
           ) : (
-            <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black">
+            <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black">
               123
             </div>
           )}

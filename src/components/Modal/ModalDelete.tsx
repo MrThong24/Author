@@ -1,5 +1,5 @@
-import CustomModal from 'src/shared/components/Modals/Modal';
-import { RiDeleteBin6Line } from 'react-icons/ri';
+import CustomModal from "src/shared/components/Modals/Modal";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 interface ModalDeleteProps {
   onClose: () => void;
@@ -8,27 +8,28 @@ interface ModalDeleteProps {
   icon?: React.ReactNode;
   isOpen: boolean;
   loading?: boolean;
+  title?: string;
 }
 
-const ModalDelete: React.FC<ModalDeleteProps> = ({ isOpen, children, onClose, onConfirm, loading }) => {
+const ModalDelete: React.FC<ModalDeleteProps> = ({
+  isOpen,
+  children,
+  onClose,
+  onConfirm,
+  loading,
+  title,
+}) => {
   return (
     <CustomModal
       isOpen={isOpen}
-      //title='Thông báo'
-      icon={
-        <div className='bg-softPink p-2 rounded-[50%]'>
-          <div className='bg-peachBlush p-2 rounded-[50%]'>
-            <RiDeleteBin6Line />
-          </div>
-        </div>
-      }
+      title={title}
       onClose={onClose}
       onConfirm={onConfirm}
-      type='danger'
-      textColorIcon='#D92D20'
+      type="danger"
+      textColorIcon="#D92D20"
       loading={loading}
     >
-      {children}
+      <div className="text-gray-700">{children}</div>
     </CustomModal>
   );
 };

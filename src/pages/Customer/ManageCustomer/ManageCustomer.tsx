@@ -238,7 +238,7 @@ export default function ManageCustomer() {
         <div className="w-full">
           <Field>
             <Label text="Thời gian sử dụng còn lại" validate={false} />
-            <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black flex justify-between items-center">
+            <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black flex justify-between items-center">
               <span>123</span>
             </div>
           </Field>
@@ -258,7 +258,7 @@ export default function ManageCustomer() {
         <div className="w-full">
           <Field>
             <Label text="Thời gian sử dụng còn lại" validate={false} />
-            <div className="bg-[#EEECEC] rounded w-full h-[44px] px-3 py-3 text-sm text-black flex justify-between items-center">
+            <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black flex justify-between items-center">
               <span>123</span>
             </div>
           </Field>
