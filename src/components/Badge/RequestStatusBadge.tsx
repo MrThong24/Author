@@ -1,5 +1,5 @@
 import { Tag } from "antd";
-import { EmployeeStatus, RequestStatus } from "src/shared/common/enum";
+import { EmployeeStatus } from "src/shared/common/enum";
 import { IoRestaurantOutline } from "react-icons/io5";
 import { GrInProgress } from "react-icons/gr";
 import {
@@ -32,6 +32,14 @@ export const RequestStatusBadge = (status: string) => {
     case EmployeeStatus.ACTIVE:
       return (
         <StatusBadge color="gold" text="Đang sử dụng" icon={<GrInProgress />} />
+      );
+    case EmployeeStatus.INACTIVE:
+      return (
+        <StatusBadge
+          color="geekblue"
+          text="Ngưng hoạt động"
+          icon={<IoRestaurantOutline />}
+        />
       );
     case EmployeeStatus.INACTIVE:
       return (

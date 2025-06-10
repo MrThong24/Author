@@ -11,6 +11,12 @@ import AccessPlatform from "src/pages/AccessPlatform";
 import ManageAccessPlatform from "src/pages/AccessPlatform/ManageAccessPlatform/ManageAccessPlatform";
 import Category from "src/pages/Category";
 import ManageCategory from "src/pages/Category/ManageCategory/ManageCategory";
+import Database from "src/pages/Database";
+import ManageDatabase from "src/pages/Database/ManageDatabase/ManageDatabase";
+import Service from "src/pages/Service";
+import ManageService from "src/pages/Service/ManageService/ManageService";
+import Contract from "src/pages/Contract";
+import ManageContract from "src/pages/Contract/ManageContract/ManageContract";
 
 interface RouteConfig {
   path: string;
@@ -92,6 +98,25 @@ const routeConfigs: RouteConfig[] = [
     ],
   },
   {
+    path: "database/*",
+    element: <Database />,
+    allowedRoles: [RoleType.STORE_OWNER, RoleType.MANAGER],
+    children: [
+      {
+        path: "",
+        element: <Database />,
+      },
+      {
+        path: "create",
+        element: <ManageDatabase />,
+      },
+      {
+        path: ":id",
+        element: <ManageDatabase />,
+      },
+    ],
+  },
+  {
     path: "subsystem/*",
     element: <Subsystem />,
     allowedRoles: [RoleType.STORE_OWNER, RoleType.MANAGER],
@@ -99,14 +124,6 @@ const routeConfigs: RouteConfig[] = [
       {
         path: "",
         element: <Subsystem />,
-      },
-      {
-        path: "create",
-        element: <ManageCategory />,
-      },
-      {
-        path: ":id",
-        element: <ManageCategory />,
       },
     ],
   },
@@ -145,6 +162,44 @@ const routeConfigs: RouteConfig[] = [
       {
         path: ":id",
         element: <ManageAccessPlatform />,
+      },
+    ],
+  },
+  {
+    path: "service/*",
+    element: <Service />,
+    allowedRoles: [RoleType.STORE_OWNER, RoleType.MANAGER],
+    children: [
+      {
+        path: "",
+        element: <Service />,
+      },
+      {
+        path: "create",
+        element: <ManageService />,
+      },
+      {
+        path: ":id",
+        element: <ManageService />,
+      },
+    ],
+  },
+  {
+    path: "contract/*",
+    element: <Contract />,
+    allowedRoles: [RoleType.STORE_OWNER, RoleType.MANAGER],
+    children: [
+      {
+        path: "",
+        element: <Contract />,
+      },
+      {
+        path: "create",
+        element: <ManageContract />,
+      },
+      {
+        path: ":id",
+        element: <ManageContract />,
       },
     ],
   },

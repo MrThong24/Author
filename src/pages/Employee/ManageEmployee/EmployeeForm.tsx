@@ -84,6 +84,7 @@ export default function EmployeeForm({
   const columns = [
     {
       title: "STT",
+      width: 60,
       render: (_text: any, _record: any, index: number) => index + 1,
     },
     {

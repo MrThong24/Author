@@ -9,36 +9,37 @@ import DataTable from "src/components/Table/DataTable";
 import { useTableConfig } from "src/hooks/useTable";
 import { useUrlQuery } from "src/hooks/useUrlQuery";
 import BaseButton from "src/shared/components/Buttons/Button";
-import useEmployeeStore, { FilterEmployee } from "src/store/useEmployeeStore";
+import useCategoryStore from "src/store/useCategoryStore";
+import { FilterEmployee } from "src/store/useEmployeeStore";
 import { Employee } from "src/types/employee.type";
 import { EditOutlined } from "@ant-design/icons";
-import ModalDelete from "src/components/Modal/ModalDelete";
-import SelectedStatusBar from "src/components/SelectedStatusBar";
-import { EmployeeStatus } from "src/shared/common/enum";
+import useDatabaseStore from "src/store/useDatabaseStore";
+import useServiceStore from "src/store/useServiceStore";
 import { RequestStatusBadge } from "src/components/Badge/RequestStatusBadge";
+import SelectedStatusBar from "src/components/SelectedStatusBar";
+import ModalDelete from "src/components/Modal/ModalDelete";
 
-const EmployeeList = () => {
+export default function Service() {
   const { getQuery } = useUrlQuery();
   const navigate = useNavigate();
-  const { fetchEmployees, isLoading, total, employees, deleteEmployees } =
-    useEmployeeStore();
+  const { fetchService, isLoading, total, service } = useServiceStore();
   const [filters, setFilters] = useState<FilterEmployee>({
     search: getQuery("search") || undefined,
   });
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
+  const [rowSelectVisible, setRowSelectVisible] = useState<boolean>(false);
+
   const { tableProps, resetToFirstPage } = useTableConfig<
     Employee,
     FilterEmployee
   >({
-    data: employees,
+    data: service,
     totalItems: total,
     isLoading,
-    fetchData: fetchEmployees,
+    fetchData: fetchService,
     filters,
   });
-
-  const [rowSelectVisible, setRowSelectVisible] = useState<boolean>(false);
 
   const handleRowSelectionChange = async (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
@@ -51,12 +52,11 @@ const EmployeeList = () => {
       render: (_text, _record, index) =>
         (tableProps.currentPage - 1) * tableProps.pageSize + index + 1,
     },
-    { title: "Tên đăng nhập", dataIndex: "name" },
-    { title: "Email", dataIndex: "username" },
-    { title: "Số điện thoại", dataIndex: "phone" },
-    { title: "Tên người dùng", dataIndex: "address" },
-    { title: "Thuộc khách hàng", dataIndex: "address" },
-    { title: "Ngày tạo", dataIndex: "address" },
+    { title: "Tên gói", dataIndex: "name" },
+    { title: "Mã", dataIndex: "name" },
+    { title: "Đã đăng ký", dataIndex: "name" },
+    { title: "Đang sử dụng", dataIndex: "name" },
+    { title: "Ngày cập nhật gần nhất", dataIndex: "name" },
     {
       title: "Trạng thái",
       width: 150,
@@ -87,34 +87,13 @@ const EmployeeList = () => {
     setFilters((prev) => ({ ...prev, ...newFilters }));
     resetToFirstPage();
   };
-
-  const handleDeleteEmployees = async () => {
-    try {
-      await deleteEmployees(selectedRowKeys);
-      await fetchEmployees(filters);
-      setOpenModalDelete(false);
-      setSelectedRowKeys([]);
-    } catch (error) {
-      setOpenModalDelete(false);
-    }
-  };
-
-  const listStatus = [
-    {
-      value: EmployeeStatus.ACTIVE,
-      label: "Đang sử dụng",
-    },
-    {
-      value: EmployeeStatus.INACTIVE,
-      label: "Ngưng hoạt động",
-    },
-  ];
+  const handleDeleteService = async () => {};
   return (
     <MainHeader
       title={
         <div className="flex items-center gap-[6.8px]">
           <h2 className="text-[16px] lg:text-xl xl:text-2xl">
-            Quản lý tài khoản người dùng
+            Quản lý gói dịch vụ
           </h2>
           <div className="flex items-center gap-[6.8px] lg:hidden">
             <FilterDropdown
@@ -123,14 +102,7 @@ const EmployeeList = () => {
                   key: "search",
                   label: "Tìm kiếm",
                   type: "search",
-                  placeholder: "Tìm kiếm tài khoản người dùng...",
-                },
-                {
-                  key: "status",
-                  options: listStatus,
-                  label: "Trạng thái",
-                  type: "select",
-                  placeholder: "Chọn trạng thái",
+                  placeholder: "Nhập tên, mã gói",
                 },
               ]}
               filters={filters}
@@ -147,29 +119,15 @@ const EmployeeList = () => {
             <SearchInput
               defaultValue={filters.search}
               onSearch={(value) => handleFiltersChange({ search: value })}
-              placeholder="Tìm kiếm tài khoản người dùng..."
+              placeholder="Nhập tên, mã gói"
               className="max-w-96 flex-1"
-            />
-            <FilterDropdown
-              filtersFields={[
-                {
-                  key: "status",
-                  options: listStatus,
-                  label: "Trạng thái",
-                  type: "select",
-                  placeholder: "Chọn trạng thái",
-                },
-              ]}
-              filters={filters}
-              setFilters={setFilters}
-              className="w-full"
             />
           </div>
         </div>
         {(rowSelectVisible || !!selectedRowKeys.length) && (
           <SelectedStatusBar
             selectedCount={selectedRowKeys.length}
-            label="nhân viên"
+            label="dịch vụ"
             onCancel={() => {
               setSelectedRowKeys([]);
               setRowSelectVisible(false);
@@ -183,6 +141,7 @@ const EmployeeList = () => {
           </BaseButton>
         </div>
       </div>
+
       <DataTable<Employee>
         rowKey="id"
         columns={columns}
@@ -199,12 +158,10 @@ const EmployeeList = () => {
       <ModalDelete
         isOpen={openModalDelete}
         onClose={() => setOpenModalDelete(false)}
-        onConfirm={handleDeleteEmployees}
+        onConfirm={handleDeleteService}
       >
-        <h2>Bạn muốn xoá nhân viên này?</h2>
+        <h2>Bạn muốn xoá dịch vụ này?</h2>
       </ModalDelete>
     </MainHeader>
   );
-};
-
-export default EmployeeList;
+}

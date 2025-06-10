@@ -30,10 +30,26 @@ export const sidebarItems: SidebarItem[] = [
     ],
   },
   {
+    text: "Quản lý hợp đồng khách hàng",
+    icon: <FaChartBar size={18} />,
+    path: "contract",
+    subItems: [{ text: "Quản lý hợp đồng", icon: <></>, path: "contract" }],
+  },
+  {
+    text: "Quản lý gói dịch vụ",
+    icon: <FaChartBar size={18} />,
+    path: "service",
+  },
+  {
     text: "Quản lý hệ thông",
     icon: <FaChartBar size={18} />,
-    path: "subsystem",
+    path: "database",
     subItems: [
+      {
+        text: "Quản lý cơ sở dữ liệu",
+        icon: <></>,
+        path: "database",
+      },
       {
         text: "Quản lý phân hệ",
         icon: <></>,

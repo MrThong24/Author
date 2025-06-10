@@ -92,3 +92,8 @@ export enum EmployeeStatus {
   ACTIVE = "ACTIVE",
   INACTIVE = "INACTIVE",
 }
+export enum ContractStatus {
+  ACTIVE = "ACTIVE",
+  INACTIVE = "INACTIVE",
+  SUSPENDED = "SUSPENDED",
+}

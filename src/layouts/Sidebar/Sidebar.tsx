@@ -61,7 +61,7 @@ const SubMenu: React.FC<SubMenuProps> = ({
           <span className={`text-xl mr-2 ${hasActiveChild ? "text-main" : ""}`}>
             {item.icon}
           </span>
-          {!collapsed && <span>{item.text}</span>}
+          {!collapsed && <span className="text-start">{item.text}</span>}
         </div>
         {!collapsed && (
           <MdKeyboardArrowDown
