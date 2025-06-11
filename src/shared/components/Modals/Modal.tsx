@@ -16,7 +16,7 @@ interface CustomModalProps {
   icon?: React.ReactNode;
   bgColorIcon?: string;
   textColorIcon?: string;
-  width?: number;
+  width?: number | string;
   type?: "primary" | "default" | "danger" | "remade" | undefined;
   buttonClassName?: string;
   showCancel?: boolean;
@@ -59,8 +59,8 @@ const CustomModal: React.FC<CustomModalProps> = ({
               buttonClassName
                 ? buttonClassName
                 : type === "remade"
-                  ? "bg-[#F89734] hover:!bg-[#F89734]/80"
-                  : "bg-primary"
+                ? "bg-[#F89734] hover:!bg-[#F89734]/80"
+                : "bg-primary"
             )}
             color={type}
             onClick={onConfirm}

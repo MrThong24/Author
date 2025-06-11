@@ -134,7 +134,7 @@ export default function ManageContract() {
           </BaseButton>
         </div>
       }
-      handleBack={() => navigate("/contract")}
+      handleBack={() => navigate(-1)}
     >
       {editContract || !id ? (
         <ContractForm

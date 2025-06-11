@@ -102,7 +102,7 @@ export default function ManageAccessPlatform() {
           </BaseButton>
         </div>
       }
-      handleBack={() => navigate("/access-platform")}
+      handleBack={() => navigate(-1)}
     >
       <div className="flex w-full mt-10 justify-between mb-2">
         <h1 className="text-lg font-semibold text-primary">

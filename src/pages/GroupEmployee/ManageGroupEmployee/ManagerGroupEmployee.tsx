@@ -30,7 +30,15 @@ export default function ManagerGroupEmployee() {
     formState: { errors },
   } = useForm<GroupEmployeePayload>({
     resolver: yupResolver(groupEmployeeSchema()),
-    defaultValues: {},
+    defaultValues: {
+      usersPermission: [
+        {
+          name: "12",
+          use: true,
+          list: [11],
+        },
+      ],
+    },
   });
   const usersPermission = watch("usersPermission") || [];
   const onSubmit = async (data: GroupEmployeePayload) => {
@@ -40,12 +48,14 @@ export default function ManagerGroupEmployee() {
     <DetailHeader
       title={
         <div className="flex w-full justify-between">
-          <h2 className="text-xl font-semibold">{`${id ? (editGroupEmployee ? "Chỉnh sửa" : "Chi tiết") : "Tạo mới"} nhóm người dùng`}</h2>
+          <h2 className="text-xl font-semibold">{`${
+            id ? (editGroupEmployee ? "Chỉnh sửa" : "Chi tiết") : "Tạo mới"
+          } nhóm người dùng`}</h2>
         </div>
       }
       rightElement={
         <div className="flex items-center gap-2">
-          {(editGroupEmployee || !id) && (
+          {editGroupEmployee && (
             <BaseButton
               disabled={isLoading}
               onClick={() => {
@@ -54,7 +64,7 @@ export default function ManagerGroupEmployee() {
               color="danger"
               className="w-[120px]"
             >
-              {editGroupEmployee || !id ? "Huỷ" : "Xoá"}
+              Huỷ
             </BaseButton>
           )}
           <BaseButton

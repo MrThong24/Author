@@ -34,7 +34,7 @@ export default function CategoryDetail() {
         {false ? (
           <Skeleton.Input active style={{ width: "100%" }} />
         ) : (
-          <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black">
+          <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full px-2 leading-[40px] text-sm text-black break-words">
             123
           </div>
         )}

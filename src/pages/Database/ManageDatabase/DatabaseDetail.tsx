@@ -1,5 +1,6 @@
 import { Skeleton, Table } from "antd";
 import React from "react";
+import NoData from "src/components/NoData/NoData";
 import BaseButton from "src/shared/components/Buttons/Button";
 import Field from "src/shared/components/Core/Field";
 import Label from "src/shared/components/Core/Label";
@@ -11,15 +12,17 @@ export default function DatabaseDetail() {
     {
       title: "STT",
       width: 60,
+      align: "center" as "left" | "right" | "center",
       render: (_text: any, _record: any, index: number) => index + 1,
     },
-    { title: "Tên schema", dataIndex: "store", key: "store" },
+    { width: "40%", title: "Tên schema", dataIndex: "name" },
+    { title: "Dịch vụ", dataIndex: "service" },
   ];
   return (
     <div>
       <div className="flex flex-col md:flex-row gap-x-10">
         <Field className="mt-4">
-          <Label text="DB name" validate={true} />
+          <Label text="Username" validate={true} />
           {isLoading ? (
             <Skeleton.Input active style={{ width: "100%" }} />
           ) : (
@@ -55,7 +58,7 @@ export default function DatabaseDetail() {
       </div>
       <div className="flex flex-col md:flex-row gap-x-10">
         <Field className="mt-4">
-          <Label text="Username " validate={true} />
+          <Label text="Password" validate={true} />
           {isLoading ? (
             <Skeleton.Input active style={{ width: "100%" }} />
           ) : (
@@ -77,33 +80,18 @@ export default function DatabaseDetail() {
           )}
         </Field>
       </div>
-      <div className="flex flex-col md:flex-row gap-x-10">
-        <Field className="mt-4">
-          <Label text="Password" validate={true} />
-          {isLoading ? (
-            <Skeleton.Input active style={{ width: "100%" }} />
-          ) : (
-            <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black">
-              123
-            </div>
-          )}
-        </Field>
-        <Field className="mt-4"> </Field>
-      </div>
-      <div className="flex w-full md:w-[50%] mt-8 justify-between">
+      <div className="flex w-full md:w-[50%] mt-4 justify-between">
         <h1 className="text-lg font-semibold text-primary">Danh sách schema</h1>
       </div>
-      <div className="flex w-full md:w-[50%] justify-between">
+      <div className="flex w-full md:w-[50%] my-8 mt-4 justify-between">
         <Table
-          scroll={{ x: "max-content", y: 400 }}
-          dataSource={[
-            {
-              store: "123",
-            },
-          ]}
+          scroll={{ x: "max-content" }}
+          dataSource={[]}
+          className="w-full"
           columns={columns}
           pagination={false}
           size="small"
+          locale={{ emptyText: <NoData /> }}
         />
       </div>
     </div>

@@ -12,6 +12,7 @@ import ServiceDetail from "./ServiceDetail";
 import ModalConfirm from "src/components/Modal/ModalConfirm";
 import { LuStore } from "react-icons/lu";
 import ModalSwitchService from "../components/ModalSwitchService";
+import ModalHistoryService from "../components/ModalHistoryService";
 
 export default function ManageService() {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ export default function ManageService() {
   const [editService, setEditService] = useState<boolean>(false);
   const [modalSwitchStatus, setModalSwitchStatus] = useState<boolean>(false);
   const [valueSwitchStatus, setValueSwitchStatus] = useState<boolean>(false);
+  const [modalHistory, setModalHistory] = useState<boolean>(false);
   const { isLoading } = useDatabaseStore();
   const {
     control,
@@ -45,7 +47,9 @@ export default function ManageService() {
     <DetailHeader
       title={
         <div className="flex w-full justify-between">
-          <h2 className="text-xl font-semibold">{`${id ? (editService ? "Chỉnh sửa" : "Chi tiết") : "Tạo mới"} gói dịch vụ`}</h2>
+          <h2 className="text-xl font-semibold">{`${
+            id ? (editService ? "Chỉnh sửa" : "Chi tiết") : "Tạo mới"
+          } gói dịch vụ`}</h2>
         </div>
       }
       rightElement={
@@ -62,7 +66,12 @@ export default function ManageService() {
               Huỷ
             </BaseButton>
           )}
-          <BaseButton loading={isLoading} onClick={() => {}}>
+          <BaseButton
+            loading={isLoading}
+            onClick={() => {
+              setModalHistory(true);
+            }}
+          >
             Xem lịch sử điều chỉnh
           </BaseButton>
           <BaseButton
@@ -84,7 +93,7 @@ export default function ManageService() {
           </BaseButton>
         </div>
       }
-      handleBack={() => navigate("/service")}
+      handleBack={() => navigate(-1)}
     >
       {editService || !id ? (
         <ServiceForm
@@ -94,7 +103,7 @@ export default function ManageService() {
           errors={errors}
           loading={isLoading}
           subsystem={subsystem}
-          listSubSystem={[{ value: "123123", lable: "123123123" }]}
+          listSubSystem={[{ value: "123123", label: "123123123" }]}
         />
       ) : (
         <ServiceDetail />
@@ -109,6 +118,15 @@ export default function ManageService() {
         onConfirm={() => {
           setValueSwitchStatus((pre) => !pre);
           setModalSwitchStatus(false);
+        }}
+      />
+      <ModalHistoryService
+        isOpen={modalHistory}
+        onClose={() => {
+          setModalHistory(false);
+        }}
+        onConfirm={() => {
+          setModalHistory(false);
         }}
       />
     </DetailHeader>

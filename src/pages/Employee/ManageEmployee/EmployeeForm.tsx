@@ -88,6 +88,7 @@ export default function EmployeeForm({
     {
       title: "STT",
       width: 60,
+      align: "center" as "left" | "right" | "center",
       render: (_text: any, _record: any, index: number) => index + 1,
     },
     {

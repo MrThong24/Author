@@ -18,9 +18,17 @@ export default function EmployeeDetail({
     {
       title: "STT",
       width: 60,
+      align: "center" as "left" | "right" | "center",
       render: (_text: any, _record: any, index: number) => index + 1,
     },
-    { title: "Nhóm người dùng", dataIndex: "store", key: "store" },
+    {
+      title: "Nhóm người dùng",
+      render: (_record: any) => (
+        <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black">
+          {_record.store}
+        </div>
+      ),
+    },
   ];
   return (
     <div>
@@ -124,7 +132,7 @@ export default function EmployeeDetail({
       </div>
       <div className="flex w-full md:w-[50%] mt-4 mb-10 justify-between">
         <Table
-          scroll={{ x: "max-content", y: 400 }}
+          scroll={{ x: "max-content" }}
           dataSource={[
             {
               store: "123",
@@ -132,6 +140,7 @@ export default function EmployeeDetail({
           ]}
           columns={columns}
           pagination={false}
+          className="w-full"
           size="small"
         />
       </div>

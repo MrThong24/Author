@@ -132,7 +132,9 @@ export default function ManageEmployee() {
     <DetailHeader
       title={
         <div className="flex w-full justify-between">
-          <h2 className="text-xl font-semibold">{`${id ? (editEmployee ? "Chỉnh sửa" : "Chi tiết") : "Tạo mới"} tài khoản`}</h2>
+          <h2 className="text-xl font-semibold">{`${
+            id ? (editEmployee ? "Chỉnh sửa" : "Chi tiết") : "Tạo mới"
+          } tài khoản`}</h2>
         </div>
       }
       rightElement={
@@ -142,7 +144,7 @@ export default function ManageEmployee() {
               Đặt lại mật khẩu
             </BaseButton>
           )}
-          {(editEmployee || !id) && (
+          {editEmployee && (
             <BaseButton
               disabled={isLoading}
               onClick={() => {
@@ -189,7 +191,7 @@ export default function ManageEmployee() {
               name: "Thức uống",
             },
           ]}
-          listUsersPermistion={[{ value: "123123", lable: "123123123" }]}
+          listUsersPermistion={[{ value: "123123", label: "123123123" }]}
         />
       ) : (
         <EmployeeDetail

@@ -38,7 +38,8 @@ export default function ChooseDatabase({
   const columns = [
     {
       title: "STT",
-      width: "10%",
+      width: 60,
+      align: "center" as "left" | "right" | "center",
       render: (_: unknown, __: StoreData, index: number) => index + 1,
     },
     { width: "45%", title: "Phân hệ", dataIndex: "store", key: "store" },

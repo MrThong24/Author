@@ -44,7 +44,12 @@ export default function Subsystem() {
       render: (_text, _record, index) =>
         (tableProps.currentPage - 1) * tableProps.pageSize + index + 1,
     },
-    { title: "Mã phân hệ", dataIndex: "name" },
+    {
+      title: "Mã phân hệ",
+      render: (_text, _record) => (
+        <div className="py-[6px]">{_record.name}</div>
+      ),
+    },
     { title: "Tên phân hệ", dataIndex: "username" },
   ];
 

@@ -18,6 +18,7 @@ export const databaseSchema = yup.object({
       yup.object().shape({
         key: yup.number().optional(),
         name: yup.string().required("Tên schema bắt buộc"),
+        service: yup.string().required("Dịch vụ là bắt buộc"),
       })
     )
     .min(1, "Schema là bắt buộc")

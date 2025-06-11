@@ -214,7 +214,7 @@ export default function Service() {
         onClose={() => setOpenModalDelete(false)}
         onConfirm={handleDeleteService}
       >
-        <h2>Bạn muốn xoá dịch vụ này?</h2>
+        <h2>Bạn có chắc chắn xóa dữ liệu này không ? </h2>
       </ModalDelete>
       <ModalSwitchService
         valueSwitchStatus={valueSwitchStatus}

@@ -9,10 +9,26 @@ export default function GroupEmployeeDetail() {
   const columns = [
     {
       title: "STT",
+      width: 60,
+      align: "center" as "left" | "right" | "center",
       render: (_text: any, _record: any, index: number) => index + 1,
     },
-    { title: "Tên phân hệ", dataIndex: "name" },
-    { title: "Sử dụng", dataIndex: "name" },
+    {
+      title: "Tên phân hệ",
+      render: (_record: any) => (
+        <div className="bg-[#EEECEC] rounded-md border border-[#BFBFBF] w-full h-[40px] px-2 leading-[40px] text-sm text-black">
+          {_record.name}
+        </div>
+      ),
+    },
+    {
+      title: "Sử dụng",
+      width: "14%",
+      align: "center" as "left" | "right" | "center",
+      render: (_: any, record: any, index: number) => (
+        <Checkbox checked={false} disabled={true} />
+      ),
+    },
     {
       title: "Phân quyền",
       width: 180,
@@ -69,7 +85,12 @@ export default function GroupEmployeeDetail() {
       <div className="flex w-full md:w-[50%] my-10 justify-between">
         <Table
           scroll={{ x: "max-content", y: 400 }}
-          dataSource={[]}
+          dataSource={[
+            {
+              name: "12",
+              use: true,
+            },
+          ]}
           columns={columns}
           pagination={false}
           size="small"

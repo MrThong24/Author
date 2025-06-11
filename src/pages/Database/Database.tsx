@@ -10,7 +10,6 @@ import { useTableConfig } from "src/hooks/useTable";
 import { useUrlQuery } from "src/hooks/useUrlQuery";
 import BaseButton from "src/shared/components/Buttons/Button";
 import { Employee } from "src/types/employee.type";
-import { EditOutlined } from "@ant-design/icons";
 import useDatabaseStore, { FilterDatabase } from "src/store/useDatabaseStore";
 import ModalDelete from "src/components/Modal/ModalDelete";
 import SelectedStatusBar from "src/components/SelectedStatusBar";
@@ -142,11 +141,12 @@ export default function Database() {
         locale={{ emptyText: <NoData /> }}
       />
       <ModalDelete
+        title="XOÁ CƠ SỞ DỮ LIỆU"
         isOpen={openModalDelete}
         onClose={() => setOpenModalDelete(false)}
         onConfirm={handleDeleteDatabase}
       >
-        <h2>Bạn muốn cơ sỡ dữ liệu này?</h2>
+        <h2>Bạn muốn cơ sở dữ liệu này?</h2>
       </ModalDelete>
     </MainHeader>
   );

@@ -15,7 +15,7 @@ export default function ContractDetail() {
       render: (_text: any, _record: any, index: number) => index + 1,
     },
     { title: "Phân hệ", dataIndex: "store", key: "store" },
-    ...([]?.some((item: any) => item.selectedDatabase) // Check if any item has selectedDatabase
+    ...([]?.some((item: any) => item.selectedDatabase)
       ? [
           {
             title: "Cơ sở dữ liệu",

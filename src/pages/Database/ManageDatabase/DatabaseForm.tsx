@@ -11,12 +11,14 @@ import Label from "src/shared/components/Core/Label";
 import FormInput from "src/shared/components/Form/FormInput";
 import FormSelect from "src/shared/components/Form/FormSelect";
 import { DatabasePayload } from "src/validate/databaseSchema";
-import { DeleteOutlined } from "@ant-design/icons";
 import { Table } from "antd";
+import { FiMinusCircle } from "react-icons/fi";
+import NoData from "src/components/NoData/NoData";
 
 interface DataType {
   key?: number;
   name: string;
+  service: string;
 }
 interface DatabaseForm {
   control: Control<DatabasePayload>;
@@ -55,7 +57,7 @@ export default function DatabaseForm({
     setValue("schema", updatedPermissions);
     clearErrors(`schema.${index}.${name}`);
   };
-
+  console.log("🇻🇳 👉 listSchema", listSchema);
   const handleDeleteUserRole = (index: number) => {
     const updatedPermissions = [...schema];
     updatedPermissions.splice(index, 1);
@@ -66,6 +68,7 @@ export default function DatabaseForm({
     const newRow = {
       key: Date.now(),
       name: "",
+      service: "",
     };
     const updatedPermissions = [...(schema || []), newRow];
     setValue?.("schema", updatedPermissions);
@@ -74,44 +77,56 @@ export default function DatabaseForm({
   const columns = [
     {
       title: "STT",
-      width: 60,
+      width: "8%",
       render: (_text: any, _record: any, index: number) => index + 1,
     },
     {
-      title: "Nhóm người dùng",
-      dataIndex: "store",
-      key: "store",
+      title: "Tên schema",
+      width: "40%",
+      render: (_: any, record: DataType, index: number) => (
+        <FormInput
+          control={control}
+          name={`schema.${index}.name`}
+          type="text"
+          placeholder="Nhập tên schema"
+          disabled={false}
+          errors={errors?.schema?.[index]?.name}
+          size="large"
+        />
+      ),
+    },
+    {
+      title: "Dịch vụ",
       render: (_: any, record: DataType, index: number) => (
         <FormSelect
-          name={`schema.${index}.name`}
-          value={record.name || undefined}
+          name={`schema.${index}.service`}
+          value={record.service || undefined}
           options={listSchema}
-          fieldNames={{
-            label: "label",
-            value: "value",
-          }}
           disabled={loading}
-          placeholder="Nhập tên schema"
+          placeholder="Chọn dich vụ"
           size={"large"}
           control={control}
-          errors={errors?.schema?.[index]?.name}
-          onChange={(value) => handleSelectPermission(index, "name", value)}
+          errors={errors?.schema?.[index]?.service}
+          onChange={(value) => handleSelectPermission(index, "service", value)}
           className="ant-select-max-width"
         />
       ),
     },
     {
-      title: "",
+      title: "Thao tác",
       dataIndex: "delete",
-      width: "10%",
+      width: "14%",
       key: "delete",
       render: (_: any, record: DataType, index: number) =>
         index !== 0 ? (
-          <DeleteOutlined
-            className="cursor-pointer text-xl hover:opacity-65 mb-6"
-            style={{ color: "#ff4d4f" }}
-            onClick={() => handleDeleteUserRole(index)}
-          />
+          <div className=" flex justify-center">
+            <FiMinusCircle
+              className="cursor-pointer hover:opacity-65"
+              style={{ color: "#94A3B8" }}
+              size={20}
+              onClick={() => handleDeleteUserRole(index)}
+            />
+          </div>
         ) : null,
     },
   ];
@@ -189,14 +204,15 @@ export default function DatabaseForm({
           Thêm mới
         </BaseButton>
       </div>
-      <div className="flex w-full md:w-[50%] my-10 justify-between">
+      <div className="flex w-full md:w-[50%] my-8 mt-4 justify-between">
         {schema?.length > 0 && (
           <Table
-            scroll={{ x: "max-content", y: 400 }}
+            scroll={{ x: "max-content" }}
             dataSource={schema}
             columns={columns}
             pagination={false}
-            size="small"
+            className="w-full"
+            locale={{ emptyText: <NoData /> }}
           />
         )}
       </div>

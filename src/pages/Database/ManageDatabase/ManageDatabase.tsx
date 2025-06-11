@@ -29,17 +29,22 @@ export default function ManageDatabase() {
         {
           key: Date.now(),
           name: "",
+          service: "",
         },
       ],
     },
   });
   const schema = watch("schema");
-  const onSubmit = async () => {};
+  const onSubmit = async (data: DatabasePayload) => {
+    console.log("🇻🇳 👉 data", data);
+  };
   return (
     <DetailHeader
       title={
         <div className="flex w-full justify-between">
-          <h2 className="text-xl font-semibold">{`${id ? (editDatabase ? "Chỉnh sửa" : "Chi tiết") : "Tạo mới"} cơ sỡ dữ liệu`}</h2>
+          <h2 className="text-xl font-semibold">{`${
+            id ? (editDatabase ? "Chỉnh sửa" : "Chi tiết") : "Tạo mới"
+          } cơ sỡ dữ liệu`}</h2>
         </div>
       }
       rightElement={
@@ -78,7 +83,10 @@ export default function ManageDatabase() {
           errors={errors}
           loading={isLoading}
           schema={schema}
-          listSchema={[{ value: "123123", lable: "123123123" }]}
+          listSchema={[
+            { label: "label1", value: "value1" },
+            { label: "label2", value: "value2" },
+          ]}
         />
       ) : (
         <DatabaseDetail />
