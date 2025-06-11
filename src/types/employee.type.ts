@@ -1,5 +1,3 @@
-import { UserStore } from './user.type';
-
 export interface Employee {
   id: string;
   createdAt: string;
@@ -14,7 +12,6 @@ export interface Employee {
   tokenVersion: number;
   isSystemAdmin: boolean;
   address: string | null;
-  userStores: UserStore[];
   posUserId: string;
 }
 

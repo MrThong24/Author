@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
-import { useUrlQuery } from './useUrlQuery';
-import useMediaQuery from './useMediaQuery';
+import { useEffect, useRef, useState, useCallback } from "react";
+import useMediaQuery from "./useMediaQuery";
 const useInfiniteScroll = <T extends { id: string }>(
   fetchMethod: (filters: any, getOnly?: boolean) => Promise<any>,
   filters: any
@@ -14,17 +13,20 @@ const useInfiniteScroll = <T extends { id: string }>(
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const observer = useRef<IntersectionObserver | null>(null);
   const filtersRef = useRef(filters);
-  const isMobile = useMediaQuery('(max-width: 1023px)');
+  const isMobile = useMediaQuery("(max-width: 1023px)");
 
   const fetchData = async () => {
     setLoading(true);
     try {
-      const response = await fetchMethod({ ...filters, page, limit: pageSize }, true);
+      const response = await fetchMethod(
+        { ...filters, page, limit: pageSize },
+        true
+      );
       const newData: T[] = response.data;
       setData((prev) => (page === 1 ? newData : [...prev, ...newData]));
       setHasMore(response?.data?.length > 0 && page < response?.totalPages);
     } catch (error) {
-      console.error('Failed to fetch posts', error);
+      console.error("Failed to fetch posts", error);
     } finally {
       setLoading(false);
     }
@@ -46,8 +48,8 @@ const useInfiniteScroll = <T extends { id: string }>(
     if (!isMobile) return;
     const observerOptions = {
       root: containerRef.current,
-      rootMargin: '300px 0px',
-      threshold: 0
+      rootMargin: "300px 0px",
+      threshold: 0,
     };
 
     if (observer.current) observer.current.disconnect();
@@ -67,12 +69,21 @@ const useInfiniteScroll = <T extends { id: string }>(
   }, [hasMore, loading, isMobile]);
 
   const removeItems = useCallback((itemIds: string[]) => {
-    setData((prevData) => prevData.filter((item: any) => !itemIds.includes(item.id)));
+    setData((prevData) =>
+      prevData.filter((item: any) => !itemIds.includes(item.id))
+    );
   }, []);
 
-  const updateItems = (idOrIds: string | string[], fieldUpdated: Partial<T>) => {
+  const updateItems = (
+    idOrIds: string | string[],
+    fieldUpdated: Partial<T>
+  ) => {
     const ids = Array.isArray(idOrIds) ? idOrIds : [idOrIds];
-    setData((prev) => prev.map((item) => (ids.includes(item.id) ? { ...item, ...fieldUpdated } : item)));
+    setData((prev) =>
+      prev.map((item) =>
+        ids.includes(item.id) ? { ...item, ...fieldUpdated } : item
+      )
+    );
   };
 
   return {
@@ -81,7 +92,7 @@ const useInfiniteScroll = <T extends { id: string }>(
     containerRef,
     sentinelRef,
     removeItems,
-    updateItems
+    updateItems,
   };
 };
 

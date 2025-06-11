@@ -11,7 +11,6 @@ import {
 } from "./auth";
 import { ErrorResponse } from "src/types/utils.type";
 import { isAxiosExpiredTokenError, isAxiosUnauthorizedError } from "./utils";
-import { CustomerInfo } from "src/types/customer.type";
 
 export class Http {
   instance: AxiosInstance;

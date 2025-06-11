@@ -1,5 +1,4 @@
 import { GetProp, message, UploadProps } from "antd";
-import { RequestProduct } from "src/types/request.type";
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 

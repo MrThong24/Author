@@ -1,5 +1,3 @@
-import { Company } from './company.type';
-
 export interface Store {
   id: string;
   name: string;
@@ -26,7 +24,6 @@ export interface Store {
   updatedAt: string;
   createdBy: string;
   updatedBy: string;
-  company: Company;
   isQRIntegrated: boolean;
   kitchenDisabled: boolean;
   servingQuantityConfirmationDisabled: boolean;

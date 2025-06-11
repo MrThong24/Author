@@ -1,7 +1,6 @@
-import { Kitchen } from './kitchen.type';
-import { Store } from './store.type';
+import { Store } from "./store.type";
 
-export type Role = 'STORE_OWNER' | 'STAFF' | 'MANAGER' | 'CHEF';
+export type Role = "STORE_OWNER" | "STAFF" | "MANAGER" | "CHEF";
 
 export interface UserStore {
   storeId: string;
@@ -39,5 +38,4 @@ export interface User {
   avatar: string;
   store: Store;
   userStores: UserStore[];
-  kitchen: Kitchen;
 }

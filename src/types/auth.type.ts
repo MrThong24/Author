@@ -1,4 +1,4 @@
-import { User, UserStore } from './user.type';
+import { User, UserStore } from "./user.type";
 
 export type AuthResponse = {
   accessToken: string;
@@ -23,7 +23,7 @@ export type ChooseStorePayLoad = {
 };
 
 export type ChooseStoreResponse = {
-  user: User;
+  user: any;
   accessToken: string;
   refreshToken: string;
 };
