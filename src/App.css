@@ -21,38 +21,6 @@
   background: #e0e0e0;
 }
 
-/* 
-div[style*='overflow-x: auto']::-webkit-scrollbar {
-  height: 5px; /* Điều chỉnh chiều cao thanh cuộn ngang} */
-*/ .lazy-loader {
-  width: 35px;
-  height: 80px;
-  position: relative;
-}
-
-.lazy-loader:after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  padding: 3px 5px;
-  border-top: 1px solid #bbb6aa;
-  border-bottom: 4px solid #bbb6aa;
-  background:
-    linear-gradient(#77d4d4 0 0) bottom no-repeat content-box,
-    #e4e0d7;
-  mix-blend-mode: darken;
-  animation: drink 1.5s infinite linear;
-}
-
-.lazy-loader:before {
-  content: '';
-  position: absolute;
-  inset: -18px calc(50% - 2px) 8px;
-  background: #eb6b3e;
-  transform-origin: bottom;
-  transform: rotate(8deg);
-}
-
 @keyframes drink {
   0% {
     background-size: 100% 100%;
@@ -93,18 +61,6 @@ div[style*='overflow-x: auto']::-webkit-scrollbar {
   box-shadow: none;
 }
 
-.image-profile .ant-image .ant-image-mask {
-  border-radius: 50% !important;
-}
-
-.image-profile .ant-image-mask:hover {
-  border-radius: 50%;
-}
-
-.ant-input-number-handler-up {
-  display: none;
-}
-
 /* Chrome, Safari, Edge, Opera */
 .hideArrowsNumber input::-webkit-outer-spin-button,
 .hideArrowsNumber input::-webkit-inner-spin-button {
@@ -115,19 +71,6 @@ div[style*='overflow-x: auto']::-webkit-scrollbar {
 /* Firefox */
 .hideArrowsNumber input[type='number'] {
   -moz-appearance: textfield;
-}
-
-.ant-table-row.active-row {
-  background-color: rgba(139, 139, 139, 0.144) !important;
-  cursor: pointer;
-}
-
-.ant-table-row.active-row:hover td {
-  background-color: rgba(139, 139, 139, 0.144) !important;
-}
-
-.ant-btn-icon {
-  margin-top: 1px;
 }
 
 /* blink */
@@ -143,20 +86,6 @@ div[style*='overflow-x: auto']::-webkit-scrollbar {
   100% {
     opacity: 1;
   }
-}
-
-/* .blinking {
-  animation: blink 1s infinite;
-} */
-.blinking-circle {
-  background: rgba(255, 255, 255, 0.6);
-  /* Màu đỏ có độ trong suốt */
-  border-radius: 50%;
-  /* Tạo hình tròn */
-  backdrop-filter: blur(10px);
-  /* Làm mờ nền */
-  transform: translate(-50%, -50%);
-  animation: blink 1.5s infinite;
 }
 
 /* Firefox */

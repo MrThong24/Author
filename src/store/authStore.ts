@@ -1,4 +1,3 @@
-import { notification } from "antd";
 import {
   clearLS,
   URL_CHOOSE_STORE,

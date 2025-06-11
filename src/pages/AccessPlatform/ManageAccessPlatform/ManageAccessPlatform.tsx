@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DetailHeader from "src/components/Headers/DetailHeader";
 import BaseButton from "src/shared/components/Buttons/Button";
-import { setAccessTokenToLS } from "src/shared/utils/auth";
 
 interface DataType {
   key: React.ReactNode;
@@ -72,7 +71,9 @@ export default function ManageAccessPlatform() {
     <DetailHeader
       title={
         <div className="flex w-full justify-between">
-          <h2 className="text-xl font-semibold">{`${editAccessPlatform ? "Chỉnh sửa" : "Chi tiết"} nhóm người dùng`}</h2>
+          <h2 className="text-xl font-semibold">{`${
+            editAccessPlatform ? "Chỉnh sửa" : "Chi tiết"
+          } nhóm người dùng`}</h2>
         </div>
       }
       rightElement={

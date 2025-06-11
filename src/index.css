@@ -4,7 +4,6 @@
 
 body {
   min-height: 100dvh;
-  /* mobile viewport bug fix */
   min-height: -webkit-fill-available;
   font-family:
     'Montserrat',
