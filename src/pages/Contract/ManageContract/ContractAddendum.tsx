@@ -3,11 +3,11 @@ import React from "react";
 import DataTable from "src/components/Table/DataTable";
 import { useTableConfig } from "src/hooks/useTable";
 import BaseButton from "src/shared/components/Buttons/Button";
-import useContractStore, { FilterContract } from "src/store/useContract";
 import { Employee } from "src/types/employee.type";
 import { EditOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import NoData from "src/components/NoData/NoData";
+import useContractStore, { FilterContract } from "src/store/useContractStore";
 
 export default function ContractAddendum() {
   const { fetchContract, isLoading, total, contract } = useContractStore();

@@ -3,9 +3,13 @@ import { create } from "zustand";
 import { Params } from "src/types/params.type";
 import { showError } from "src/shared/utils/error";
 import { Employee } from "src/types/employee.type";
+import { Dayjs } from "dayjs";
 
 export interface FilterService extends Params {
   search?: string;
+  startDate?: Dayjs | string;
+  endDate?: Dayjs | string;
+  status?: string;
 }
 interface ServiceStore {
   service: Employee[];

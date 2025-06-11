@@ -16,9 +16,7 @@ import ModalDelete from "src/components/Modal/ModalDelete";
 import SelectedStatusBar from "src/components/SelectedStatusBar";
 import { EmployeeStatus } from "src/shared/common/enum";
 import { RequestStatusBadge } from "src/components/Badge/RequestStatusBadge";
-import ModalSwitchStatus from "./components/ModalSwitchStatus";
-import dayjs from "dayjs";
-import { u } from "framer-motion/dist/types.d-B50aGbjN";
+import ModalSwitchEmployee from "./components/ModalSwitchEmployee";
 
 const EmployeeList = () => {
   const { getQuery } = useUrlQuery();
@@ -29,6 +27,7 @@ const EmployeeList = () => {
     search: getQuery("search") || undefined,
     startDate: getQuery("startDate") || undefined,
     endDate: getQuery("endDate") || undefined,
+    status: getQuery("status") || undefined,
   });
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
@@ -229,7 +228,7 @@ const EmployeeList = () => {
         </h2>
         <h3 className="">Bạn có chắc muốn tiếp tục?</h3>
       </ModalDelete>
-      <ModalSwitchStatus
+      <ModalSwitchEmployee
         valueSwitchStatus={valueSwitchStatus}
         isOpen={modalSwitchStatus}
         onClose={() => {

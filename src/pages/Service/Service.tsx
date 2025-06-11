@@ -1,4 +1,4 @@
-import { TableColumnsType } from "antd";
+import { Switch, TableColumnsType } from "antd";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FilterDropdown from "src/components/Filter/FilterDropdown";
@@ -9,30 +9,33 @@ import DataTable from "src/components/Table/DataTable";
 import { useTableConfig } from "src/hooks/useTable";
 import { useUrlQuery } from "src/hooks/useUrlQuery";
 import BaseButton from "src/shared/components/Buttons/Button";
-import useCategoryStore from "src/store/useCategoryStore";
-import { FilterEmployee } from "src/store/useEmployeeStore";
 import { Employee } from "src/types/employee.type";
 import { EditOutlined } from "@ant-design/icons";
-import useDatabaseStore from "src/store/useDatabaseStore";
-import useServiceStore from "src/store/useServiceStore";
+import useServiceStore, { FilterService } from "src/store/useServiceStore";
 import { RequestStatusBadge } from "src/components/Badge/RequestStatusBadge";
 import SelectedStatusBar from "src/components/SelectedStatusBar";
 import ModalDelete from "src/components/Modal/ModalDelete";
+import ModalSwitchService from "./components/ModalSwitchService";
+import { EmployeeStatus } from "src/shared/common/enum";
 
 export default function Service() {
   const { getQuery } = useUrlQuery();
   const navigate = useNavigate();
   const { fetchService, isLoading, total, service } = useServiceStore();
-  const [filters, setFilters] = useState<FilterEmployee>({
+  const [filters, setFilters] = useState<FilterService>({
     search: getQuery("search") || undefined,
+    startDate: getQuery("startDate") || undefined,
+    endDate: getQuery("endDate") || undefined,
+    status: getQuery("status") || undefined,
   });
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
   const [rowSelectVisible, setRowSelectVisible] = useState<boolean>(false);
-
+  const [modalSwitchStatus, setModalSwitchStatus] = useState<boolean>(false);
+  const [valueSwitchStatus, setValueSwitchStatus] = useState<boolean>(false);
   const { tableProps, resetToFirstPage } = useTableConfig<
     Employee,
-    FilterEmployee
+    FilterService
   >({
     data: service,
     totalItems: total,
@@ -68,7 +71,14 @@ export default function Service() {
       fixed: "right",
       title: "Tác vụ",
       render: (value: Employee) => (
-        <div>
+        <div className="flex gap-4 items-center">
+          <Switch
+            value={valueSwitchStatus}
+            onChange={() => {
+              setModalSwitchStatus(true);
+            }}
+            className="w-[40px]"
+          />
           <BaseButton
             className={`w-[44px] h-[34px] rounded-md overflow-hidden`}
             variant="filled"
@@ -83,11 +93,23 @@ export default function Service() {
     },
   ];
 
-  const handleFiltersChange = (newFilters: Partial<FilterEmployee>) => {
+  const handleFiltersChange = (newFilters: Partial<FilterService>) => {
     setFilters((prev) => ({ ...prev, ...newFilters }));
     resetToFirstPage();
   };
+
   const handleDeleteService = async () => {};
+
+  const listStatus = [
+    {
+      value: EmployeeStatus.ACTIVE,
+      label: "Đang sử dụng",
+    },
+    {
+      value: EmployeeStatus.INACTIVE,
+      label: "Ngưng hoạt động",
+    },
+  ];
   return (
     <MainHeader
       title={
@@ -103,6 +125,17 @@ export default function Service() {
                   label: "Tìm kiếm",
                   type: "search",
                   placeholder: "Nhập tên, mã gói",
+                },
+                {
+                  key: "status",
+                  options: listStatus,
+                  label: "Trạng thái",
+                  type: "select",
+                  placeholder: "Chọn trạng thái",
+                },
+                {
+                  label: "Thời gian",
+                  type: "date-range",
                 },
               ]}
               filters={filters}
@@ -121,6 +154,24 @@ export default function Service() {
               onSearch={(value) => handleFiltersChange({ search: value })}
               placeholder="Nhập tên, mã gói"
               className="max-w-96 flex-1"
+            />
+            <FilterDropdown
+              filtersFields={[
+                {
+                  key: "status",
+                  options: listStatus,
+                  label: "Trạng thái",
+                  type: "select",
+                  placeholder: "Chọn trạng thái",
+                },
+                {
+                  label: "Thời gian",
+                  type: "date-range",
+                },
+              ]}
+              filters={filters}
+              setFilters={setFilters}
+              className="w-full"
             />
           </div>
         </div>
@@ -156,12 +207,24 @@ export default function Service() {
         locale={{ emptyText: <NoData /> }}
       />
       <ModalDelete
+        title="XOÁ GÓI DỊCH VỤ"
         isOpen={openModalDelete}
         onClose={() => setOpenModalDelete(false)}
         onConfirm={handleDeleteService}
       >
         <h2>Bạn muốn xoá dịch vụ này?</h2>
       </ModalDelete>
+      <ModalSwitchService
+        valueSwitchStatus={valueSwitchStatus}
+        isOpen={modalSwitchStatus}
+        onClose={() => {
+          setModalSwitchStatus(false);
+        }}
+        onConfirm={() => {
+          setValueSwitchStatus((pre) => !pre);
+          setModalSwitchStatus(false);
+        }}
+      />
     </MainHeader>
   );
 }

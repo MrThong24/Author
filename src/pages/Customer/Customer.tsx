@@ -13,8 +13,8 @@ import { Employee } from "src/types/employee.type";
 import { EditOutlined } from "@ant-design/icons";
 import ModalDelete from "src/components/Modal/ModalDelete";
 import SelectedStatusBar from "src/components/SelectedStatusBar";
-import { FilterContract } from "src/store/useContract";
-import useCustomerStore from "src/store/useCustomer";
+import { FilterContract } from "src/store/useContractStore";
+import useCustomerStore from "src/store/useCustomerStore";
 
 export default function Customer() {
   const { getQuery } = useUrlQuery();

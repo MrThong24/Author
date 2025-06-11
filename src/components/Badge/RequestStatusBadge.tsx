@@ -4,10 +4,7 @@ import { IoRestaurantOutline } from "react-icons/io5";
 import { GrInProgress } from "react-icons/gr";
 import {
   CheckOutlined,
-  CloseCircleOutlined,
-  ReloadOutlined,
 } from "@ant-design/icons";
-import { FaCheckCircle } from "react-icons/fa";
 
 export const RequestStatusBadge = (status: string) => {
   const StatusBadge = ({
@@ -20,8 +17,8 @@ export const RequestStatusBadge = (status: string) => {
     icon: React.ReactNode;
   }) => (
     <Tag
-      className="flex gap-1 p-1 items-center justify-center max-w-28"
-      icon={icon}
+      className="flex gap-1 p-1 items-center justify-center max-w-28 rounded-[40px] border"
+      // icon={icon}
       color={color}
     >
       {text}

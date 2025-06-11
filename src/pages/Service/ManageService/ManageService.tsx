@@ -11,12 +11,14 @@ import ServiceForm from "./ServiceForm";
 import ServiceDetail from "./ServiceDetail";
 import ModalConfirm from "src/components/Modal/ModalConfirm";
 import { LuStore } from "react-icons/lu";
+import ModalSwitchService from "../components/ModalSwitchService";
 
 export default function ManageService() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [editService, setEditService] = useState<boolean>(false);
-  const [showConfirm, setShowConfirm] = useState(false);
+  const [modalSwitchStatus, setModalSwitchStatus] = useState<boolean>(false);
+  const [valueSwitchStatus, setValueSwitchStatus] = useState<boolean>(false);
   const { isLoading } = useDatabaseStore();
   const {
     control,
@@ -43,7 +45,7 @@ export default function ManageService() {
     <DetailHeader
       title={
         <div className="flex w-full justify-between">
-          <h2 className="text-xl font-semibold">{`${id ? (editService ? "Chỉnh sửa" : "Chi tiết") : "Tạo mới"} cơ sỡ dữ liệu`}</h2>
+          <h2 className="text-xl font-semibold">{`${id ? (editService ? "Chỉnh sửa" : "Chi tiết") : "Tạo mới"} gói dịch vụ`}</h2>
         </div>
       }
       rightElement={
@@ -66,7 +68,7 @@ export default function ManageService() {
           <BaseButton
             loading={isLoading}
             onClick={() => {
-              setShowConfirm(true);
+              setModalSwitchStatus(true);
             }}
           >
             Ngưng sử dụng
@@ -97,18 +99,18 @@ export default function ManageService() {
       ) : (
         <ServiceDetail />
       )}
-      <ModalConfirm
-        isOpen={showConfirm}
-        title="Ngưng sử dụng gói dịch vụ"
+
+      <ModalSwitchService
+        valueSwitchStatus={valueSwitchStatus}
+        isOpen={modalSwitchStatus}
         onClose={() => {
-          setShowConfirm(false);
+          setModalSwitchStatus(false);
         }}
-        onConfirm={() => []}
-        icon={<LuStore size={24} />}
-        loading={isLoading}
-      >
-        Bạn có chắn chắn ngưng sử dụng gói dịch vụ này không ?
-      </ModalConfirm>
+        onConfirm={() => {
+          setValueSwitchStatus((pre) => !pre);
+          setModalSwitchStatus(false);
+        }}
+      />
     </DetailHeader>
   );
 }

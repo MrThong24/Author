@@ -4,8 +4,7 @@ import { MdOutlineDateRange } from "react-icons/md";
 import { RequestStatusBadge } from "src/components/Badge/RequestStatusBadge";
 import Field from "src/shared/components/Core/Field";
 import Label from "src/shared/components/Core/Label";
-import useContractStore from "src/store/useContract";
-import useCustomerStore from "src/store/useCustomer";
+import useCustomerStore from "src/store/useCustomerStore";
 
 export default function InfoLincense() {
   const { isLoading } = useCustomerStore();

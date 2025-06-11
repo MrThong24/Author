@@ -1,5 +1,4 @@
-import { Checkbox, Skeleton, Switch, Table } from "antd";
-import React from "react";
+import { Checkbox, Skeleton, Table } from "antd";
 import BaseButton from "src/shared/components/Buttons/Button";
 import Field from "src/shared/components/Core/Field";
 import Label from "src/shared/components/Core/Label";
@@ -49,7 +48,7 @@ export default function GroupEmployeeDetail() {
           </div>
         </Field>
       </div>
-      <div className="flex flex-col md:flex-row gap-x-10 items-center">
+      <div className="flex flex-col md:flex-row gap-x-10">
         <Field className="mt-4">
           <Label text="Mã nhóm" validate={true} />
           {isLoading ? (

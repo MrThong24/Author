@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import DetailHeader from "src/components/Headers/DetailHeader";
 import BaseButton from "src/shared/components/Buttons/Button";
-import useCustomerStore from "src/store/useCustomer";
 import { CustomerPayload, customerSchema } from "src/validate/customerSchema";
 import CustomerForm from "./CustomerForm";
 import CustomerDetail from "./CustomerDetail";
@@ -24,6 +23,7 @@ import Label from "src/shared/components/Core/Label";
 import { IoPauseCircleOutline } from "react-icons/io5";
 import FormInput from "src/shared/components/Form/FormInput";
 import AdjustmentHistory from "./AdjustmentHistory";
+import useCustomerStore from "src/store/useCustomerStore";
 
 type MenuItem = Required<MenuProps>["items"][number];
 type TabKeys = "inforCustomer" | "infoLincense" | "adjustmentHistory";
@@ -139,7 +139,9 @@ export default function ManageCustomer() {
     <DetailHeader
       title={
         <div className="flex w-full justify-between">
-          <h2 className="text-xl font-semibold">{`${id ? (editCustomer ? "Chỉnh sửa" : "Thông tin") : "Tạo mới"} khách hàng`}</h2>
+          <h2 className="text-xl font-semibold">{`${
+            id ? (editCustomer ? "Chỉnh sửa" : "Thông tin") : "Tạo mới"
+          } khách hàng`}</h2>
         </div>
       }
       rightElement={

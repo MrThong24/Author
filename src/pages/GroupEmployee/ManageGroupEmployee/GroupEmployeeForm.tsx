@@ -6,6 +6,7 @@ import {
   FieldErrors,
   UseFormClearErrors,
   UseFormSetValue,
+  UseWatchProps,
 } from "react-hook-form";
 import { FaChevronLeft } from "react-icons/fa";
 import BaseButton from "src/shared/components/Buttons/Button";
@@ -15,6 +16,39 @@ import FormInput from "src/shared/components/Form/FormInput";
 import { GroupEmployeePayload } from "src/validate/groupEmployeeSchema";
 import CustomDrawer from "../components/CustomDrawer";
 
+const data: any[] = [
+  {
+    key: 1,
+    name: "Quản lý đơn hàng",
+    age: "MO_INVOICE",
+    children: [
+      {
+        key: 11,
+        name: "Xem danh sách đơn hàng",
+        age: "MO_INVOICE",
+      },
+      {
+        key: 12,
+        name: "Xem chi tiết đơn hàng",
+        age: "MO_INVOICE",
+        children: [
+          {
+            key: 121,
+            name: "Thanh toán đơn hàng",
+            age: "MO_INVOICE",
+          },
+        ],
+      },
+    ],
+  },
+];
+
+interface DataType {
+  key?: number;
+  name?: string;
+  use?: boolean;
+  list?: any;
+}
 interface GroupEmployeeForm {
   control: Control<GroupEmployeePayload>;
   errors: FieldErrors<GroupEmployeePayload>;
@@ -22,13 +56,6 @@ interface GroupEmployeeForm {
   setValue: UseFormSetValue<GroupEmployeePayload>;
   clearErrors: UseFormClearErrors<GroupEmployeePayload>;
   usersPermission: DataType[];
-}
-
-interface DataType {
-  key?: number;
-  name: string;
-  use: boolean;
-  list: any;
 }
 
 export default function GroupEmployeeForm({
@@ -40,12 +67,12 @@ export default function GroupEmployeeForm({
 }: GroupEmployeeForm) {
   const [drawerVisible, setDrawerVisible] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-
+  const [dataDrawer, setDataDrawer] = useState<any[]>(data);
+  const [selectedKeys, setSelectedKeys] = useState<any[]>([]);
   const handleSaveSelection =
     (index: number) => (selectedKeys: React.Key[]) => {
       setValue(`usersPermission.${index}.list`, selectedKeys);
     };
-
   const columns = [
     {
       title: "STT",
@@ -65,7 +92,7 @@ export default function GroupEmployeeForm({
       ),
     },
     {
-      title: "Nhóm người dùng",
+      title: "Sử dựng",
       render: (_: any, record: DataType, index: number) => (
         <div>
           <Controller
@@ -84,7 +111,7 @@ export default function GroupEmployeeForm({
       ),
     },
     {
-      title: "Nhóm người dùng",
+      title: "Phân quyền",
       width: 180,
       render: (_: any, record: DataType, index: number) => {
         return (
@@ -96,6 +123,8 @@ export default function GroupEmployeeForm({
               render={({ field }) => (
                 <BaseButton
                   onClick={() => {
+                    const currentList = field.value || [];
+                    setSelectedKeys(currentList);
                     setCurrentIndex(index);
                     setDrawerVisible(true);
                   }}
@@ -161,7 +190,7 @@ export default function GroupEmployeeForm({
             size="large"
           />
         </Field>
-        <Field className="mt-4">{""}</Field>
+        <Field className="mt-4"> </Field>
       </div>
       <div className="flex w-full md:w-[50%] mt-10 justify-between">
         <h1 className="text-lg font-semibold text-primary">
@@ -178,9 +207,14 @@ export default function GroupEmployeeForm({
         />
       </div>
       <CustomDrawer
-        onClose={() => setDrawerVisible(false)}
+        onClose={() => {
+          setDrawerVisible(false);
+          setDataDrawer(data);
+        }}
         open={drawerVisible}
+        dataDrawer={dataDrawer}
         onSaveSelection={handleSaveSelection(currentIndex)}
+        initialSelectedKeys={selectedKeys}
       />
     </div>
   );

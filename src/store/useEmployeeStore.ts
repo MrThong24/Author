@@ -15,6 +15,7 @@ export interface FilterEmployee extends Params {
   search?: string;
   startDate?: Dayjs | string;
   endDate?: Dayjs | string;
+  status?: string;
 }
 interface EmployeeStore {
   employees: Employee[];

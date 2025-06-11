@@ -3,7 +3,7 @@ import React from "react";
 import { RequestStatusBadge } from "src/components/Badge/RequestStatusBadge";
 import Field from "src/shared/components/Core/Field";
 import Label from "src/shared/components/Core/Label";
-import useCustomerStore from "src/store/useCustomer";
+import useCustomerStore from "src/store/useCustomerStore";
 
 export default function CustomerDetail() {
   const { isLoading } = useCustomerStore();

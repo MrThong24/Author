@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import DetailHeader from "src/components/Headers/DetailHeader";
 import BaseButton from "src/shared/components/Buttons/Button";
-import useContractStore from "src/store/useContract";
 import { ContractPayload, contractSchema } from "src/validate/contractSchema";
 import ContractForm from "./ContractForm";
 import dayjs, { Dayjs } from "dayjs";
@@ -16,6 +15,7 @@ import { RiSettings3Line } from "react-icons/ri";
 import { MenuProps } from "antd/lib";
 import ContractAddendum from "./ContractAddendum";
 import ExtendService from "../components/ExtendService";
+import useContractStore from "src/store/useContractStore";
 
 type MenuItem = Required<MenuProps>["items"][number];
 type TabKeys = "infor" | "contract";
@@ -96,7 +96,9 @@ export default function ManageContract() {
     <DetailHeader
       title={
         <div className="flex w-full justify-between">
-          <h2 className="text-xl font-semibold">{`${id ? (editContract ? "Chỉnh sửa" : "Chi tiết") : "Tạo mới"} hợp đồng`}</h2>
+          <h2 className="text-xl font-semibold">{`${
+            id ? (editContract ? "Chỉnh sửa" : "Chi tiết") : "Tạo mới"
+          } hợp đồng`}</h2>
         </div>
       }
       rightElement={

@@ -1,6 +1,6 @@
 import CustomModal from "src/shared/components/Modals/Modal";
 
-export default function ModalSwitchStatus({
+export default function ModalSwitchEmployee({
   isOpen,
   valueSwitchStatus,
   onClose,

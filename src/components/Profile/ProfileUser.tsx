@@ -1,9 +1,7 @@
 import { Dropdown } from "antd";
-import { FiUser } from "react-icons/fi";
-import { LuKeyRound, LuStore } from "react-icons/lu";
+import { LuStore } from "react-icons/lu";
 import { RxExit } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
-import { imageStoreDefault } from "src/assets/images";
 import BaseSelect from "src/shared/components/Core/Select";
 import {
   clearLS,
@@ -66,24 +64,6 @@ export default function ProfileUser() {
     <div className="flex flex-col gap-1 bg-white p-3 rounded-md shadow-md border border-gray-200 max-w-[300px] min-w-[200px]">
       <div
         className="cursor-pointer hover:bg-primary-50 active:bg-primary-50 rounded-sm gap-1.5 p-1.5 flex text-start items-center"
-        onClick={() => navigateWithSidebarControl("/user")}
-      >
-        <div className=" p-1 rounded-full flex-shrink-0">
-          <FiUser className="text-primary" size={16} />
-        </div>
-        <h2 className="text-primary truncate text-sm">Thông tin - Cài đặt</h2>
-      </div>
-      <div
-        className="cursor-pointer hover:bg-primary-50 active:bg-primary-50 rounded-sm gap-1.5 p-1.5 flex text-start items-center"
-        onClick={() => navigateWithSidebarControl("/changePassword")}
-      >
-        <div className=" p-1 rounded-full flex-shrink-0">
-          <LuKeyRound className="text-primary" size={16} />
-        </div>
-        <h2 className="text-primary truncate text-sm">Đổi mật khẩu</h2>
-      </div>
-      <div
-        className="cursor-pointer hover:bg-primary-50 active:bg-primary-50 rounded-sm gap-1.5 p-1.5 flex text-start items-center"
         onClick={() => handleOnConfirm()}
       >
         <div className="p-1 rounded-full flex-shrink-0">
@@ -121,7 +101,7 @@ export default function ProfileUser() {
       >
         <div className="flex  items-center gap-2 w-full truncate">
           <img
-            src={generateImageURL(currentUser?.avatar) || imageStoreDefault}
+            src={generateImageURL(currentUser?.avatar)}
             alt="avatar"
             className="w-8 h-8 rounded-full flex-shrink-0 object-cover active:scale-95 active:brightness-90 transition-all cursor-pointer"
           />

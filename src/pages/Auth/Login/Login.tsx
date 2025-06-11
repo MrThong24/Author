@@ -14,11 +14,9 @@ import { roleTypes } from "src/shared/common/constant";
 import { Option } from "src/types/utils.type";
 import BaseSelect from "src/shared/components/Core/Select";
 import { Empty, notification } from "antd";
-import { logo, logoBlue, mobifone } from "src/assets/images";
+import { logo, mobifone } from "src/assets/images";
 import Field from "src/shared/components/Core/Field";
 import { useTheme } from "src/provider/ThemeContext";
-import { RoleType } from "src/shared/common/enum";
-import { jwtDecode } from "jwt-decode";
 import useWindowResize from "src/hooks/useWindowResize";
 
 export default function Login() {

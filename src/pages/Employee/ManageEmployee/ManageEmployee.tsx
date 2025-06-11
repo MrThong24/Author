@@ -19,7 +19,7 @@ import ModalPreviewPassword from "../components/ModalPreviewPassword";
 import EmployeeForm from "./EmployeeForm";
 import ModalDelete from "src/components/Modal/ModalDelete";
 import CustomModal from "src/shared/components/Modals/Modal";
-import ModalSwitchStatus from "../components/ModalSwitchStatus";
+import ModalSwitchEmployee from "../components/ModalSwitchEmployee";
 
 export default function ManageEmployee() {
   const navigate = useNavigate();
@@ -238,8 +238,7 @@ export default function ManageEmployee() {
       >
         Bạn có chắc muốn mở khóa tài khoản này không?
       </CustomModal>
-
-      <ModalSwitchStatus
+      <ModalSwitchEmployee
         valueSwitchStatus={valueSwitchStatus}
         isOpen={modalSwitchStatus}
         onClose={() => {

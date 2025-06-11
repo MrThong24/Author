@@ -1,4 +1,3 @@
-import { Dayjs } from "dayjs";
 import * as yup from "yup";
 
 export const customerSchema = yup.object({

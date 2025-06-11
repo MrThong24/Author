@@ -6,7 +6,7 @@ import DataTable from "src/components/Table/DataTable";
 import { useTableConfig } from "src/hooks/useTable";
 import { useUrlQuery } from "src/hooks/useUrlQuery";
 import BaseButton from "src/shared/components/Buttons/Button";
-import useCustomerStore, { FilterCustomer } from "src/store/useCustomer";
+import useCustomerStore, { FilterCustomer } from "src/store/useCustomerStore";
 import { Employee } from "src/types/employee.type";
 
 export default function AdjustmentHistory() {

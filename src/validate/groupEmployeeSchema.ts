@@ -1,4 +1,3 @@
-import { passwordRegex } from "src/shared/utils/regex";
 import * as yup from "yup";
 
 export const groupEmployeeSchema = () =>

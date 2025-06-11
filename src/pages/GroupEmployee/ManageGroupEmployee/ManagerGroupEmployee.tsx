@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import GroupEmployeeForm from "./GroupEmployeeForm";
 import DetailHeader from "src/components/Headers/DetailHeader";
 import { useNavigate, useParams } from "react-router-dom";
@@ -20,7 +20,6 @@ export default function ManagerGroupEmployee() {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
   const { isLoading } = useGroupEmployeeStore();
-
   const {
     control,
     reset,
@@ -31,7 +30,9 @@ export default function ManagerGroupEmployee() {
     formState: { errors },
   } = useForm<GroupEmployeePayload>({
     resolver: yupResolver(groupEmployeeSchema()),
+    defaultValues: {},
   });
+  const usersPermission = watch("usersPermission") || [];
   const onSubmit = async (data: GroupEmployeePayload) => {
     console.log("🇻🇳 👉 data", data);
   };
@@ -44,24 +45,18 @@ export default function ManagerGroupEmployee() {
       }
       rightElement={
         <div className="flex items-center gap-2">
-          <BaseButton
-            disabled={isLoading}
-            onClick={() => {
-              if (editGroupEmployee) {
+          {(editGroupEmployee || !id) && (
+            <BaseButton
+              disabled={isLoading}
+              onClick={() => {
                 setEditGroupEmployee(false);
-              } else {
-                if (!id) {
-                  navigate(-1);
-                } else {
-                  setOpenModalDelete(true);
-                }
-              }
-            }}
-            color="danger"
-            className="w-[120px]"
-          >
-            {editGroupEmployee || !id ? "Huỷ" : "Xoá"}
-          </BaseButton>
+              }}
+              color="danger"
+              className="w-[120px]"
+            >
+              {editGroupEmployee || !id ? "Huỷ" : "Xoá"}
+            </BaseButton>
+          )}
           <BaseButton
             loading={isLoading}
             onClick={async () => {
@@ -74,7 +69,7 @@ export default function ManagerGroupEmployee() {
           </BaseButton>
         </div>
       }
-      handleBack={() => navigate("/group-employee")}
+      handleBack={() => navigate(-1)}
     >
       {editGroupEmployee || !id ? (
         <GroupEmployeeForm
@@ -83,20 +78,7 @@ export default function ManagerGroupEmployee() {
           loading={isLoading}
           setValue={setValue}
           clearErrors={clearErrors}
-          usersPermission={[
-            {
-              key: 1,
-              name: "Phân hệ 1",
-              use: true,
-              list: [],
-            },
-            {
-              key: 2,
-              name: "Phân hệ 2",
-              use: false,
-              list: [],
-            },
-          ]}
+          usersPermission={usersPermission}
         />
       ) : (
         <GroupEmployeeDetail />

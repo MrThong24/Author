@@ -1,9 +1,10 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Drawer, Table, TableColumnsType } from "antd";
 import { TableProps } from "antd/lib";
 import { FaChevronLeft } from "react-icons/fa";
 import SearchInput from "src/components/Search/SearchInput";
 import BaseButton from "src/shared/components/Buttons/Button";
+import { removeVietnameseAccents } from "src/shared/common/format";
 
 type TableRowSelection<T extends object = object> =
   TableProps<T>["rowSelection"];
@@ -15,17 +16,28 @@ interface DataType {
   children?: DataType[];
 }
 
+interface Props {
+  onClose: () => void;
+  open: boolean;
+  onSaveSelection: (selectedKeys: React.Key[]) => void;
+  dataDrawer: DataType[];
+  initialSelectedKeys?: React.Key[];
+}
+
 export default function CustomDrawer({
   onClose,
   open,
   onSaveSelection,
-}: {
-  onClose: () => void;
-  open: boolean;
-  onSaveSelection: (selectedKeys: React.Key[]) => void;
-}) {
+  dataDrawer,
+  initialSelectedKeys = [],
+}: Props) {
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>();
+
+  useEffect(() => {
+    setSelectedRowKeys(initialSelectedKeys);
+  }, [initialSelectedKeys]);
+
   const columns: TableColumnsType<DataType> = [
     {
       title: "Tên tính năng",
@@ -41,46 +53,12 @@ export default function CustomDrawer({
     },
   ];
 
-  const data: DataType[] = [
-    {
-      key: 1,
-      name: "Quản lý đơn hàng",
-      age: "MO_INVOICE",
-      children: [
-        {
-          key: 11,
-          name: "Xem danh sách đơn hàng",
-          age: "MO_INVOICE",
-        },
-        {
-          key: 12,
-          name: "Xem chi tiết đơn hàng",
-          age: "MO_INVOICE",
-          children: [
-            {
-              key: 121,
-              name: "Thanh toán đơn hàng",
-              age: "MO_INVOICE",
-            },
-          ],
-        },
-      ],
-    },
-  ];
-
   const rowSelection: TableRowSelection<DataType> = {
     selectedRowKeys,
     onChange: (newSelectedRowKeys: React.Key[], selectedRows: DataType[]) => {
       setSelectedRowKeys(newSelectedRowKeys);
     },
     checkStrictly: false,
-  };
-
-  const removeVietnameseAccents = (str: string) => {
-    return str
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase();
   };
 
   const filterData = (data: DataType[], keyword: string): DataType[] => {
@@ -108,8 +86,8 @@ export default function CustomDrawer({
   };
 
   const filteredData = useMemo(() => {
-    if (!searchKeyword) return data;
-    return filterData(data, searchKeyword);
+    if (!searchKeyword) return dataDrawer;
+    return filterData(dataDrawer, searchKeyword);
   }, [searchKeyword]);
 
   return (
@@ -137,7 +115,7 @@ export default function CustomDrawer({
       />
       <BaseButton
         onClick={() => {
-          onSaveSelection(selectedRowKeys);
+          onSaveSelection(selectedRowKeys || []);
           onClose();
         }}
         className="w-[120px]"
