@@ -17,6 +17,7 @@ import { EmployeeStatus } from "src/shared/common/enum";
 import useGroupEmployeeStore, {
   FilterGroupEmployee,
 } from "src/store/useGroupEmployeeStore";
+import { IoEyeOutline } from "react-icons/io5";
 
 const GroupEmployee = () => {
   const { getQuery } = useUrlQuery();
@@ -64,13 +65,12 @@ const GroupEmployee = () => {
       render: (value: Employee) => (
         <div>
           <BaseButton
-            className={`w-[44px] h-[34px] rounded-md overflow-hidden`}
-            variant="filled"
+            variant="link"
             onClick={() => {
               navigate(`${value?.id}`);
             }}
           >
-            <EditOutlined className="text-primary text-[20px] font-bold" />
+            <IoEyeOutline className="text-gray-500 font-semibold" size={24} />
           </BaseButton>
         </div>
       ),

@@ -17,6 +17,7 @@ import SelectedStatusBar from "src/components/SelectedStatusBar";
 import ModalDelete from "src/components/Modal/ModalDelete";
 import ModalSwitchService from "./components/ModalSwitchService";
 import { EmployeeStatus } from "src/shared/common/enum";
+import { IoEyeOutline } from "react-icons/io5";
 
 export default function Service() {
   const { getQuery } = useUrlQuery();
@@ -79,15 +80,16 @@ export default function Service() {
             }}
             className="w-[40px]"
           />
-          <BaseButton
-            className={`w-[44px] h-[34px] rounded-md overflow-hidden`}
-            variant="filled"
-            onClick={() => {
-              navigate(`${value?.id}`);
-            }}
-          >
-            <EditOutlined className="text-primary text-[20px] font-bold" />
-          </BaseButton>
+          <div>
+            <BaseButton
+              variant="link"
+              onClick={() => {
+                navigate(`${value?.id}`);
+              }}
+            >
+              <IoEyeOutline className="text-gray-500 font-semibold" size={24} />
+            </BaseButton>
+          </div>
         </div>
       ),
     },

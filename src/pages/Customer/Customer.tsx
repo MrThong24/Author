@@ -15,6 +15,7 @@ import ModalDelete from "src/components/Modal/ModalDelete";
 import SelectedStatusBar from "src/components/SelectedStatusBar";
 import { FilterContract } from "src/store/useContractStore";
 import useCustomerStore from "src/store/useCustomerStore";
+import { IoEyeOutline } from "react-icons/io5";
 
 export default function Customer() {
   const { getQuery } = useUrlQuery();
@@ -58,13 +59,12 @@ export default function Customer() {
       render: (value: Employee) => (
         <div>
           <BaseButton
-            className={`w-[44px] h-[34px] rounded-md overflow-hidden`}
-            variant="filled"
+            variant="link"
             onClick={() => {
               navigate(`${value?.id}`);
             }}
           >
-            <EditOutlined className="text-primary text-[20px] font-bold" />
+            <IoEyeOutline className="text-gray-500 font-semibold" size={24} />
           </BaseButton>
         </div>
       ),

@@ -17,6 +17,7 @@ import SelectedStatusBar from "src/components/SelectedStatusBar";
 import { EmployeeStatus } from "src/shared/common/enum";
 import { RequestStatusBadge } from "src/components/Badge/RequestStatusBadge";
 import ModalSwitchEmployee from "./components/ModalSwitchEmployee";
+import { IoEyeOutline } from "react-icons/io5";
 
 const EmployeeList = () => {
   const { getQuery } = useUrlQuery();
@@ -72,7 +73,7 @@ const EmployeeList = () => {
       fixed: "right",
       title: "Tác vụ",
       render: (value: Employee) => (
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-2 items-center">
           <Switch
             value={valueSwitchStatus}
             onChange={() => {
@@ -80,15 +81,16 @@ const EmployeeList = () => {
             }}
             className="w-[40px]"
           />
-          <BaseButton
-            className={`w-[44px] h-[34px] rounded-md overflow-hidden`}
-            variant="filled"
-            onClick={() => {
-              navigate(`${value?.id}`);
-            }}
-          >
-            <EditOutlined className="text-primary text-[20px] font-bold" />
-          </BaseButton>
+          <div>
+            <BaseButton
+              variant="link"
+              onClick={() => {
+                navigate(`${value?.id}`);
+              }}
+            >
+              <IoEyeOutline className="text-gray-500 font-semibold" size={24} />
+            </BaseButton>
+          </div>
         </div>
       ),
     },

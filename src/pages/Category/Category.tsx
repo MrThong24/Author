@@ -13,6 +13,7 @@ import useCategoryStore from "src/store/useCategoryStore";
 import { FilterEmployee } from "src/store/useEmployeeStore";
 import { Employee } from "src/types/employee.type";
 import { EditOutlined } from "@ant-design/icons";
+import { IoEyeOutline } from "react-icons/io5";
 
 export default function Category() {
   const { getQuery } = useUrlQuery();
@@ -54,13 +55,12 @@ export default function Category() {
       render: (value: Employee) => (
         <div>
           <BaseButton
-            className={`w-[44px] h-[34px] rounded-md overflow-hidden`}
-            variant="filled"
+            variant="link"
             onClick={() => {
               navigate(`${value?.id}`);
             }}
           >
-            <EditOutlined className="text-primary text-[20px] font-bold" />
+            <IoEyeOutline className="text-gray-500 font-semibold" size={24} />
           </BaseButton>
         </div>
       ),

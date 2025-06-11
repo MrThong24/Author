@@ -8,6 +8,7 @@ import { EditOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import NoData from "src/components/NoData/NoData";
 import useContractStore, { FilterContract } from "src/store/useContractStore";
+import { IoEyeOutline } from "react-icons/io5";
 
 export default function ContractAddendum() {
   const { fetchContract, isLoading, total, contract } = useContractStore();
@@ -43,13 +44,12 @@ export default function ContractAddendum() {
       render: (value: Employee) => (
         <div>
           <BaseButton
-            className={`w-[44px] h-[34px] rounded-md overflow-hidden`}
-            variant="filled"
+            variant="link"
             onClick={() => {
               navigate(`${value?.id}`);
             }}
           >
-            <EditOutlined className="text-primary text-[20px] font-bold" />
+            <IoEyeOutline className="text-gray-500 font-semibold" size={24} />
           </BaseButton>
         </div>
       ),
